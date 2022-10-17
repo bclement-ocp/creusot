@@ -1,3 +1,4 @@
+mod alloc;
 mod boxed;
 mod clone;
 mod cmp;

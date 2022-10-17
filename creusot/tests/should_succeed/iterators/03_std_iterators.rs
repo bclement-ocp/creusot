@@ -15,6 +15,7 @@ pub fn slice_iter<T>(slice: &[T]) -> usize {
 #[requires((@vec).len() < 1000)]
 #[ensures(@result == (@vec).len())]
 pub fn vec_iter<T>(vec: &Vec<T>) -> usize {
+    vec![1,2,3];
     let mut i = 0;
     #[invariant(dummy, @i == produced.len())]
     for _ in vec {

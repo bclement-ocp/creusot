@@ -1,6 +1,6 @@
 use super::{
     function::place,
-    specification::{lower_literal, lower_pure},
+    specification::{lower_literal, lower_pure, lower_impure},
     traits,
     ty::translate_ty,
 };
@@ -19,12 +19,13 @@ use creusot_rustc::{
     span::{Span, Symbol, DUMMY_SP},
     target::abi::VariantIdx,
 };
+use rustc_middle::mir::NullOp;
 use rustc_type_ir::{IntTy, UintTy};
 use why3::{
     exp::{Exp, Pattern},
     mlcfg,
     mlcfg::BlockId,
-    QName,
+    QName, ty::Type,
 };
 
 pub enum Statement<'tcx> {
@@ -41,9 +42,11 @@ pub enum RValue<'tcx> {
 }
 
 pub enum Expr<'tcx> {
+    // Cleanup
     Place(Place<'tcx>),
     Move(Place<'tcx>),
     Copy(Place<'tcx>),
+
     BinOp(BinOp, Ty<'tcx>, Box<Expr<'tcx>>, Box<Expr<'tcx>>),
     UnaryOp(UnOp, Box<Expr<'tcx>>),
     Constructor(DefId, SubstsRef<'tcx>, Vec<Expr<'tcx>>),
@@ -51,10 +54,12 @@ pub enum Expr<'tcx> {
     Call(DefId, SubstsRef<'tcx>, Vec<Expr<'tcx>>),
     // Get rid and replace with a Term<'tcx>?
     Constant(Literal<'tcx>),
+    Pure(Term<'tcx>),
     Cast(Box<Expr<'tcx>>, Ty<'tcx>, Ty<'tcx>),
     Tuple(Vec<Expr<'tcx>>),
     Span(Span, Box<Expr<'tcx>>),
     Len(Box<Expr<'tcx>>),
+    NullOp(NullOp, Ty<'tcx>),
     // Migration escape hatch
     Exp(why3::exp::Exp),
 }
@@ -64,6 +69,7 @@ impl<'tcx> Expr<'tcx> {
         self,
         ctx: &mut TranslationCtx<'tcx>,
         names: &mut CloneMap<'tcx>,
+        param_env: ParamEnv<'tcx>,
         body: Option<&Body<'tcx>>,
     ) -> Exp {
         match self {
@@ -79,33 +85,33 @@ impl<'tcx> Expr<'tcx> {
             }
             Expr::BinOp(BinOp::BitAnd, ty, l, r) if ty.is_bool() => Exp::BinaryOp(
                 why3::exp::BinOp::LazyAnd,
-                box l.to_why(ctx, names, body),
-                box r.to_why(ctx, names, body),
+                box l.to_why(ctx, names, param_env, body),
+                box r.to_why(ctx, names, param_env, body),
             ),
             Expr::BinOp(BinOp::Eq, ty, l, r) if ty.is_bool() => {
                 names.import_prelude_module(PreludeModule::Bool);
                 Exp::Call(
                     box Exp::impure_qvar(QName::from_string("Bool.eqb").unwrap()),
-                    vec![l.to_why(ctx, names, body), r.to_why(ctx, names, body)],
+                    vec![l.to_why(ctx, names, param_env, body), r.to_why(ctx, names, param_env, body)],
                 )
             }
             Expr::BinOp(BinOp::Ne, ty, l, r) if ty.is_bool() => {
                 names.import_prelude_module(PreludeModule::Bool);
                 Exp::Call(
                     box Exp::impure_qvar(QName::from_string("Bool.neqb").unwrap()),
-                    vec![l.to_why(ctx, names, body), r.to_why(ctx, names, body)],
+                    vec![l.to_why(ctx, names, param_env, body), r.to_why(ctx, names, param_env, body)],
                 )
             }
             Expr::BinOp(op, ty, l, r) => Exp::BinaryOp(
                 binop_to_binop(ctx, ty, op),
-                box l.to_why(ctx, names, body),
-                box r.to_why(ctx, names, body),
+                box l.to_why(ctx, names, param_env, body),
+                box r.to_why(ctx, names, param_env, body),
             ),
             Expr::UnaryOp(op, arg) => {
-                Exp::UnaryOp(unop_to_unop(op), box arg.to_why(ctx, names, body))
+                Exp::UnaryOp(unop_to_unop(op), box arg.to_why(ctx, names, param_env, body))
             }
             Expr::Constructor(id, subst, args) => {
-                let args = args.into_iter().map(|a| a.to_why(ctx, names, body)).collect();
+                let args = args.into_iter().map(|a| a.to_why(ctx, names, param_env, body)).collect();
 
                 match ctx.def_kind(id) {
                     DefKind::Closure => {
@@ -122,7 +128,7 @@ impl<'tcx> Expr<'tcx> {
             }
             Expr::Call(id, subst, args) => {
                 let mut args: Vec<_> =
-                    args.into_iter().map(|a| a.to_why(ctx, names, body)).collect();
+                    args.into_iter().map(|a| a.to_why(ctx, names, param_env, body)).collect();
                 let fname = names.insert(id, subst).qname(ctx.tcx, id);
 
                 let exp = if ctx.is_closure(id) {
@@ -152,11 +158,11 @@ impl<'tcx> Expr<'tcx> {
             }
             Expr::Constant(c) => lower_literal(ctx, names, c),
             Expr::Tuple(f) => {
-                Exp::Tuple(f.into_iter().map(|f| f.to_why(ctx, names, body)).collect())
+                Exp::Tuple(f.into_iter().map(|f| f.to_why(ctx, names, param_env, body)).collect())
             }
             Expr::Exp(e) => e,
             Expr::Span(sp, e) => {
-                let e = e.to_why(ctx, names, body);
+                let e = e.to_why(ctx, names, param_env, body);
                 ctx.attach_span(sp, e)
             } // Expr::Cast(_, _) => todo!(),
             Expr::Cast(e, source, target) => {
@@ -182,14 +188,20 @@ impl<'tcx> Expr<'tcx> {
                         .crash_and_error(DUMMY_SP, "Non integral casts are currently unsupported"),
                 };
 
-                from_int.app_to(to_int.app_to(e.to_why(ctx, names, body)))
+                from_int.app_to(to_int.app_to(e.to_why(ctx, names, param_env, body)))
             }
             Expr::Len(pl) => {
                 let int_conversion = uint_from_int(&UintTy::Usize);
                 let len_call = Exp::impure_qvar(QName::from_string("Seq.length").unwrap())
-                    .app_to(pl.to_why(ctx, names, body));
+                    .app_to(pl.to_why(ctx, names, param_env, body));
                 int_conversion.app_to(len_call)
             }
+            Expr::NullOp(_, _) =>{
+                Exp::Any(Type::Integer)
+            },
+            Expr::Pure(t) => {
+                lower_impure(ctx, names, param_env, t)
+            },
         }
     }
 
@@ -211,6 +223,8 @@ impl<'tcx> Expr<'tcx> {
             Expr::Span(_, e) => e.invalidated_places(places),
             Expr::Len(e) => e.invalidated_places(places),
             Expr::Exp(_) => {}
+            Expr::NullOp(_, _) => {},
+            Expr::Pure(_) => {},
         }
     }
 }
@@ -286,13 +300,14 @@ impl<'tcx> Terminator<'tcx> {
         self,
         ctx: &mut TranslationCtx<'tcx>,
         names: &mut CloneMap<'tcx>,
+        param_env: ParamEnv<'tcx>,
         body: Option<&Body<'tcx>>,
     ) -> why3::mlcfg::Terminator {
         use why3::mlcfg::Terminator::*;
         match self {
             Terminator::Goto(bb) => Goto(BlockId(bb.into())),
             Terminator::Switch(switch, branches) => {
-                let discr = switch.to_why(ctx, names, body);
+                let discr = switch.to_why(ctx, names, param_env, body);
                 branches.to_why(ctx, names, discr)
             }
             Terminator::Return => Return,
@@ -388,7 +403,7 @@ impl<'tcx> Block<'tcx> {
                 .into_iter()
                 .flat_map(|s| s.to_why(ctx, names, body, param_env))
                 .collect(),
-            terminator: self.terminator.to_why(ctx, names, Some(body)),
+            terminator: self.terminator.to_why(ctx, names, param_env, Some(body)),
         }
     }
 }
@@ -419,8 +434,8 @@ impl<'tcx> Statement<'tcx> {
     ) -> Vec<mlcfg::Statement> {
         match self {
             Statement::Assignment(lhs, RValue::Borrow(rhs)) => {
-                let borrow = Exp::BorrowMut(box Expr::Place(rhs).to_why(ctx, names, Some(body)));
-                let reassign = Exp::Final(box Expr::Place(lhs).to_why(ctx, names, Some(body)));
+                let borrow = Exp::BorrowMut(box Expr::Place(rhs).to_why(ctx, names, param_env, Some(body)));
+                let reassign = Exp::Final(box Expr::Place(lhs).to_why(ctx, names, param_env, Some(body)));
 
                 vec![
                     place::create_assign_inner(ctx, names, body, &lhs, borrow),
@@ -435,7 +450,7 @@ impl<'tcx> Statement<'tcx> {
             Statement::Assignment(lhs, RValue::Expr(rhs)) => {
                 let mut invalid = Vec::new();
                 rhs.invalidated_places(&mut invalid);
-                let rhs = rhs.to_why(ctx, names, Some(body));
+                let rhs = rhs.to_why(ctx, names, param_env, Some(body));
                 let mut exps = vec![place::create_assign_inner(ctx, names, body, &lhs, rhs)];
                 for pl in invalid {
                     let ty = translate_ty(ctx, names, DUMMY_SP, pl.ty(body, ctx.tcx).ty);
@@ -446,7 +461,7 @@ impl<'tcx> Statement<'tcx> {
             Statement::Resolve(pl) => {
                 match resolve_predicate_of(ctx, names, param_env, pl.ty(body, ctx.tcx).ty) {
                     Some(rp) => {
-                        let assume = rp.app_to(Expr::Place(pl).to_why(ctx, names, Some(body)));
+                        let assume = rp.app_to(Expr::Place(pl).to_why(ctx, names, param_env, Some(body)));
                         vec![mlcfg::Statement::Assume(assume)]
                     }
                     None => Vec::new(),

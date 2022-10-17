@@ -40,16 +40,15 @@ pub(crate) fn lower_pure<'tcx>(
 pub(crate) fn lower_impure<'tcx>(
     ctx: &mut TranslationCtx<'tcx>,
     names: &mut CloneMap<'tcx>,
-    term_id: DefId,
+    // term_id: DefId,
     param_env: ParamEnv<'tcx>,
-
     term: Term<'tcx>,
 ) -> Exp {
     let span = term.span;
     let mut term = Lower { ctx, names, pure: Purity::Program, param_env }.lower_term(term);
     term.reassociate();
 
-    if term_id.is_local() {
+    if !ctx.sess.source_map().is_imported(span) {
         term = ctx.attach_span(span, term);
     }
     term
@@ -88,7 +87,7 @@ impl<'tcx> Lower<'_, 'tcx> {
                         self.param_env,
                         creusot_rustc::span::DUMMY_SP,
                     )
-                    .to_why(self.ctx, self.names, None)
+                    .to_why(self.ctx, self.names, self.param_env, None)
                 })
             }
             TermKind::Var(v) => Exp::pure_var(util::ident_of(v)),

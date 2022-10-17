@@ -5,10 +5,14 @@ use creusot_rustc::{
         StatementKind,
     },
 };
+use rustc_middle::ty::adjustment::PointerCast;
 
 use super::BodyTranslator;
 use crate::{
-    translation::fmir::{self, Expr, RValue},
+    translation::{
+        fmir::{self, Expr, RValue},
+        pearlite::{Term, TermKind},
+    },
     util::{self, is_ghost_closure},
 };
 
@@ -160,6 +164,12 @@ impl<'tcx> BodyTranslator<'_, 'tcx> {
                             Expr::Constructor(def_id, subst, fields)
                         }
                     }
+                    Array(ty) => Expr::Pure(Term {
+                        kind: TermKind::Absurd,
+                        // kind: TermKind::Sequence { elems: Vec::new() },
+                        ty: place.ty(self.body, self.tcx).ty,
+                        span: si.span,
+                    }),
                     _ => self.ctx.crash_and_error(
                         si.span,
                         &format!("the rvalue {:?} is not currently supported", kind),
@@ -171,6 +181,11 @@ impl<'tcx> BodyTranslator<'_, 'tcx> {
                 let op_ty = op.ty(self.body, self.tcx);
                 Expr::Cast(box self.translate_operand(op), op_ty, *ty)
             }
+            Rvalue::Cast(CastKind::Pointer(PointerCast::Unsize), op, _) => {
+                self.translate_operand(op)
+            }
+            // RValue::NullaryOp(_, _) => {}
+            Rvalue::NullaryOp(op, ty) => Expr::NullOp(*op, *ty),
             Rvalue::Cast(
                 CastKind::Pointer(_)
                 | CastKind::PointerExposeAddress
@@ -180,14 +195,18 @@ impl<'tcx> BodyTranslator<'_, 'tcx> {
                 _,
             ) => self.ctx.crash_and_error(si.span, "Pointer casts are currently unsupported"),
             Rvalue::CopyForDeref(_) => panic!(),
-            Rvalue::ShallowInitBox(_, _)
-            | Rvalue::NullaryOp(_, _)
-            | Rvalue::Repeat(_, _)
-            | Rvalue::ThreadLocalRef(_)
-            | Rvalue::AddressOf(_, _) => self.ctx.crash_and_error(
-                si.span,
-                &format!("MIR code used an unsupported Rvalue {:?}", rvalue),
-            ),
+            Rvalue::ShallowInitBox(_, _) => Expr::Pure(Term {
+                kind: TermKind::Absurd,
+                span: si.span,
+                ty: place.ty(self.body, self.tcx).ty,
+            }),
+            // | Rvalue::NullaryOp(_, _)
+            Rvalue::Repeat(_, _) | Rvalue::ThreadLocalRef(_) | Rvalue::AddressOf(_, _) => {
+                self.ctx.crash_and_error(
+                    si.span,
+                    &format!("MIR code used an unsupported Rvalue {:?}", rvalue),
+                )
+            }
         };
         self.emit_assignment(place, RValue::Expr(rval));
     }

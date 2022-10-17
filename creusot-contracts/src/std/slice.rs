@@ -7,6 +7,7 @@ use crate::{
 use std::{
     ops::{Index, IndexMut, Range, RangeFrom, RangeFull, RangeTo, RangeToInclusive},
     slice::{Iter, IterMut},
+    alloc::Allocator,
 };
 
 impl<T> ShallowModel for [T] {
@@ -267,6 +268,9 @@ extern_spec! {
         #[ensures(@result == self)]
         #[ensures(result.invariant())]
         fn iter_mut(&mut self) -> IterMut<'_, T>;
+
+        #[ensures(@result == @self_)]
+        fn into_vec<A : Allocator>(self_: Box<[T], A>) -> Vec<T, A>;
     }
 
     impl<'a, T> IntoIterator for &'a [T] {
