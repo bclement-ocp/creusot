@@ -3,7 +3,7 @@ use crate::{
     ctx::{CloneMap, TranslationCtx},
     translation::{
         binop_to_binop,
-        fmir::{Block, Branches, Expr, RValue, Statement, Terminator},
+        fmir::{self, Block, Branches, Expr, RValue, Statement, Terminator},
         function::{place, place::translate_rplace_inner},
         specification::{lower_impure, lower_pure},
         ty::translate_ty,
@@ -11,8 +11,10 @@ use crate::{
     },
 };
 use rustc_hir::{def::DefKind, Unsafety};
-use rustc_middle::ty::TyKind;
-use rustc_smir::mir::{self, BasicBlock, BinOp, Place};
+use rustc_middle::{
+    mir::{self, BasicBlock, BinOp},
+    ty::TyKind,
+};
 use rustc_span::DUMMY_SP;
 
 use rustc_type_ir::{IntTy, UintTy};
@@ -155,7 +157,7 @@ impl<'tcx> Expr<'tcx> {
         }
     }
 
-    fn invalidated_places(&self, places: &mut Vec<Place<'tcx>>) {
+    fn invalidated_places(&self, places: &mut Vec<fmir::Place<'tcx>>) {
         match self {
             Expr::Place(_) => {}
             Expr::Move(p) => places.push(*p),
@@ -359,7 +361,7 @@ impl<'tcx> Statement<'tcx> {
                 let rhs = rhs.to_why(ctx, names, Some(body));
                 let mut exps = vec![place::create_assign_inner(ctx, names, body, &lhs, rhs)];
                 for pl in invalid {
-                    let ty = translate_ty(ctx, names, DUMMY_SP, pl.ty(body, ctx.tcx).ty);
+                    let ty = translate_ty(ctx, names, DUMMY_SP, pl.ty(ctx.tcx).ty);
                     exps.push(place::create_assign_inner(ctx, names, body, &pl, Exp::Any(ty)));
                 }
                 exps

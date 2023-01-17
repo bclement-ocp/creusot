@@ -23,7 +23,10 @@ use rustc_hir::def_id::DefId;
 use rustc_index::bit_set::BitSet;
 use rustc_infer::infer::TyCtxtInferExt;
 use rustc_middle::{
-    mir::{traversal::reverse_postorder, MirPass},
+    mir::{
+        self, traversal::reverse_postorder, BasicBlock, Body, Local, Location, MirPass, Operand,
+        Place, VarDebugInfo,
+    },
     ty::{
         subst::{GenericArg, SubstsRef},
         ClosureKind::*,
@@ -33,7 +36,6 @@ use rustc_middle::{
 };
 use rustc_mir_dataflow::move_paths::MoveData;
 use rustc_mir_transform::{cleanup_post_borrowck::CleanupPostBorrowck, simplify::*};
-use rustc_smir::mir::{BasicBlock, Body, Local, Location, Operand, Place, VarDebugInfo};
 use rustc_span::{Span, Symbol, DUMMY_SP};
 use std::rc::Rc;
 use why3::{declaration::*, exp::*, mlcfg::*, Ident};
@@ -331,7 +333,7 @@ impl<'body, 'tcx> BodyTranslator<'body, 'tcx> {
             // self.emit_statement(fmir::Statement::Assume(
             //     Term { kind: TermKind::Call { id: id, subst: subst, fun: (), args: () }}
             // ));
-            self.emit_statement(fmir::Statement::Resolve(id, subst, pl));
+            self.emit_statement(fmir::Statement::Resolve(id, subst, self.translate_place(pl)));
         }
     }
 
@@ -342,7 +344,7 @@ impl<'body, 'tcx> BodyTranslator<'body, 'tcx> {
     }
 
     fn emit_borrow(&mut self, lhs: &Place<'tcx>, rhs: &Place<'tcx>) {
-        self.emit_assignment(lhs, fmir::RValue::Borrow(*rhs));
+        self.emit_assignment(lhs, fmir::RValue::Borrow(self.translate_place(*rhs)));
     }
 
     fn emit_ghost_assign(&mut self, lhs: Place<'tcx>, rhs: Term<'tcx>) {
@@ -350,7 +352,7 @@ impl<'body, 'tcx> BodyTranslator<'body, 'tcx> {
     }
 
     fn emit_assignment(&mut self, lhs: &Place<'tcx>, rhs: RValue<'tcx>) {
-        self.emit_statement(fmir::Statement::Assignment(*lhs, rhs));
+        self.emit_statement(fmir::Statement::Assignment(self.translate_place(*lhs), rhs));
     }
 
     // Inserts drop statements for variables which died over the course of a goto or switch
@@ -425,10 +427,18 @@ impl<'body, 'tcx> BodyTranslator<'body, 'tcx> {
     // Useful helper to translate an operand
     pub(crate) fn translate_operand(&mut self, operand: &Operand<'tcx>) -> Expr<'tcx> {
         match operand {
-            Operand::Copy(pl) | Operand::Move(pl) => Expr::Place(*pl),
+            Operand::Copy(pl) | Operand::Move(pl) => Expr::Place(self.translate_place(*pl)),
             Operand::Constant(c) => {
                 crate::constant::from_mir_constant(self.param_env(), self.ctx, c)
             }
+        }
+    }
+
+    pub(crate) fn translate_place(&self, place: mir::Place<'tcx>) -> fmir::Place<'tcx> {
+        fmir::Place {
+            local: place.local,
+            ty: self.body.local_decls[place.local].ty,
+            projection: place.projection,
         }
     }
 

@@ -1,10 +1,13 @@
-use super::LocalIdent;
+use super::{fmir, LocalIdent};
 use crate::{
     backend::program::uint_to_int,
     ctx::{CloneMap, TranslationCtx},
 };
-use rustc_middle::ty::{TyKind, UintTy};
-use rustc_smir::mir::{Body, Local, Place};
+use rustc_ast::Mutability;
+use rustc_middle::{
+    mir::{Body, Local, Place, PlaceElem, ProjectionElem::*},
+    ty::{TyKind, UintTy},
+};
 use why3::{
     exp::{
         Exp::{self, *},
@@ -32,7 +35,7 @@ pub(crate) fn create_assign_inner<'tcx>(
     ctx: &mut TranslationCtx<'tcx>,
     names: &mut CloneMap<'tcx>,
     body: &Body<'tcx>,
-    lhs: &Place<'tcx>,
+    lhs: &fmir::Place<'tcx>,
     rhs: Exp,
 ) -> mlcfg::Statement {
     // Translation happens inside to outside, which means we scan projection elements in reverse
@@ -46,18 +49,16 @@ pub(crate) fn create_assign_inner<'tcx>(
     let mut stump: &[_] = lhs.projection;
 
     use rustc_middle::mir::ProjectionElem::*;
-
-    for (proj, elem) in lhs.iter_projections().rev() {
+    let temp = Place { local: lhs.local, projection: lhs.projection };
+    for (proj, elem) in temp.iter_projections().rev() {
         // twisted stuff
         stump = &stump[0..stump.len() - 1];
         let place_ty = proj.ty(body, ctx.tcx);
 
         match elem {
             Deref => {
-                use rustc_hir::Mutability::*;
-
                 let mutability = place_ty.ty.builtin_deref(false).expect("raw pointer").mutbl;
-                if mutability == Mut {
+                if mutability == Mutability::Mut {
                     inner = RecUp {
                         record: box translate_rplace_inner(ctx, names, body, lhs.local, stump),
                         label: "current".into(),
@@ -80,11 +81,12 @@ pub(crate) fn create_assign_inner<'tcx>(
 
                     varexps[ix.as_usize()] = inner;
 
-                    let ctor = names.constructor(variant.def_id, subst);
+                    let tyname = names.constructor(variant.def_id, subst);
+
                     inner = Let {
-                        pattern: ConsP(ctor.clone(), field_pats),
+                        pattern: ConsP(tyname.clone(), field_pats),
                         arg: box translate_rplace_inner(ctx, names, body, lhs.local, stump),
-                        body: box Constructor { ctor, args: varexps },
+                        body: box Constructor { ctor: tyname, args: varexps },
                     }
                 }
                 TyKind::Tuple(fields) => {
@@ -116,6 +118,7 @@ pub(crate) fn create_assign_inner<'tcx>(
                         .collect();
 
                     varexps[ix.as_usize()] = inner;
+
                     let cons = names.constructor(*id, subst);
 
                     inner = Let {
@@ -159,27 +162,22 @@ pub(crate) fn translate_rplace_inner<'tcx>(
     names: &mut CloneMap<'tcx>,
     body: &Body<'tcx>,
     loc: Local,
-    proj: &[rustc_middle::mir::PlaceElem<'tcx>],
+    proj: &[PlaceElem<'tcx>],
 ) -> Exp {
     let mut inner = Exp::impure_var(translate_local(body, loc).ident());
-    use rustc_smir::mir::ProjectionElem::*;
     let mut place_ty = Place::ty_from(loc, &[], body, ctx.tcx);
 
     for elem in proj {
         match elem {
             Deref => {
-                use rustc_hir::Mutability::*;
                 let mutability = place_ty.ty.builtin_deref(false).expect("raw pointer").mutbl;
-                if mutability == Mut {
+                if mutability == Mutability::Mut {
                     inner = Current(box inner)
                 }
             }
             Field(ix, _) => match place_ty.ty.kind() {
                 TyKind::Adt(def, subst) => {
                     let variant_id = place_ty.variant_index.unwrap_or_else(|| 0u32.into());
-                    let _variant = &def.variants()[variant_id];
-
-                    ctx.translate_accessor(def.variants()[variant_id].fields[ix.as_usize()].did);
 
                     let acc =
                         names.accessor(def.did(), subst, variant_id.as_usize(), ix.as_usize());

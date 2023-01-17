@@ -2,10 +2,27 @@ use super::{function::LocalIdent, traits};
 use crate::{ctx::TranslationCtx, pearlite::Term};
 use indexmap::IndexMap;
 use rustc_hir::def_id::DefId;
-use rustc_middle::ty::{subst::SubstsRef, AdtDef, GenericArg, ParamEnv, Ty, TypeVisitable};
-use rustc_smir::mir::{BasicBlock, BinOp, Place, UnOp};
+use rustc_middle::{
+    mir::{tcx::PlaceTy, BasicBlock, BinOp, Local, PlaceElem, UnOp},
+    ty::{subst::SubstsRef, AdtDef, GenericArg, List, ParamEnv, Ty, TyCtxt, TypeVisitable},
+};
 use rustc_span::{Span, Symbol, DUMMY_SP};
 use rustc_target::abi::VariantIdx;
+
+#[derive(Clone, Copy, Debug)]
+pub struct Place<'tcx> {
+    pub local: Local,
+    pub ty: Ty<'tcx>,
+    pub projection: &'tcx List<PlaceElem<'tcx>>,
+}
+
+impl<'tcx> Place<'tcx> {
+    pub(crate) fn ty(self, tcx: TyCtxt<'tcx>) -> PlaceTy<'tcx> {
+        self.projection
+            .iter()
+            .fold(PlaceTy::from_ty(self.ty), |acc, elem| acc.projection_ty(tcx, elem))
+    }
+}
 
 #[derive(Clone)]
 pub enum Statement<'tcx> {

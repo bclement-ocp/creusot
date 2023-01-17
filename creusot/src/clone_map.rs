@@ -295,6 +295,9 @@ impl<'tcx> CloneMap<'tcx> {
         self.insert(def_id, subst).qname_ident(name.into())
     }
 
+    // Creates a name for a constructor of a closure or type.
+    //
+    // `def_id` should be the identifier for the variant, struct or closure you want to construct
     pub(crate) fn constructor(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
         let type_id = match self.tcx.def_kind(def_id) {
             DefKind::Closure | DefKind::Struct | DefKind::Enum | DefKind::Union => def_id,
