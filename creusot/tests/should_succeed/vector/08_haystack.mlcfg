@@ -425,6 +425,17 @@ module Core_Iter_Traits_Collect_Impl0_IntoIter_Interface
     ensures { Invariant0.invariant' result }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
+end
 module CreusotContracts_Std1_Ops_Impl4_Invariant_Stub
   type idx
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
@@ -444,16 +455,9 @@ module CreusotContracts_Std1_Ops_Impl4_Invariant
     ensures { result = invariant' self }
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
+module Core_Iter_Traits_Iterator_Iterator_Item_Type
+  type self
+  type item
 end
 module CreusotContracts_Std1_Iter_Iterator_Completed_Stub
   type self
@@ -472,10 +476,6 @@ module CreusotContracts_Std1_Iter_Iterator_Completed
   val completed (self : borrowed self) : bool
     ensures { result = completed self }
     
-end
-module Core_Iter_Traits_Iterator_Iterator_Item_Type
-  type self
-  type item
 end
 module CreusotContracts_Std1_Iter_Iterator_Produces_Stub
   type self

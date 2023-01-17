@@ -50,6 +50,11 @@ module SparseArray_Sparse_Type
     match (self) with
       | C_Sparse a _ _ _ _ -> a
       end
+  let function sparse_values (self : t_sparse 't) : Alloc_Vec_Vec_Type.t_vec 't (Alloc_Alloc_Global_Type.t_global)
+   = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_Sparse _ _ a _ _ -> a
+      end
   let function sparse_idx (self : t_sparse 't) : Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global)
    = [@vc:do_not_keep_trace] [@vc:sp]
     match (self) with
@@ -64,11 +69,12 @@ module SparseArray_Sparse_Type
     match (self) with
       | C_Sparse _ _ _ _ a -> a
       end
-  let function sparse_values (self : t_sparse 't) : Alloc_Vec_Vec_Type.t_vec 't (Alloc_Alloc_Global_Type.t_global)
-   = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_Sparse _ _ a _ _ -> a
-      end
+end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
 end
 module Core_Num_Impl12_Max_Stub
   use mach.int.Int
@@ -150,12 +156,6 @@ module SparseArray_Impl1_IsElt
     [#"../sparse_array.rs" 56 20 58 58] 0 <= i /\ i < UInt64.to_int (SparseArray_Sparse_Type.sparse_size self) /\ UInt64.to_int (Seq.get (ShallowModel0.shallow_model (SparseArray_Sparse_Type.sparse_idx self)) i) < UInt64.to_int (SparseArray_Sparse_Type.sparse_n self) /\ UInt64.to_int (Seq.get (ShallowModel0.shallow_model (SparseArray_Sparse_Type.sparse_back self)) (UInt64.to_int (Seq.get (ShallowModel0.shallow_model (SparseArray_Sparse_Type.sparse_idx self)) i))) = i
   val is_elt [#"../sparse_array.rs" 55 4 55 36] (self : SparseArray_Sparse_Type.t_sparse t) (i : int) : bool
     ensures { result = is_elt self i }
-    
-end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
     
 end
 module SparseArray_Impl0_ShallowModel_Stub

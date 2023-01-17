@@ -515,6 +515,45 @@ module HeapsortGeneric_HeapFragMax_Impl
    = [@vc:do_not_keep_trace] [@vc:sp]
     [#"../heapsort_generic.rs" 26 4 28 5] if i > 0 then let b' = Parent0.parent i in heap_frag_max s b' end' else ()
 end
+module Core_Ptr_NonNull_NonNull_Type
+  use prelude.Opaque
+  type t_nonnull 't =
+    | C_NonNull opaque_ptr
+    
+end
+module Core_Marker_PhantomData_Type
+  type t_phantomdata 't =
+    | C_PhantomData
+    
+end
+module Core_Ptr_Unique_Unique_Type
+  use Core_Marker_PhantomData_Type as Core_Marker_PhantomData_Type
+  use Core_Ptr_NonNull_NonNull_Type as Core_Ptr_NonNull_NonNull_Type
+  type t_unique 't =
+    | C_Unique (Core_Ptr_NonNull_NonNull_Type.t_nonnull 't) (Core_Marker_PhantomData_Type.t_phantomdata 't)
+    
+end
+module Alloc_RawVec_RawVec_Type
+  use mach.int.Int
+  use prelude.UIntSize
+  use Core_Ptr_Unique_Unique_Type as Core_Ptr_Unique_Unique_Type
+  type t_rawvec 't 'a =
+    | C_RawVec (Core_Ptr_Unique_Unique_Type.t_unique 't) usize 'a
+    
+end
+module Alloc_Vec_Vec_Type
+  use mach.int.Int
+  use prelude.UIntSize
+  use Alloc_RawVec_RawVec_Type as Alloc_RawVec_RawVec_Type
+  type t_vec 't 'a =
+    | C_Vec (Alloc_RawVec_RawVec_Type.t_rawvec 't 'a) usize
+    
+end
+module Alloc_Alloc_Global_Type
+  type t_global  =
+    | C_Global
+    
+end
 module CreusotContracts_Model_DeepModel_DeepModelTy_Type
   type self
   type deepModelTy
@@ -619,40 +658,6 @@ module CreusotContracts_Model_Impl3_ShallowModel
     ShallowModel0.shallow_model ( * self)
   val shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
     ensures { result = shallow_model self }
-    
-end
-module Core_Ptr_NonNull_NonNull_Type
-  use prelude.Opaque
-  type t_nonnull 't =
-    | C_NonNull opaque_ptr
-    
-end
-module Core_Marker_PhantomData_Type
-  type t_phantomdata 't =
-    | C_PhantomData
-    
-end
-module Core_Ptr_Unique_Unique_Type
-  use Core_Marker_PhantomData_Type as Core_Marker_PhantomData_Type
-  use Core_Ptr_NonNull_NonNull_Type as Core_Ptr_NonNull_NonNull_Type
-  type t_unique 't =
-    | C_Unique (Core_Ptr_NonNull_NonNull_Type.t_nonnull 't) (Core_Marker_PhantomData_Type.t_phantomdata 't)
-    
-end
-module Alloc_RawVec_RawVec_Type
-  use mach.int.Int
-  use prelude.UIntSize
-  use Core_Ptr_Unique_Unique_Type as Core_Ptr_Unique_Unique_Type
-  type t_rawvec 't 'a =
-    | C_RawVec (Core_Ptr_Unique_Unique_Type.t_unique 't) usize 'a
-    
-end
-module Alloc_Vec_Vec_Type
-  use mach.int.Int
-  use prelude.UIntSize
-  use Alloc_RawVec_RawVec_Type as Alloc_RawVec_RawVec_Type
-  type t_vec 't 'a =
-    | C_Vec (Alloc_RawVec_RawVec_Type.t_rawvec 't 'a) usize
     
 end
 module Core_Num_Impl12_Max_Stub
@@ -781,11 +786,6 @@ module CreusotContracts_Logic_Seq_Impl0_PermutationOf
     Permut.permut self o 0 (Seq.length self)
   val permutation_of (self : Seq.seq t) (o : Seq.seq t) : bool
     ensures { result = permutation_of self o }
-    
-end
-module Alloc_Alloc_Global_Type
-  type t_global  =
-    | C_Global
     
 end
 module CreusotContracts_Std1_Vec_Impl1_DeepModelTy_Type

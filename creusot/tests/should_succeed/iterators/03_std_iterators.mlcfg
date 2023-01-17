@@ -228,6 +228,10 @@ module Core_Option_Option_Type
       | C_Some a -> a
       end
 end
+module Core_Iter_Traits_Iterator_Iterator_Item_Type
+  type self
+  type item
+end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
@@ -445,10 +449,6 @@ module CreusotContracts_Std1_Slice_Impl15_Produces
   val produces (self : Core_Slice_Iter_Iter_Type.t_iter t) (visited : Seq.seq t) (tl : Core_Slice_Iter_Iter_Type.t_iter t) : bool
     ensures { result = produces self visited tl }
     
-end
-module Core_Iter_Traits_Iterator_Iterator_Item_Type
-  type self
-  type item
 end
 module Core_Slice_Iter_Impl181_Item_Type
   type t
@@ -2955,6 +2955,26 @@ module Alloc_Vec_Impl9_Deref_Interface
     ensures { ShallowModel0.shallow_model result = ShallowModel1.shallow_model self }
     
 end
+module CreusotContracts_Std1_Iter_MapInv_MapInv_Type
+  use prelude.Ghost
+  use seq.Seq
+  type t_mapinv 'i 'b 'f =
+    | C_MapInv 'i 'f (Ghost.ghost_ty (Seq.seq 'b))
+    
+  let function mapinv_iter (self : t_mapinv 'i 'b 'f) : 'i = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_MapInv a _ _ -> a
+      end
+  let function mapinv_func (self : t_mapinv 'i 'b 'f) : 'f = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_MapInv _ a _ -> a
+      end
+  let function mapinv_produced (self : t_mapinv 'i 'b 'f) : Ghost.ghost_ty (Seq.seq 'b)
+   = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_MapInv _ _ a -> a
+      end
+end
 module CreusotContracts_Std1_Ops_Impl0_Precondition_Stub
   type args
   type f
@@ -2972,26 +2992,6 @@ module CreusotContracts_Std1_Ops_Impl0_Precondition
   val precondition (self : f) (_2' : args) : bool
     ensures { result = precondition self _2' }
     
-end
-module CreusotContracts_Std1_Iter_MapInv_MapInv_Type
-  use prelude.Ghost
-  use seq.Seq
-  type t_mapinv 'i 'b 'f =
-    | C_MapInv 'i 'f (Ghost.ghost_ty (Seq.seq 'b))
-    
-  let function mapinv_produced (self : t_mapinv 'i 'b 'f) : Ghost.ghost_ty (Seq.seq 'b)
-   = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_MapInv _ _ a -> a
-      end
-  let function mapinv_iter (self : t_mapinv 'i 'b 'f) : 'i = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_MapInv a _ _ -> a
-      end
-  let function mapinv_func (self : t_mapinv 'i 'b 'f) : 'f = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_MapInv _ a _ -> a
-      end
 end
 module CreusotContracts_Std1_Iter_MapInv_Impl0_Completed_Stub
   type i

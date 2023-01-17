@@ -84,24 +84,6 @@ module CreusotContracts_Resolve_Resolve_Resolve
     ensures { result = resolve self }
     
 end
-module CreusotContracts_Std1_Ops_Impl1_Unnest_Stub
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-end
-module CreusotContracts_Std1_Ops_Impl1_Unnest_Interface
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-end
-module CreusotContracts_Std1_Ops_Impl1_Unnest
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-  val unnest (self : f) (_2' : f) : bool
-    ensures { result = unnest self _2' }
-    
-end
 module C08MultipleCalls_MultiUse_Closure0_Type
   use prelude.Borrow
   type c08multiplecalls_multiuse_closure0 't =

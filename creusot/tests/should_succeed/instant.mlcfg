@@ -55,22 +55,6 @@ module Std_Time_Impl0_Now_Interface
     ensures { ShallowModel0.shallow_model result >= 0 }
     
 end
-module CreusotContracts_Std1_Time_SecsToNanos_Stub
-  use mach.int.Int
-  function secs_to_nanos (secs : int) : int
-end
-module CreusotContracts_Std1_Time_SecsToNanos_Interface
-  use mach.int.Int
-  function secs_to_nanos (secs : int) : int
-end
-module CreusotContracts_Std1_Time_SecsToNanos
-  use mach.int.Int
-  function secs_to_nanos (secs : int) : int =
-    secs * 1000000000
-  val secs_to_nanos (secs : int) : int
-    ensures { result = secs_to_nanos secs }
-    
-end
 module Core_Time_Nanoseconds_Type
   use mach.int.Int
   use mach.int.UInt32
@@ -96,6 +80,22 @@ module Core_Num_Impl10_Max
   use mach.int.UInt64
   let constant mAX'  : uint64 = [@vc:do_not_keep_trace] [@vc:sp]
     (18446744073709551615 : uint64)
+end
+module CreusotContracts_Std1_Time_SecsToNanos_Stub
+  use mach.int.Int
+  function secs_to_nanos (secs : int) : int
+end
+module CreusotContracts_Std1_Time_SecsToNanos_Interface
+  use mach.int.Int
+  function secs_to_nanos (secs : int) : int
+end
+module CreusotContracts_Std1_Time_SecsToNanos
+  use mach.int.Int
+  function secs_to_nanos (secs : int) : int =
+    secs * 1000000000
+  val secs_to_nanos (secs : int) : int
+    ensures { result = secs_to_nanos secs }
+    
 end
 module CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub
   use mach.int.Int

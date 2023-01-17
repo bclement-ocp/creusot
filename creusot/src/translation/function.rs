@@ -92,7 +92,6 @@ impl<'body, 'tcx> BodyTranslator<'body, 'tcx> {
         tcx: TyCtxt<'tcx>,
         ctx: &'body mut TranslationCtx<'tcx>,
         body: &'body Body<'tcx>,
-        // names: &'body mut CloneMap<'tcx>,
         def_id: DefId,
     ) -> Self {
         let (invariants, assertions) = corrected_invariant_names_and_locations(ctx, def_id, &body);

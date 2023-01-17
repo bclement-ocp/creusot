@@ -1,4 +1,17 @@
 
+module Mutex_MutexInner_Type
+  type t_mutexinner 't
+end
+module Mutex_Mutex_Type
+  use Mutex_MutexInner_Type as Mutex_MutexInner_Type
+  type t_mutex 't 'i =
+    | C_Mutex (Mutex_MutexInner_Type.t_mutexinner 't) 'i
+    
+  let function mutex_1 (self : t_mutex 't 'i) : 'i = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_Mutex _ a -> a
+      end
+end
 module Mutex_Inv_Inv_Stub
   type self
   type t
@@ -19,19 +32,6 @@ module Mutex_Inv_Inv
   val inv [#"../mutex.rs" 7 4 7 32] (self : self) (x : t) : bool
     ensures { result = inv self x }
     
-end
-module Mutex_MutexInner_Type
-  type t_mutexinner 't
-end
-module Mutex_Mutex_Type
-  use Mutex_MutexInner_Type as Mutex_MutexInner_Type
-  type t_mutex 't 'i =
-    | C_Mutex (Mutex_MutexInner_Type.t_mutexinner 't) 'i
-    
-  let function mutex_1 (self : t_mutex 't 'i) : 'i = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_Mutex _ a -> a
-      end
 end
 module Mutex_Impl0_New_Interface
   type t
@@ -326,6 +326,15 @@ module Mutex_Impl4_Join_Interface
       end }
     
 end
+module Mutex_SpawnPostCond_Type
+  type t_spawnpostcond 'f =
+    | C_SpawnPostCond 'f
+    
+  let function spawnpostcond_f (self : t_spawnpostcond 'f) : 'f = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_SpawnPostCond a -> a
+      end
+end
 module Mutex_FakeFnOnce_Precondition_Stub
   type self
   predicate precondition [#"../mutex.rs" 77 4 77 34] (self : self)
@@ -340,15 +349,6 @@ module Mutex_FakeFnOnce_Precondition
   val precondition [#"../mutex.rs" 77 4 77 34] (self : self) : bool
     ensures { result = precondition self }
     
-end
-module Mutex_SpawnPostCond_Type
-  type t_spawnpostcond 'f =
-    | C_SpawnPostCond 'f
-    
-  let function spawnpostcond_f (self : t_spawnpostcond 'f) : 'f = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_SpawnPostCond a -> a
-      end
 end
 module Mutex_Spawn_Interface
   type t

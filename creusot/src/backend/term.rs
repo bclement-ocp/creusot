@@ -126,13 +126,7 @@ impl<'tcx> Lower<'_, 'tcx> {
                 };
                 Exp::UnaryOp(op, box self.lower_term(arg))
             }
-            TermKind::Call {
-                id,
-                subst,
-                // fun: box Term { kind: TermKind::Item(id, subst), .. },
-                args,
-                ..
-            } => {
+            TermKind::Call { id, subst, args, .. } => {
                 let mut args: Vec<_> = args.into_iter().map(|arg| self.lower_term(arg)).collect();
 
                 if args.is_empty() {
@@ -146,8 +140,6 @@ impl<'tcx> Lower<'_, 'tcx> {
                 }
 
                 self.lookup_builtin(method, &mut args).unwrap_or_else(|| {
-                    self.ctx.translate(method.0);
-
                     let clone = self.names.value(method.0, method.1);
                     if self.pure == Purity::Program {
                         mk_binders(Exp::QVar(clone, self.pure), args)
@@ -169,7 +161,6 @@ impl<'tcx> Lower<'_, 'tcx> {
                 })
             }
             TermKind::Constructor { adt, variant, fields } => {
-                self.ctx.translate(adt.did());
                 let TyKind::Adt(_, subst) = term.ty.kind() else { unreachable!() };
                 let args = fields.into_iter().map(|f| self.lower_term(f)).collect();
 
@@ -231,6 +222,7 @@ impl<'tcx> Lower<'_, 'tcx> {
                         self.names.accessor(*did, substs, 0, name.as_usize())
                     }
                     TyKind::Adt(def, substs) => {
+                        // TODO: Remove this
                         self.ctx.translate_accessor(
                             def.variants()[0u32.into()].fields[name.as_usize()].did,
                         );

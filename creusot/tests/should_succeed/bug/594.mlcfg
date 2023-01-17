@@ -108,24 +108,6 @@ module C594_TestProgram
   }
   
 end
-module CreusotContracts_Std1_Ops_Impl1_Unnest_Stub
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-end
-module CreusotContracts_Std1_Ops_Impl1_Unnest_Interface
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-end
-module CreusotContracts_Std1_Ops_Impl1_Unnest
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-  val unnest (self : f) (_2' : f) : bool
-    ensures { result = unnest self _2' }
-    
-end
 module C594_TestClosure_Closure0_Type
   type c594_testclosure_closure0  =
     | C594_TestClosure_Closure0

@@ -33,6 +33,11 @@ module Alloc_Vec_Vec_Type
     | C_Vec (Alloc_RawVec_RawVec_Type.t_rawvec 't 'a) usize
     
 end
+module Alloc_Alloc_Global_Type
+  type t_global  =
+    | C_Global
+    
+end
 module Core_Num_Impl12_Max_Stub
   use mach.int.Int
   use prelude.UIntSize
@@ -130,11 +135,6 @@ module CreusotContracts_Model_Impl3_ShallowModel
     ShallowModel0.shallow_model ( * self)
   val shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
     ensures { result = shallow_model self }
-    
-end
-module Alloc_Alloc_Global_Type
-  type t_global  =
-    | C_Global
     
 end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModelTy_Type
@@ -1094,6 +1094,10 @@ module Core_Option_Option_Type
       | C_Some a -> a
       end
 end
+module Core_Iter_Traits_Iterator_Iterator_Item_Type
+  type self
+  type item
+end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub
   type t
   use seq.Seq
@@ -1253,10 +1257,6 @@ module CreusotContracts_Std1_Slice_Impl15_Produces
   val produces (self : Core_Slice_Iter_Iter_Type.t_iter t) (visited : Seq.seq t) (tl : Core_Slice_Iter_Iter_Type.t_iter t) : bool
     ensures { result = produces self visited tl }
     
-end
-module Core_Iter_Traits_Iterator_Iterator_Item_Type
-  type self
-  type item
 end
 module Core_Slice_Iter_Impl181_Item_Type
   type t

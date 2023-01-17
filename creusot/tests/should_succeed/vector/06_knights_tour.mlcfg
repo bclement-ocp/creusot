@@ -271,6 +271,30 @@ module Core_Ops_Range_Range_Type
       | C_Range a _ -> a
       end
 end
+module CreusotContracts_Std1_Iter_MapInv_MapInv_Type
+  use prelude.Ghost
+  use seq.Seq
+  type t_mapinv 'i 'b 'f =
+    | C_MapInv 'i 'f (Ghost.ghost_ty (Seq.seq 'b))
+    
+  let function mapinv_iter (self : t_mapinv 'i 'b 'f) : 'i = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_MapInv a _ _ -> a
+      end
+  let function mapinv_func (self : t_mapinv 'i 'b 'f) : 'f = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_MapInv _ a _ -> a
+      end
+  let function mapinv_produced (self : t_mapinv 'i 'b 'f) : Ghost.ghost_ty (Seq.seq 'b)
+   = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_MapInv _ _ a -> a
+      end
+end
+module Core_Iter_Traits_Iterator_Iterator_Item_Type
+  type self
+  type item
+end
 module CreusotContracts_Invariant_Invariant_Invariant_Stub
   type self
   predicate invariant' (self : self)
@@ -285,10 +309,6 @@ module CreusotContracts_Invariant_Invariant_Invariant
   val invariant' (self : self) : bool
     ensures { result = invariant' self }
     
-end
-module Core_Iter_Traits_Iterator_Iterator_Item_Type
-  type self
-  type item
 end
 module CreusotContracts_Std1_Iter_Iterator_Produces_Stub
   type self
@@ -331,26 +351,6 @@ module CreusotContracts_Std1_Ops_Impl0_Precondition
   val precondition (self : f) (_2' : args) : bool
     ensures { result = precondition self _2' }
     
-end
-module CreusotContracts_Std1_Iter_MapInv_MapInv_Type
-  use prelude.Ghost
-  use seq.Seq
-  type t_mapinv 'i 'b 'f =
-    | C_MapInv 'i 'f (Ghost.ghost_ty (Seq.seq 'b))
-    
-  let function mapinv_produced (self : t_mapinv 'i 'b 'f) : Ghost.ghost_ty (Seq.seq 'b)
-   = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_MapInv _ _ a -> a
-      end
-  let function mapinv_iter (self : t_mapinv 'i 'b 'f) : 'i = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_MapInv a _ _ -> a
-      end
-  let function mapinv_func (self : t_mapinv 'i 'b 'f) : 'f = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_MapInv _ a _ -> a
-      end
 end
 module CreusotContracts_Std1_Iter_Iterator_Completed_Stub
   type self
@@ -2336,6 +2336,22 @@ module C06KnightsTour_Moves_Interface
     ensures { [#"../06_knights_tour.rs" 94 0 94 142] forall i : int . 0 <= i /\ i < 8 -> - 2 <= Int64.to_int (let (a, _) = Seq.get (ShallowModel0.shallow_model result) i in a) /\ Int64.to_int (let (a, _) = Seq.get (ShallowModel0.shallow_model result) i in a) <= 2 /\ - 2 <= Int64.to_int (let (_, a) = Seq.get (ShallowModel0.shallow_model result) i in a) /\ Int64.to_int (let (_, a) = Seq.get (ShallowModel0.shallow_model result) i in a) <= 2 }
     
 end
+module Core_Mem_ManuallyDrop_ManuallyDrop_Type
+  type t_manuallydrop 't =
+    | C_ManuallyDrop 't
+    
+end
+module Alloc_Vec_IntoIter_IntoIter_Type
+  use mach.int.Int
+  use prelude.UIntSize
+  use prelude.Opaque
+  use Core_Mem_ManuallyDrop_ManuallyDrop_Type as Core_Mem_ManuallyDrop_ManuallyDrop_Type
+  use Core_Marker_PhantomData_Type as Core_Marker_PhantomData_Type
+  use Core_Ptr_NonNull_NonNull_Type as Core_Ptr_NonNull_NonNull_Type
+  type t_intoiter 't 'a =
+    | C_IntoIter (Core_Ptr_NonNull_NonNull_Type.t_nonnull 't) (Core_Marker_PhantomData_Type.t_phantomdata 't) usize (Core_Mem_ManuallyDrop_ManuallyDrop_Type.t_manuallydrop 'a) opaque_ptr opaque_ptr
+    
+end
 module CreusotContracts_Std1_Vec_Impl2_IntoIterPre_Stub
   type t
   type a
@@ -2356,22 +2372,6 @@ module CreusotContracts_Std1_Vec_Impl2_IntoIterPre
     true
   val into_iter_pre (self : Alloc_Vec_Vec_Type.t_vec t a) : bool
     ensures { result = into_iter_pre self }
-    
-end
-module Core_Mem_ManuallyDrop_ManuallyDrop_Type
-  type t_manuallydrop 't =
-    | C_ManuallyDrop 't
-    
-end
-module Alloc_Vec_IntoIter_IntoIter_Type
-  use mach.int.Int
-  use prelude.UIntSize
-  use prelude.Opaque
-  use Core_Mem_ManuallyDrop_ManuallyDrop_Type as Core_Mem_ManuallyDrop_ManuallyDrop_Type
-  use Core_Marker_PhantomData_Type as Core_Marker_PhantomData_Type
-  use Core_Ptr_NonNull_NonNull_Type as Core_Ptr_NonNull_NonNull_Type
-  type t_intoiter 't 'a =
-    | C_IntoIter (Core_Ptr_NonNull_NonNull_Type.t_nonnull 't) (Core_Marker_PhantomData_Type.t_phantomdata 't) usize (Core_Mem_ManuallyDrop_ManuallyDrop_Type.t_manuallydrop 'a) opaque_ptr opaque_ptr
     
 end
 module CreusotContracts_Std1_Vec_Impl5_ShallowModel_Stub
@@ -2462,6 +2462,17 @@ module Alloc_Vec_Impl18_IntoIter_Interface
     ensures { Invariant0.invariant' result }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
+end
 module CreusotContracts_Std1_Vec_Impl6_Invariant_Stub
   type t
   type a
@@ -2483,17 +2494,6 @@ module CreusotContracts_Std1_Vec_Impl6_Invariant
   val invariant' (self : Alloc_Vec_IntoIter_IntoIter_Type.t_intoiter t a) : bool
     ensures { result = invariant' self }
     
-end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
 end
 module CreusotContracts_Model_Impl3_ShallowModel_Stub
   type t
@@ -3289,6 +3289,15 @@ module C06KnightsTour_Impl1_Set
   }
   
 end
+module Core_Slice_Iter_Iter_Type
+  use prelude.Opaque
+  use prelude.Borrow
+  use Core_Marker_PhantomData_Type as Core_Marker_PhantomData_Type
+  use Core_Ptr_NonNull_NonNull_Type as Core_Ptr_NonNull_NonNull_Type
+  type t_iter 't =
+    | C_Iter (Core_Ptr_NonNull_NonNull_Type.t_nonnull 't) opaque_ptr (Core_Marker_PhantomData_Type.t_phantomdata 't)
+    
+end
 module CreusotContracts_Std1_Vec_Impl3_IntoIterPre_Stub
   type t
   type a
@@ -3312,15 +3321,6 @@ module CreusotContracts_Std1_Vec_Impl3_IntoIterPre
     true
   val into_iter_pre (self : Alloc_Vec_Vec_Type.t_vec t a) : bool
     ensures { result = into_iter_pre self }
-    
-end
-module Core_Slice_Iter_Iter_Type
-  use prelude.Opaque
-  use prelude.Borrow
-  use Core_Marker_PhantomData_Type as Core_Marker_PhantomData_Type
-  use Core_Ptr_NonNull_NonNull_Type as Core_Ptr_NonNull_NonNull_Type
-  type t_iter 't =
-    | C_Iter (Core_Ptr_NonNull_NonNull_Type.t_nonnull 't) opaque_ptr (Core_Marker_PhantomData_Type.t_phantomdata 't)
     
 end
 module CreusotContracts_Std1_Slice_Impl13_ShallowModel_Stub

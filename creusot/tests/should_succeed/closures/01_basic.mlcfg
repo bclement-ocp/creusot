@@ -1,22 +1,4 @@
 
-module CreusotContracts_Std1_Ops_Impl1_Unnest_Stub
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-end
-module CreusotContracts_Std1_Ops_Impl1_Unnest_Interface
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-end
-module CreusotContracts_Std1_Ops_Impl1_Unnest
-  type args
-  type f
-  predicate unnest (self : f) (_2' : f)
-  val unnest (self : f) (_2' : f) : bool
-    ensures { result = unnest self _2' }
-    
-end
 module C01Basic_UsesClosure_Closure0_Type
   use prelude.Borrow
   type c01basic_usesclosure_closure0  =
@@ -92,22 +74,6 @@ module C01Basic_UsesClosure_Closure0
     return _0
   }
   
-end
-module CreusotContracts_Resolve_Impl2_Resolve_Stub
-  type t
-  predicate resolve (self : t)
-end
-module CreusotContracts_Resolve_Impl2_Resolve_Interface
-  type t
-  predicate resolve (self : t)
-end
-module CreusotContracts_Resolve_Impl2_Resolve
-  type t
-  predicate resolve (self : t) =
-    true
-  val resolve (self : t) : bool
-    ensures { result = resolve self }
-    
 end
 module C01Basic_UsesClosure_Interface
   val uses_closure [@cfg:stackify] [#"../01_basic.rs" 4 0 4 21] (_1' : ()) : ()

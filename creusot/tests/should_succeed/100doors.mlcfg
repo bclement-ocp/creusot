@@ -33,6 +33,11 @@ module Alloc_Vec_Vec_Type
     | C_Vec (Alloc_RawVec_RawVec_Type.t_rawvec 't 'a) usize
     
 end
+module Alloc_Alloc_Global_Type
+  type t_global  =
+    | C_Global
+    
+end
 module Core_Num_Impl12_Max_Stub
   use mach.int.Int
   use prelude.UIntSize
@@ -78,11 +83,6 @@ module CreusotContracts_Std1_Vec_Impl0_ShallowModel
     ensures { result = shallow_model self }
     
   axiom shallow_model_spec : forall self : Alloc_Vec_Vec_Type.t_vec t a . Seq.length (shallow_model self) <= UInt64.to_int Max0.mAX'
-end
-module Alloc_Alloc_Global_Type
-  type t_global  =
-    | C_Global
-    
 end
 module Alloc_Vec_FromElem_Interface
   type t
@@ -194,6 +194,17 @@ module Core_Iter_Traits_Collect_Impl0_IntoIter_Interface
     ensures { Invariant0.invariant' result }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
+end
 module CreusotContracts_Std1_Ops_Impl3_Invariant_Stub
   type idx
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
@@ -213,16 +224,9 @@ module CreusotContracts_Std1_Ops_Impl3_Invariant
     ensures { result = invariant' self }
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
+module Core_Iter_Traits_Iterator_Iterator_Item_Type
+  type self
+  type item
 end
 module CreusotContracts_Std1_Iter_Iterator_Completed_Stub
   type self
@@ -241,10 +245,6 @@ module CreusotContracts_Std1_Iter_Iterator_Completed
   val completed (self : borrowed self) : bool
     ensures { result = completed self }
     
-end
-module Core_Iter_Traits_Iterator_Iterator_Item_Type
-  type self
-  type item
 end
 module CreusotContracts_Std1_Iter_Iterator_Produces_Stub
   type self

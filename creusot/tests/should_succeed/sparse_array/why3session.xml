@@ -27,7 +27,7 @@
      <goal name="lemma_permutation&#39;vc.0.0.0.1" expl="postcondition" proved="true">
      <transf name="assert" proved="true" arg1="(exists k. 0 &lt;= k &lt; sparse_n self /\ (f k) = i)">
       <goal name="lemma_permutation&#39;vc.0.0.0.1.0" expl="asserted formula" proved="true">
-      <proof prover="3" timelimit="10" memlimit="4000"><result status="valid" time="0.59" steps="27950"/></proof>
+      <proof prover="3" timelimit="10" memlimit="4000"><result status="valid" time="0.59" steps="27435"/></proof>
       </goal>
       <goal name="lemma_permutation&#39;vc.0.0.0.1.1" expl="postcondition" proved="true">
       <proof prover="3"><result status="valid" time="0.05" steps="223"/></proof>
@@ -58,7 +58,7 @@
   <goal name="set&#39;vc.3" expl="assertion" proved="true">
   <transf name="split_vc" proved="true" >
    <goal name="set&#39;vc.3.0" expl="assertion" proved="true">
-   <proof prover="3"><result status="valid" time="0.03" steps="350"/></proof>
+   <proof prover="3"><result status="valid" time="0.03" steps="351"/></proof>
    </goal>
    <goal name="set&#39;vc.3.1" expl="assertion" proved="true">
    <proof prover="3"><result status="valid" time="0.02" steps="440"/></proof>
@@ -86,7 +86,7 @@
   </transf>
   </goal>
   <goal name="set&#39;vc.6" expl="integer overflow" proved="true">
-  <proof prover="3"><result status="valid" time="0.04" steps="354"/></proof>
+  <proof prover="3"><result status="valid" time="0.04" steps="353"/></proof>
   </goal>
   <goal name="set&#39;vc.7" expl="postcondition" proved="true">
   <transf name="split_vc" proved="true" >
@@ -106,7 +106,7 @@
     <proof prover="1" timelimit="5" memlimit="2000"><result status="valid" time="0.37" steps="60151"/></proof>
     </goal>
     <goal name="set&#39;vc.7.1.1" expl="postcondition" proved="true">
-    <proof prover="1" timelimit="5" memlimit="2000"><result status="valid" time="0.36" steps="60696"/></proof>
+    <proof prover="1" timelimit="5" memlimit="2000"><result status="valid" time="0.36" steps="60698"/></proof>
     </goal>
    </transf>
    </goal>
@@ -144,7 +144,7 @@
     <proof prover="3"><result status="valid" time="0.01" steps="61"/></proof>
     </goal>
     <goal name="set&#39;vc.9.0.1" expl="postcondition" proved="true">
-    <proof prover="3"><result status="valid" time="0.26" steps="3599"/></proof>
+    <proof prover="3"><result status="valid" time="0.26" steps="3601"/></proof>
     </goal>
    </transf>
    </goal>
@@ -168,7 +168,7 @@
     <proof prover="1"><result status="valid" time="0.12" steps="26920"/></proof>
     </goal>
     <goal name="set&#39;vc.10.0.1" expl="postcondition" proved="true">
-    <proof prover="1"><result status="valid" time="0.21" steps="32298"/></proof>
+    <proof prover="1"><result status="valid" time="0.21" steps="32310"/></proof>
     </goal>
    </transf>
    </goal>
@@ -194,7 +194,7 @@
 </theory>
 <theory name="SparseArray_F" proved="true">
  <goal name="f&#39;vc" expl="VC for f" proved="true">
- <proof prover="3"><result status="valid" time="0.17" steps="2858"/></proof>
+ <proof prover="3"><result status="valid" time="0.17" steps="2857"/></proof>
  </goal>
 </theory>
 </file>
