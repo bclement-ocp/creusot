@@ -1,7 +1,11 @@
 use std::borrow::Cow;
 
 use crate::{
-    ctx::*, function::all_generic_decls_for, translation::specification, util, util::get_builtin,
+    ctx::*,
+    function::all_generic_decls_for,
+    translation::{function::closure_generic_decls, specification},
+    util,
+    util::get_builtin,
 };
 use rustc_hir::def_id::DefId;
 use why3::{
@@ -89,7 +93,7 @@ fn builtin_body<'tcx>(
         names.import_builtin_module(builtin.clone().module_qname());
     }
 
-    let mut decls = names.to_clones(ctx);
+    let (mut decls, summary) = names.to_clones(ctx);
     if !builtin.module.is_empty() {
         let body = Exp::Call(box Exp::pure_qvar(builtin.without_search_path()), val_args);
 
@@ -104,7 +108,7 @@ fn builtin_body<'tcx>(
 
     let name = module_name(ctx.tcx, def_id);
 
-    (Module { name, decls }, names.summary())
+    (Module { name, decls }, summary)
 }
 
 fn body_module<'tcx>(
@@ -132,8 +136,6 @@ fn body_module<'tcx>(
     sig.contract = Contract::new();
 
     let mut decls: Vec<_> = Vec::new();
-    decls.extend(all_generic_decls_for(ctx.tcx, def_id));
-    decls.extend(names.to_clones(ctx));
 
     if util::is_trusted(ctx.tcx, def_id) || !util::has_body(ctx, def_id) {
         let val = util::item_type(ctx.tcx, def_id).val(sig.clone());
@@ -142,7 +144,6 @@ fn body_module<'tcx>(
     } else {
         let term = ctx.term(def_id).unwrap().clone();
         let body = specification::lower_pure(ctx, &mut names, term);
-        decls.extend(names.to_clones(ctx));
 
         if sig_contract.contract.variant.is_empty() {
             let decl = match util::item_type(ctx.tcx, def_id) {
@@ -187,7 +188,13 @@ fn body_module<'tcx>(
 
     let name = module_name(ctx.tcx, def_id);
 
-    (Module { name, decls }, names.summary())
+    let (clones, summary) = names.to_clones(ctx);
+    let decls = closure_generic_decls(ctx.tcx, def_id)
+        .chain(clones.into_iter())
+        .chain(decls.into_iter())
+        .collect();
+
+    (Module { name, decls }, summary)
 }
 
 pub(crate) fn stub_module(ctx: &mut TranslationCtx, def_id: DefId) -> Module {
@@ -206,7 +213,8 @@ pub(crate) fn stub_module(ctx: &mut TranslationCtx, def_id: DefId) -> Module {
 
     let mut decls: Vec<_> = Vec::new();
     decls.extend(all_generic_decls_for(ctx.tcx, def_id));
-    decls.extend(names.to_clones(ctx));
+    let (clones, _) = names.to_clones(ctx);
+    decls.extend(clones);
     decls.push(decl);
 
     Module { name, decls }
@@ -230,7 +238,8 @@ fn proof_module(ctx: &mut TranslationCtx, def_id: DefId) -> Option<Module> {
 
     let mut decls: Vec<_> = Vec::new();
     decls.extend(all_generic_decls_for(ctx.tcx, def_id));
-    decls.extend(names.to_clones(ctx));
+    let (clones, _) = names.to_clones(ctx);
+    decls.extend(clones);
 
     let kind = match util::item_type(ctx.tcx, def_id) {
         ItemType::Predicate => {

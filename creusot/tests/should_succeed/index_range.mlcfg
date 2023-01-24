@@ -201,13 +201,13 @@ module CreusotContracts_Std1_Vec_Impl9_Resolve_Interface
 end
 module CreusotContracts_Std1_Vec_Impl9_Resolve
   type t
-  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   use mach.int.Int
   use seq.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
     type self = t
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -684,8 +684,8 @@ module CreusotContracts_Std1_Slice_Impl6_InBounds
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   use mach.int.UInt64
+  use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate in_bounds (self : Core_Ops_Range_Range_Type.t_range usize) (seq : Seq.seq t) =
     UInt64.to_int (Core_Ops_Range_Range_Type.range_start self) <= UInt64.to_int (Core_Ops_Range_Range_Type.range_end self) /\ UInt64.to_int (Core_Ops_Range_Range_Type.range_end self) <= Seq.length seq
   val in_bounds (self : Core_Ops_Range_Range_Type.t_range usize) (seq : Seq.seq t) : bool
@@ -748,7 +748,6 @@ module CreusotContracts_Std1_Slice_Impl6_HasValue
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   use mach.int.UInt64
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
@@ -756,6 +755,7 @@ module CreusotContracts_Std1_Slice_Impl6_HasValue
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate has_value (self : Core_Ops_Range_Range_Type.t_range usize) (seq : Seq.seq t) (out : seq t) =
     SeqExt.subsequence seq (UInt64.to_int (Core_Ops_Range_Range_Type.range_start self)) (UInt64.to_int (Core_Ops_Range_Range_Type.range_end self)) = ShallowModel0.shallow_model out
   val has_value (self : Core_Ops_Range_Range_Type.t_range usize) (seq : Seq.seq t) (out : seq t) : bool
@@ -783,8 +783,8 @@ module CreusotContracts_Std1_Slice_Impl6_ResolveElswhere
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   use mach.int.UInt64
+  use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate resolve_elswhere (self : Core_Ops_Range_Range_Type.t_range usize) (old' : Seq.seq t) (fin : Seq.seq t) =
     forall i : int . 0 <= i /\ (i < UInt64.to_int (Core_Ops_Range_Range_Type.range_start self) \/ UInt64.to_int (Core_Ops_Range_Range_Type.range_end self) <= i) /\ i < Seq.length old' -> Seq.get old' i = Seq.get fin i
   val resolve_elswhere (self : Core_Ops_Range_Range_Type.t_range usize) (old' : Seq.seq t) (fin : Seq.seq t) : bool
@@ -1640,8 +1640,8 @@ module CreusotContracts_Std1_Slice_Impl7_InBounds
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   use mach.int.UInt64
+  use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   predicate in_bounds (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (seq : Seq.seq t) =
     UInt64.to_int (Core_Ops_Range_RangeTo_Type.rangeto_end self) <= Seq.length seq
   val in_bounds (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (seq : Seq.seq t) : bool
@@ -1672,7 +1672,6 @@ module CreusotContracts_Std1_Slice_Impl7_HasValue
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   use mach.int.UInt64
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
@@ -1680,6 +1679,7 @@ module CreusotContracts_Std1_Slice_Impl7_HasValue
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   predicate has_value (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (seq : Seq.seq t) (out : seq t) =
     SeqExt.subsequence seq 0 (UInt64.to_int (Core_Ops_Range_RangeTo_Type.rangeto_end self)) = ShallowModel0.shallow_model out
   val has_value (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (seq : Seq.seq t) (out : seq t) : bool
@@ -1707,8 +1707,8 @@ module CreusotContracts_Std1_Slice_Impl7_ResolveElswhere
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   use mach.int.UInt64
+  use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   predicate resolve_elswhere (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (old' : Seq.seq t) (fin : Seq.seq t) =
     forall i : int . UInt64.to_int (Core_Ops_Range_RangeTo_Type.rangeto_end self) <= i /\ i < Seq.length old' -> Seq.get old' i = Seq.get fin i
   val resolve_elswhere (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (old' : Seq.seq t) (fin : Seq.seq t) : bool
@@ -2275,8 +2275,8 @@ module CreusotContracts_Std1_Slice_Impl8_InBounds
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   use mach.int.UInt64
+  use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   predicate in_bounds (self : Core_Ops_Range_RangeFrom_Type.t_rangefrom usize) (seq : Seq.seq t) =
     UInt64.to_int (Core_Ops_Range_RangeFrom_Type.rangefrom_start self) <= Seq.length seq
   val in_bounds (self : Core_Ops_Range_RangeFrom_Type.t_rangefrom usize) (seq : Seq.seq t) : bool
@@ -2307,7 +2307,6 @@ module CreusotContracts_Std1_Slice_Impl8_HasValue
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   use mach.int.UInt64
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
@@ -2315,6 +2314,7 @@ module CreusotContracts_Std1_Slice_Impl8_HasValue
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   predicate has_value (self : Core_Ops_Range_RangeFrom_Type.t_rangefrom usize) (seq : Seq.seq t) (out : seq t) =
     SeqExt.subsequence seq (UInt64.to_int (Core_Ops_Range_RangeFrom_Type.rangefrom_start self)) (Seq.length seq) = ShallowModel0.shallow_model out
   val has_value (self : Core_Ops_Range_RangeFrom_Type.t_rangefrom usize) (seq : Seq.seq t) (out : seq t) : bool
@@ -2344,8 +2344,8 @@ module CreusotContracts_Std1_Slice_Impl8_ResolveElswhere
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   use mach.int.UInt64
+  use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   predicate resolve_elswhere (self : Core_Ops_Range_RangeFrom_Type.t_rangefrom usize) (old' : Seq.seq t) (fin : Seq.seq t)
     
    =
@@ -2966,12 +2966,12 @@ module CreusotContracts_Std1_Slice_Impl9_HasValue
   type t
   use seq.Seq
   use prelude.Slice
-  use Core_Ops_Range_RangeFull_Type as Core_Ops_Range_RangeFull_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use Core_Ops_Range_RangeFull_Type as Core_Ops_Range_RangeFull_Type
   predicate has_value (self : Core_Ops_Range_RangeFull_Type.t_rangefull) (seq : Seq.seq t) (out : seq t) =
     seq = ShallowModel0.shallow_model out
   val has_value (self : Core_Ops_Range_RangeFull_Type.t_rangefull) (seq : Seq.seq t) (out : seq t) : bool
@@ -3538,8 +3538,8 @@ module CreusotContracts_Std1_Slice_Impl10_InBounds
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   use mach.int.UInt64
+  use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   predicate in_bounds (self : Core_Ops_Range_RangeToInclusive_Type.t_rangetoinclusive usize) (seq : Seq.seq t) =
     UInt64.to_int (Core_Ops_Range_RangeToInclusive_Type.rangetoinclusive_end self) < Seq.length seq
   val in_bounds (self : Core_Ops_Range_RangeToInclusive_Type.t_rangetoinclusive usize) (seq : Seq.seq t) : bool
@@ -3572,7 +3572,6 @@ module CreusotContracts_Std1_Slice_Impl10_HasValue
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   use mach.int.UInt64
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
@@ -3580,6 +3579,7 @@ module CreusotContracts_Std1_Slice_Impl10_HasValue
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   predicate has_value (self : Core_Ops_Range_RangeToInclusive_Type.t_rangetoinclusive usize) (seq : Seq.seq t) (out : seq t)
     
    =
@@ -3611,8 +3611,8 @@ module CreusotContracts_Std1_Slice_Impl10_ResolveElswhere
   use mach.int.Int
   use prelude.UIntSize
   use seq.Seq
-  use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   use mach.int.UInt64
+  use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   predicate resolve_elswhere (self : Core_Ops_Range_RangeToInclusive_Type.t_rangetoinclusive usize) (old' : Seq.seq t) (fin : Seq.seq t)
     
    =
