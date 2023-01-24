@@ -45,10 +45,10 @@
    <goal name="next&#39;vc.3.0" expl="postcondition" proved="true">
    <transf name="split_vc" proved="true" >
     <goal name="next&#39;vc.3.0.0" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.03" steps="685"/></proof>
+    <proof prover="0"><result status="valid" time="0.03" steps="669"/></proof>
     </goal>
     <goal name="next&#39;vc.3.0.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.44" steps="9370"/></proof>
+    <proof prover="0"><result status="valid" time="0.44" steps="9389"/></proof>
     </goal>
    </transf>
    </goal>
@@ -91,7 +91,7 @@
  <goal name="produces_trans&#39;vc" expl="VC for produces_trans" proved="true">
  <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="produces_trans&#39;vc.0" expl="VC for produces_trans" proved="true">
-  <proof prover="0"><result status="valid" time="0.18" steps="4555"/></proof>
+  <proof prover="0"><result status="valid" time="0.18" steps="4554"/></proof>
   </goal>
  </transf>
  </goal>

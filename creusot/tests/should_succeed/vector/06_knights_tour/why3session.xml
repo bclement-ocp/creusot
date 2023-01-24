@@ -23,7 +23,7 @@
 </theory>
 <theory name="C06KnightsTour_Impl1_New" proved="true">
  <goal name="new&#39;vc" expl="VC for new" proved="true">
- <proof prover="0"><result status="valid" time="0.07" steps="349603"/></proof>
+ <proof prover="0"><result status="valid" time="0.07" steps="349273"/></proof>
  </goal>
 </theory>
 <theory name="C06KnightsTour_Impl1_Available" proved="true">
