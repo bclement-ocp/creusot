@@ -49,7 +49,7 @@
 </theory>
 <theory name="C03StdIterators_AllZero" proved="true">
  <goal name="all_zero&#39;vc" expl="VC for all_zero" proved="true">
- <proof prover="1" timelimit="5"><result status="valid" time="0.08" steps="1661"/></proof>
+ <proof prover="1" timelimit="5"><result status="valid" time="0.08" steps="1663"/></proof>
  </goal>
 </theory>
 <theory name="C03StdIterators_SkipTake" proved="true">
@@ -81,13 +81,13 @@
   <proof prover="1" timelimit="5"><result status="valid" time="0.01" steps="28"/></proof>
   </goal>
   <goal name="counter&#39;vc.5" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" time="0.12" steps="482"/></proof>
+  <proof prover="1"><result status="valid" time="0.12" steps="481"/></proof>
   </goal>
   <goal name="counter&#39;vc.6" expl="assertion" proved="true">
   <proof prover="2" memlimit="2000"><result status="valid" time="0.04" steps="203931"/></proof>
   </goal>
   <goal name="counter&#39;vc.7" expl="assertion" proved="true">
-  <proof prover="2" timelimit="1"><result status="valid" time="0.07" steps="398144"/></proof>
+  <proof prover="2" timelimit="1"><result status="valid" time="0.07" steps="460289"/></proof>
   </goal>
  </transf>
  </goal>

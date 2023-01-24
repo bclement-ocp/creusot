@@ -344,7 +344,7 @@
   <proof prover="2"><result status="valid" time="0.01" steps="74"/></proof>
   </goal>
   <goal name="increment&#39;vc.4" expl="assertion" proved="true">
-  <proof prover="3"><result status="valid" time="0.03" steps="382115"/></proof>
+  <proof prover="3"><result status="valid" time="0.03" steps="382100"/></proof>
   </goal>
  </transf>
  </goal>
