@@ -110,27 +110,12 @@ pub struct CloneMap<'tcx> {
     // TODO: Push the graph into an opaque type with tight api boundary
     // Graph which is used to calculate the full clone set
     clone_graph: DiGraphMap<DepNode<'tcx>, IndexSet<(Kind, SymbolKind)>>,
-    // Index of the last cloned entry
-    last_cloned: usize,
 
     // Internal state to determine whether clones should be public or not
     public: bool,
 
     // Used to ensure we only have a single `use` per type.
     used_types: IndexSet<DefId>,
-}
-
-impl<'tcx> Drop for CloneMap<'tcx> {
-    fn drop(&mut self) {
-        if self.last_cloned != self.names.len() {
-            debug!(
-                "Dropping clone map with un-emitted clones. {:?} clones emitted of {:?} total {:?}",
-                self.last_cloned,
-                self.names.len(),
-                self.self_id,
-            );
-        }
-    }
 }
 
 type DepNode<'tcx> = Dependency<'tcx>;
@@ -213,7 +198,6 @@ impl<'tcx> CloneMap<'tcx> {
             prelude: IndexMap::new(),
             clone_level,
             clone_graph: DiGraphMap::new(),
-            last_cloned: 0,
             public: false,
             used_types: Default::default(),
         };
@@ -394,7 +378,7 @@ impl<'tcx> CloneMap<'tcx> {
         // Along the edge, we include the 'original' substitution, which we can use
         // to build the correct substitution.
         //
-        let mut i = self.last_cloned;
+        let mut i = 0;
         while i < self.names.len() {
             let key = *self.names.get_index(i).unwrap().0;
 
@@ -643,13 +627,10 @@ impl<'tcx> CloneMap<'tcx> {
         self.update_graph(ctx);
 
         trace!(
-            "dep_graph processed={} nodes={} edges={}",
-            self.last_cloned,
+            "dep_graph nodes={} edges={}",
             self.clone_graph.node_count(),
             self.clone_graph.edge_count()
         );
-
-        self.last_cloned = self.names.len();
 
         // Broken because of closures which share a defid for the type *and* function
         // debug_assert!(!is_cyclic_directed(&self.clone_graph), "clone graph for {:?} is cyclic", self.self_id );
