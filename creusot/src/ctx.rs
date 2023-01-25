@@ -345,7 +345,11 @@ impl<'tcx, 'sess> TranslationCtx<'tcx> {
 
     pub(crate) fn binding_group(&mut self, def_id: DefId) -> &IndexSet<DefId> {
         if !self.representative_type.contains_key(&def_id) {
-            let bg = ty_binding_group(self.tcx, def_id);
+            let bg = if util::item_type(self.tcx, def_id) == ItemType::Type {
+                ty_binding_group(self.tcx, def_id)
+            } else {
+                vec![def_id].into_iter().collect()
+            };
             self.add_binding_group(&bg);
             self.ty_binding_groups.insert(self.representative_type(def_id), bg);
         }

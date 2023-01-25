@@ -58,8 +58,14 @@ module Core_Cmp_Impls_Impl9_Eq_Interface
   use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = a
+  clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel2 with
+    type self = b,
+    type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
   clone CreusotContracts_Model_Impl0_DeepModel_Stub as DeepModel1 with
     type t = b,
+    type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
+  clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel3 with
+    type self = a,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
   clone CreusotContracts_Model_Impl0_DeepModel_Stub as DeepModel0 with
     type t = a,
@@ -93,23 +99,25 @@ module EqPanic_Omg
   use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
-  clone CreusotContracts_Model_DeepModel_DeepModel_Interface as DeepModel2 with
+  clone CreusotContracts_Model_DeepModel_DeepModel_Interface as DeepModel0 with
     type self = t,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
   clone CreusotContracts_Model_Impl0_DeepModel as DeepModel1 with
     type t = t,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy,
-    function DeepModel0.deep_model = DeepModel2.deep_model
-  clone CreusotContracts_Model_Impl0_DeepModel as DeepModel0 with
+    function DeepModel0.deep_model = DeepModel0.deep_model
+  clone CreusotContracts_Model_Impl0_DeepModel as DeepModel2 with
     type t = t,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy,
     function DeepModel0.deep_model = DeepModel1.deep_model
   clone Core_Cmp_Impls_Impl9_Eq_Interface as Eq0 with
     type a = t,
     type b = t,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function DeepModel1.deep_model = DeepModel0.deep_model,
-    type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
+    function DeepModel0.deep_model = DeepModel2.deep_model,
+    function DeepModel1.deep_model = DeepModel2.deep_model,
+    type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy,
+    function DeepModel2.deep_model = DeepModel1.deep_model,
+    function DeepModel3.deep_model = DeepModel1.deep_model
   clone CreusotContracts_Resolve_Resolve_Resolve_Interface as Resolve0 with
     type self = t
   let rec cfg omg [@cfg:stackify] [#"../eq_panic.rs" 6 0 6 51] (x : t) (y : t) : bool = [@vc:do_not_keep_trace] [@vc:sp]

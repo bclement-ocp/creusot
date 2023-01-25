@@ -87,9 +87,9 @@ end
 module Alloc_Vec_Impl0_New_Interface
   type t
   use seq.Seq
-  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -157,17 +157,17 @@ module Alloc_Vec_Impl1_Push_Interface
   type a
   use prelude.Borrow
   use seq.Seq
-  use seq.Seq
-  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
-    type t = Alloc_Vec_Vec_Type.t_vec t a,
-    type ShallowModelTy0.shallowModelTy = Seq.seq t
+  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = a,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use seq.Seq
+  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
+    type t = Alloc_Vec_Vec_Type.t_vec t a,
+    type ShallowModelTy0.shallowModelTy = Seq.seq t
   val push [@cfg:stackify] (self : borrowed (Alloc_Vec_Vec_Type.t_vec t a)) (value : t) : ()
     ensures { ShallowModel0.shallow_model ( ^ self) = Seq.snoc (ShallowModel1.shallow_model self) value }
     
@@ -203,11 +203,11 @@ module CreusotContracts_Std1_Vec_Impl9_Resolve
   type t
   use mach.int.Int
   use seq.Seq
-  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
     type self = t
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -240,9 +240,9 @@ module C01ResolveUnsoundness_MakeVecOfSize_Interface
   use mach.int.UInt64
   use mach.int.Int
   use prelude.UIntSize
-  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = bool,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -258,26 +258,26 @@ module C01ResolveUnsoundness_MakeVecOfSize
   use prelude.Borrow
   use seq.Seq
   use mach.int.UInt64
+  clone Core_Num_Impl12_Max as Max0
   clone CreusotContracts_Resolve_Impl2_Resolve as Resolve1 with
     type t = bool
-  use seq.Seq
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel0 with
     type t = bool,
     type a = Alloc_Alloc_Global_Type.t_global,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  clone CreusotContracts_Model_Impl3_ShallowModel as ShallowModel1 with
-    type t = Alloc_Vec_Vec_Type.t_vec bool (Alloc_Alloc_Global_Type.t_global),
-    type ShallowModelTy0.shallowModelTy = Seq.seq bool,
-    function ShallowModel0.shallow_model = ShallowModel0.shallow_model
   clone CreusotContracts_Std1_Vec_Impl9_Resolve as Resolve0 with
     type t = bool,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     predicate Resolve0.resolve = Resolve1.resolve,
     val Max0.mAX' = Max0.mAX'
+  use seq.Seq
+  clone CreusotContracts_Model_Impl3_ShallowModel as ShallowModel1 with
+    type t = Alloc_Vec_Vec_Type.t_vec bool (Alloc_Alloc_Global_Type.t_global),
+    type ShallowModelTy0.shallowModelTy = Seq.seq bool,
+    function ShallowModel0.shallow_model = ShallowModel0.shallow_model
   clone Alloc_Vec_Impl1_Push_Interface as Push0 with
     type t = bool,
     type a = Alloc_Alloc_Global_Type.t_global,

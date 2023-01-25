@@ -132,11 +132,11 @@ module CreusotContracts_Std1_Vec_Impl9_Resolve
   type t
   use mach.int.Int
   use seq.Seq
-  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
     type self = t
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -175,17 +175,17 @@ end
 module Specialize_F
   use mach.int.Int
   use mach.int.UInt32
+  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Specialize_Impl1_X_Interface as X0
   clone Core_Num_Impl12_Max as Max0
   clone CreusotContracts_Resolve_Impl2_Resolve as Resolve1 with
     type t = uint32
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel0 with
     type t = uint32,
     type a = Alloc_Alloc_Global_Type.t_global,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  clone Specialize_Impl1_X_Interface as X0
   clone CreusotContracts_Std1_Vec_Impl9_Resolve as Resolve0 with
     type t = uint32,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
@@ -234,18 +234,18 @@ module Specialize_G_Interface
 end
 module Specialize_G
   type t
+  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Specialize_T_X_Interface as X0 with
+    type self = Alloc_Vec_Vec_Type.t_vec t (Alloc_Alloc_Global_Type.t_global)
   clone Core_Num_Impl12_Max as Max0
   clone CreusotContracts_Resolve_Resolve_Resolve_Interface as Resolve1 with
     type self = t
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  clone Specialize_T_X_Interface as X0 with
-    type self = Alloc_Vec_Vec_Type.t_vec t (Alloc_Alloc_Global_Type.t_global)
   clone CreusotContracts_Std1_Vec_Impl9_Resolve as Resolve0 with
     type t = t,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
@@ -292,18 +292,18 @@ end
 module Specialize_H
   use mach.int.Int
   use mach.int.Int32
+  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Specialize_Impl0_X_Interface as X0 with
+    type u = int32
   clone Core_Num_Impl12_Max as Max0
   clone CreusotContracts_Resolve_Impl2_Resolve as Resolve1 with
     type t = int32
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel0 with
     type t = int32,
     type a = Alloc_Alloc_Global_Type.t_global,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  clone Specialize_Impl0_X_Interface as X0 with
-    type u = int32
   clone CreusotContracts_Std1_Vec_Impl9_Resolve as Resolve0 with
     type t = int32,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,

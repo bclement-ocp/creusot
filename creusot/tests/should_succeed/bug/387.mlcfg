@@ -34,15 +34,9 @@ module Alloc_Boxed_Box_Type
     | C_Box (Core_Ptr_Unique_Unique_Type.t_unique 't) 'a
     
 end
-module Alloc_Alloc_Global_Type
-  type t_global  =
-    | C_Global
-    
-end
 module C387_Node_Type
   use mach.int.Int
   use mach.int.UInt32
-  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
   type t_node  =
@@ -197,8 +191,11 @@ module CreusotContracts_Logic_Ord_OrdLogic_LtLog
 end
 module Core_Cmp_Ord_Max_Interface
   type self
+  use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = self
+  clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
+    type self = DeepModelTy0.deepModelTy
   clone CreusotContracts_Logic_Ord_OrdLogic_LtLog_Stub as LtLog0 with
     type self = DeepModelTy0.deepModelTy
   clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
@@ -214,6 +211,80 @@ module Core_Cmp_Ord_Max_Interface
     ensures { result = self \/ result = other }
     ensures { LeLog0.le_log (DeepModel0.deep_model self) (DeepModel0.deep_model other) -> result = other }
     ensures { LtLog0.lt_log (DeepModel0.deep_model other) (DeepModel0.deep_model self) -> result = self }
+    
+end
+module CreusotContracts_Logic_Ord_Impl2_CmpLog_Stub
+  use mach.int.Int
+  use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
+  function cmp_log (self : int) (o : int) : Core_Cmp_Ordering_Type.t_ordering
+end
+module CreusotContracts_Logic_Ord_Impl2_CmpLog_Interface
+  use mach.int.Int
+  use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
+  function cmp_log (self : int) (o : int) : Core_Cmp_Ordering_Type.t_ordering
+end
+module CreusotContracts_Logic_Ord_Impl2_CmpLog
+  use mach.int.Int
+  use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
+  function cmp_log (self : int) (o : int) : Core_Cmp_Ordering_Type.t_ordering =
+    if self < o then
+      Core_Cmp_Ordering_Type.C_Less
+    else
+      if self = o then Core_Cmp_Ordering_Type.C_Equal else Core_Cmp_Ordering_Type.C_Greater
+    
+  val cmp_log (self : int) (o : int) : Core_Cmp_Ordering_Type.t_ordering
+    ensures { result = cmp_log self o }
+    
+end
+module CreusotContracts_Logic_Ord_Impl2_LtLog_Stub
+  use mach.int.Int
+  predicate lt_log (self : int) (_2' : int)
+end
+module CreusotContracts_Logic_Ord_Impl2_LtLog_Interface
+  use mach.int.Int
+  predicate lt_log (self : int) (_2' : int)
+end
+module CreusotContracts_Logic_Ord_Impl2_LtLog
+  use mach.int.Int
+  use int.Int
+  predicate lt_log (self : int) (_2' : int) =
+    Int.(<) self _2'
+  val lt_log (self : int) (_2' : int) : bool
+    ensures { result = lt_log self _2' }
+    
+end
+module CreusotContracts_Logic_Ord_Impl2_LeLog_Stub
+  use mach.int.Int
+  predicate le_log (self : int) (_2' : int)
+end
+module CreusotContracts_Logic_Ord_Impl2_LeLog_Interface
+  use mach.int.Int
+  predicate le_log (self : int) (_2' : int)
+end
+module CreusotContracts_Logic_Ord_Impl2_LeLog
+  use mach.int.Int
+  use int.Int
+  predicate le_log (self : int) (_2' : int) =
+    Int.(<=) self _2'
+  val le_log (self : int) (_2' : int) : bool
+    ensures { result = le_log self _2' }
+    
+end
+module CreusotContracts_Logic_Ord_Impl2_GeLog_Stub
+  use mach.int.Int
+  predicate ge_log (self : int) (_2' : int)
+end
+module CreusotContracts_Logic_Ord_Impl2_GeLog_Interface
+  use mach.int.Int
+  predicate ge_log (self : int) (_2' : int)
+end
+module CreusotContracts_Logic_Ord_Impl2_GeLog
+  use mach.int.Int
+  use int.Int
+  predicate ge_log (self : int) (_2' : int) =
+    Int.(>=) self _2'
+  val ge_log (self : int) (_2' : int) : bool
+    ensures { result = ge_log self _2' }
     
 end
 module CreusotContracts_Logic_Int_Impl14_DeepModel_Stub
@@ -235,57 +306,6 @@ module CreusotContracts_Logic_Int_Impl14_DeepModel
     ensures { result = deep_model self }
     
 end
-module CreusotContracts_Logic_Ord_Impl2_GeLog_Stub
-  use mach.int.Int
-  predicate ge_log (self : int) (_2' : int)
-end
-module CreusotContracts_Logic_Ord_Impl2_GeLog_Interface
-  use mach.int.Int
-  predicate ge_log (self : int) (_2' : int)
-end
-module CreusotContracts_Logic_Ord_Impl2_GeLog
-  use mach.int.Int
-  use int.Int
-  predicate ge_log (self : int) (_2' : int) =
-    Int.(>=) self _2'
-  val ge_log (self : int) (_2' : int) : bool
-    ensures { result = ge_log self _2' }
-    
-end
-module CreusotContracts_Logic_Ord_Impl2_LeLog_Stub
-  use mach.int.Int
-  predicate le_log (self : int) (_2' : int)
-end
-module CreusotContracts_Logic_Ord_Impl2_LeLog_Interface
-  use mach.int.Int
-  predicate le_log (self : int) (_2' : int)
-end
-module CreusotContracts_Logic_Ord_Impl2_LeLog
-  use mach.int.Int
-  use int.Int
-  predicate le_log (self : int) (_2' : int) =
-    Int.(<=) self _2'
-  val le_log (self : int) (_2' : int) : bool
-    ensures { result = le_log self _2' }
-    
-end
-module CreusotContracts_Logic_Ord_Impl2_LtLog_Stub
-  use mach.int.Int
-  predicate lt_log (self : int) (_2' : int)
-end
-module CreusotContracts_Logic_Ord_Impl2_LtLog_Interface
-  use mach.int.Int
-  predicate lt_log (self : int) (_2' : int)
-end
-module CreusotContracts_Logic_Ord_Impl2_LtLog
-  use mach.int.Int
-  use int.Int
-  predicate lt_log (self : int) (_2' : int) =
-    Int.(<) self _2'
-  val lt_log (self : int) (_2' : int) : bool
-    ensures { result = lt_log self _2' }
-    
-end
 module C387_Impl0_Height_Interface
   use prelude.Borrow
   use mach.int.Int
@@ -298,22 +318,24 @@ module C387_Impl0_Height
   use mach.int.UInt64
   use prelude.Borrow
   use prelude.IntSize
+  clone CreusotContracts_Logic_Ord_Impl2_CmpLog as CmpLog0
   use mach.int.Int
+  use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_Impl2_LtLog as LtLog0
   clone CreusotContracts_Logic_Ord_Impl2_LeLog as LeLog0
   clone CreusotContracts_Logic_Ord_Impl2_GeLog as GeLog0
   clone CreusotContracts_Logic_Int_Impl14_DeepModel as DeepModel0
-  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
-  use C387_Node_Type as C387_Node_Type
-  use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
   clone Core_Cmp_Ord_Max_Interface as Max0 with
     type self = uint64,
     function DeepModel0.deep_model = DeepModel0.deep_model,
     predicate GeLog0.ge_log = GeLog0.ge_log,
     predicate LeLog0.le_log = LeLog0.le_log,
     predicate LtLog0.lt_log = LtLog0.lt_log,
-    type DeepModelTy0.deepModelTy = int
+    type DeepModelTy0.deepModelTy = int,
+    function CmpLog0.cmp_log = CmpLog0.cmp_log
+  use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
+  use C387_Node_Type as C387_Node_Type
   use C387_Tree_Type as C387_Tree_Type
   let rec cfg height [@cfg:stackify] [#"../387.rs" 16 4 16 31] (self : C387_Tree_Type.t_tree) : uint64
    = [@vc:do_not_keep_trace] [@vc:sp]

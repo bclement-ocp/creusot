@@ -36,9 +36,9 @@ module C552_Impl1_Transition_Interface
 end
 module C552_Impl1_Transition
   use prelude.Borrow
+  use C552_Transition_Type as C552_Transition_Type
   use C552_Machine_Type as C552_Machine_Type
   clone C552_Impl0_Invariants as Invariants0
-  use C552_Transition_Type as C552_Transition_Type
   let rec cfg transition [@cfg:stackify] [#"../552.rs" 30 4 30 42] (self : C552_Machine_Type.t_machine) : C552_Transition_Type.t_transition
     requires {[#"../552.rs" 29 15 29 32] Invariants0.invariants self}
     

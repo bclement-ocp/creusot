@@ -173,8 +173,14 @@ module Alloc_Vec_Impl1_Len_Interface
   use prelude.Borrow
   use mach.int.Int
   use prelude.UIntSize
-  use seq.Seq
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Core_Num_Impl12_Max_Stub as Max0
+  clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel1 with
+    type t = t,
+    type a = a,
+    val Max0.mAX' = Max0.mAX',
+    axiom .
+  use seq.Seq
   clone CreusotContracts_Model_Impl1_ShallowModel_Stub as ShallowModel0 with
     type t = Alloc_Vec_Vec_Type.t_vec t a,
     type ShallowModelTy0.shallowModelTy = Seq.seq t
@@ -187,17 +193,17 @@ module Alloc_Vec_Impl1_Push_Interface
   type a
   use prelude.Borrow
   use seq.Seq
-  use seq.Seq
-  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
-    type t = Alloc_Vec_Vec_Type.t_vec t a,
-    type ShallowModelTy0.shallowModelTy = Seq.seq t
+  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = a,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use seq.Seq
+  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
+    type t = Alloc_Vec_Vec_Type.t_vec t a,
+    type ShallowModelTy0.shallowModelTy = Seq.seq t
   val push [@cfg:stackify] (self : borrowed (Alloc_Vec_Vec_Type.t_vec t a)) (value : t) : ()
     ensures { ShallowModel0.shallow_model ( ^ self) = Seq.snoc (ShallowModel1.shallow_model self) value }
     
@@ -227,18 +233,18 @@ module TwoPhase_Test_Interface
   use mach.int.UInt64
   use mach.int.Int
   use prelude.UIntSize
-  use seq.Seq
-  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
-    type t = Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global),
-    type ShallowModelTy0.shallowModelTy = Seq.seq usize
+  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = usize,
     type a = Alloc_Alloc_Global_Type.t_global,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  use seq.Seq
+  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
+    type t = Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global),
+    type ShallowModelTy0.shallowModelTy = Seq.seq usize
   val test [@cfg:stackify] [#"../two_phase.rs" 6 0 6 31] (v : borrowed (Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global))) : ()
     ensures { [#"../two_phase.rs" 5 10 5 42] UInt64.to_int (Seq.get (ShallowModel0.shallow_model ( ^ v)) (Seq.length (ShallowModel1.shallow_model v))) = Seq.length (ShallowModel1.shallow_model v) }
     
@@ -249,21 +255,17 @@ module TwoPhase_Test
   use prelude.UIntSize
   use seq.Seq
   use mach.int.UInt64
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone CreusotContracts_Resolve_Impl1_Resolve as Resolve0 with
+    type t = Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global)
+  use seq.Seq
+  clone Core_Num_Impl12_Max as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel0 with
     type t = usize,
     type a = Alloc_Alloc_Global_Type.t_global,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  use seq.Seq
-  clone CreusotContracts_Model_Impl1_ShallowModel as ShallowModel2 with
-    type t = Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global),
-    type ShallowModelTy0.shallowModelTy = Seq.seq usize,
-    function ShallowModel0.shallow_model = ShallowModel0.shallow_model
-  clone CreusotContracts_Resolve_Impl1_Resolve as Resolve0 with
-    type t = Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global)
   clone CreusotContracts_Model_Impl3_ShallowModel as ShallowModel1 with
     type t = Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global),
     type ShallowModelTy0.shallowModelTy = Seq.seq usize,
@@ -274,10 +276,16 @@ module TwoPhase_Test
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     function ShallowModel1.shallow_model = ShallowModel1.shallow_model,
     val Max0.mAX' = Max0.mAX'
+  clone CreusotContracts_Model_Impl1_ShallowModel as ShallowModel2 with
+    type t = Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global),
+    type ShallowModelTy0.shallowModelTy = Seq.seq usize,
+    function ShallowModel0.shallow_model = ShallowModel0.shallow_model
   clone Alloc_Vec_Impl1_Len_Interface as Len0 with
     type t = usize,
     type a = Alloc_Alloc_Global_Type.t_global,
-    function ShallowModel0.shallow_model = ShallowModel2.shallow_model
+    function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
+    val Max0.mAX' = Max0.mAX',
+    function ShallowModel1.shallow_model = ShallowModel0.shallow_model
   let rec cfg test [@cfg:stackify] [#"../two_phase.rs" 6 0 6 31] (v : borrowed (Alloc_Vec_Vec_Type.t_vec usize (Alloc_Alloc_Global_Type.t_global))) : ()
     ensures { [#"../two_phase.rs" 5 10 5 42] UInt64.to_int (Seq.get (ShallowModel0.shallow_model ( ^ v)) (Seq.length (ShallowModel1.shallow_model v))) = Seq.length (ShallowModel1.shallow_model v) }
     

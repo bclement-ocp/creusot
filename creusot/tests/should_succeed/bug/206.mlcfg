@@ -175,9 +175,9 @@ end
 module C206_U
   use mach.int.Int
   use prelude.UIntSize
+  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = usize,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -186,7 +186,6 @@ module C206_U
   use C206_A_Type as C206_A_Type
   clone C206_U2_Stub as U20 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    val Max0.mAX' = Max0.mAX',
     axiom .
   function u [#"../206.rs" 12 0 12 14] (a : C206_A_Type.t_a) : () =
     [#"../206.rs" 14 8 14 13] U20.u2 a
@@ -196,7 +195,20 @@ module C206_U
 end
 module C206_Ex_Interface
   use prelude.Borrow
+  use mach.int.Int
+  use prelude.UIntSize
   use C206_A_Type as C206_A_Type
+  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
+  clone Core_Num_Impl12_Max_Stub as Max0
+  clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
+    type t = usize,
+    type a = Alloc_Alloc_Global_Type.t_global,
+    val Max0.mAX' = Max0.mAX',
+    axiom .
+  clone C206_U2_Stub as U20 with
+    function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
+    axiom .
   clone C206_U_Stub as U0
   val ex [@cfg:stackify] [#"../206.rs" 19 0 19 16] (a : C206_A_Type.t_a) : ()
     ensures { [#"../206.rs" 18 10 18 26] U0.u a = U0.u a }
@@ -206,9 +218,9 @@ module C206_Ex
   use prelude.Borrow
   use mach.int.Int
   use prelude.UIntSize
+  clone Core_Num_Impl12_Max as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel0 with
     type t = usize,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -221,8 +233,8 @@ module C206_Ex
     axiom .
   clone C206_U as U0 with
     function U20.u2 = U20.u2,
-    function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    val Max0.mAX' = Max0.mAX'
+    val Max0.mAX' = Max0.mAX',
+    function ShallowModel0.shallow_model = ShallowModel0.shallow_model
   let rec cfg ex [@cfg:stackify] [#"../206.rs" 19 0 19 16] (a : C206_A_Type.t_a) : ()
     ensures { [#"../206.rs" 18 10 18 26] U0.u a = U0.u a }
     
