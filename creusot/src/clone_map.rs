@@ -5,12 +5,14 @@ use std::collections::HashSet;
 use heck::ToUpperCamelCase;
 use indexmap::{IndexMap, IndexSet};
 use petgraph::{
-    graphmap::DiGraphMap, visit::DfsPostOrder, Direction::Incoming, EdgeDirection::Outgoing,
+    graphmap::DiGraphMap,
+    visit::{DfsPostOrder, EdgeFiltered},
+    EdgeDirection::Outgoing,
 };
 use rustc_hir::{def::DefKind, def_id::DefId};
 use rustc_middle::ty::{
     self,
-    subst::{GenericArgKind, InternalSubsts, SubstsRef},
+    subst::{InternalSubsts, SubstsRef},
     AliasKind, AliasTy, DefIdTree, EarlyBinder, ParamEnv, Ty, TyCtxt, TyKind, TypeFoldable,
     TypeSuperVisitable, TypeVisitor,
 };
@@ -22,10 +24,10 @@ use why3::{
 };
 
 use crate::{
-    backend::dependency::{Dependency, VisitDeps},
+    backend::dependency::Dependency,
     ctx::{self, *},
     translation::{interface, ty::translate_ty},
-    util::{self, get_builtin, ident_of, ident_of_ty, item_name, module_name},
+    util::{self, get_builtin, item_name, module_name},
 };
 
 // Prelude modules
@@ -154,56 +156,6 @@ impl<'tcx> CloneSummary<'tcx> {
         self.get(def_id, subst).qname_ident(name.into())
     }
 
-    pub(crate) fn constructor(
-        &self,
-        tcx: TyCtxt<'tcx>,
-        def_id: DefId,
-        subst: SubstsRef<'tcx>,
-    ) -> QName {
-        let type_id = match tcx.def_kind(def_id) {
-            DefKind::Closure | DefKind::Struct | DefKind::Enum | DefKind::Union => def_id,
-            DefKind::Variant => tcx.parent(def_id),
-            _ => unreachable!("Not a type or constructor"),
-        };
-        let mut name = item_name(tcx, def_id, Namespace::ValueNS);
-        name.capitalize();
-        self.get(type_id, subst).qname_ident(name.into())
-    }
-
-    /// Creates a name for a type or closure projection ie: x.field1
-    /// This also includes projections from `enum` types
-    ///
-    /// * `def_id` - The id of the type or closure being projected
-    /// * `subst` - Substitution that type is being accessed at
-    /// * `variant` - The constructor being used. For closures this is always 0
-    /// * `ix` - The field in that constructor being accessed.
-    pub(crate) fn accessor(
-        &self,
-        tcx: TyCtxt<'tcx>,
-        def_id: DefId,
-        subst: SubstsRef<'tcx>,
-        variant: usize,
-        ix: usize,
-    ) -> QName {
-        let clone = &self.get(def_id, subst);
-        let name: Ident = match util::item_type(tcx, def_id) {
-            ItemType::Closure => format!("field_{}", ix).into(),
-            ItemType::Type => {
-                let variant_def = &tcx.adt_def(def_id).variants()[variant.into()];
-                let variant = variant_def;
-                format!(
-                    "{}_{}",
-                    variant.name.as_str().to_ascii_lowercase(),
-                    variant.fields[ix].name
-                )
-                .into()
-            }
-            _ => panic!("accessor: invalid item kind"),
-        };
-
-        clone.qname_ident(name.into())
-    }
-
     pub(crate) fn visible(
         &self,
         orig_id: DefId,
@@ -213,8 +165,8 @@ impl<'tcx> CloneSummary<'tcx> {
         let info = self.get(orig_id, orig_subst);
 
         match clone_level {
-            CloneLevel::Stub => info.public,
-            CloneLevel::Interface => info.public,
+            CloneLevel::Stub => info.public == DepLevel::Signature,
+            CloneLevel::Interface => info.public == DepLevel::Signature,
             CloneLevel::Body => true,
         }
     }
@@ -264,21 +216,35 @@ impl Kind {
     }
 }
 
-use rustc_macros::{TyDecodable, TyEncodable};
+use rustc_macros::{Decodable, Encodable, TyDecodable, TyEncodable, TypeFoldable, TypeVisitable};
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, TyEncodable, TyDecodable)]
-enum CloneOpacity {
-    Transparent,
-    Opaque,
-    Default,
-}
-
-#[derive(Clone, Debug, TyEncodable, TyDecodable)]
+#[derive(Copy, Clone, Debug, TyEncodable, TyDecodable)]
 pub struct CloneInfo {
     kind: Kind,
     cloned: bool,
-    public: bool,
-    opaque: CloneOpacity,
+    public: DepLevel,
+}
+
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Encodable,
+    Decodable,
+    TypeFoldable,
+    TypeVisitable,
+    PartialOrd,
+    Ord,
+)]
+enum DepLevel {
+    /// This dependency is as visible as the item's signature.
+    Signature,
+    /// This dependency is as visible as the item's body.
+    Body,
+    // /// This dependency should only be used by the function itself and not observable by *anyone* else
+    // Internal,
 }
 
 impl Into<CloneKind> for Kind {
@@ -293,20 +259,15 @@ impl Into<CloneKind> for Kind {
 
 impl<'tcx> CloneInfo {
     fn from_name(name: Symbol, public: bool) -> Self {
-        CloneInfo { kind: Kind::Named(name), cloned: false, public, opaque: CloneOpacity::Default }
-    }
-
-    fn hidden() -> Self {
         CloneInfo {
-            kind: Kind::Hidden,
+            kind: Kind::Named(name),
             cloned: false,
-            public: false,
-            opaque: CloneOpacity::Default,
+            public: if public { DepLevel::Signature } else { DepLevel::Body },
         }
     }
 
-    pub(crate) fn opaque(&mut self) {
-        self.opaque = CloneOpacity::Opaque;
+    fn hidden() -> Self {
+        CloneInfo { kind: Kind::Hidden, cloned: false, public: DepLevel::Body }
     }
 
     fn qname_ident(&self, method: Ident) -> QName {
@@ -642,42 +603,11 @@ impl<'tcx> CloneMap<'tcx> {
     //     dep.resolve(ctx, param_env).unwrap_or(dep)
     // }
 
-    // fn clone_laws(&mut self, ctx: &mut TranslationCtx<'tcx>, key: (DefId, SubstsRef<'tcx>)) {
-    //     let Some(item) = ctx.tcx.opt_associated_item(key.0) else { return };
-
-    //     // Dont clone laws into the trait / impl which defines them.
-    //     if let Some(self_trait) = ctx.tcx.opt_associated_item(self.self_id) {
-    //         if self_trait.container_id(ctx.tcx) == item.container_id(ctx.tcx) {
-    //             return;
-    //         }
-    //     }
-
-    //     // If the function we are cloning into is `#[trusted]` there is no need for laws.
-    //     // Similarily, if it has no body, there will be no proofs.
-    //     if util::is_trusted(ctx.tcx, self.self_id) || !util::has_body(ctx, self.self_id) {
-    //         return;
-    //     }
-
-    //     if self.clone_level == CloneLevel::Stub {
-    //         return;
-    //     }
-
-    //     let laws = ctx.laws(item.container_id(ctx.tcx));
-
-    //     for law in laws {
-    //         trace!("adding law {:?} in {:?}", *law, self.self_id);
-
-    //         // No way the substitution is correct...
-    //         let law = self.insert(*law, key.1);
-    //         law.public = false;
-    //     }
-    // }
-
     fn build_clone(
         &mut self,
         ctx: &mut TranslationCtx<'tcx>,
         item: DepNode<'tcx>,
-        deps: impl Iterator<Item = (DepNode<'tcx>, DepNode<'tcx>)>,
+        deps: impl Iterator<Item = (DepLevel, DepNode<'tcx>, DepNode<'tcx>)>,
     ) -> Option<Decl> {
         let node @ (def_id, subst) = item.cloneable_id()?;
 
@@ -699,7 +629,7 @@ impl<'tcx> CloneMap<'tcx> {
 
         let mut clone_subst = base_subst(ctx, self, ctx.param_env(self.self_id), def_id, subst);
 
-        for (refn, orig) in deps {
+        for (_, refn, orig) in deps {
             let Some((orig_id, orig_subst)) = orig.cloneable_id() else { continue };
             let Some((refn_id, refn_subst)) = refn.cloneable_id() else { continue };
 
@@ -788,10 +718,16 @@ impl<'tcx> CloneMap<'tcx> {
 
         // Broken because of closures which share a defid for the type *and* function
         // debug_assert!(!is_cyclic_directed(&self.clone_graph), "clone graph for {:?} is cyclic", self.self_id );
-
+        let tgt_lvl = match self.clone_level {
+            CloneLevel::Stub => DepLevel::Signature,
+            CloneLevel::Interface => DepLevel::Signature,
+            CloneLevel::Body => DepLevel::Body,
+        };
         use petgraph::visit::Walker;
-        let mut topo =
-            DfsPostOrder::new(&clone_graph.clone_graph, id_subst_to_dep(ctx.tcx, self.self_key()));
+        let filter_graph = EdgeFiltered::from_fn(&clone_graph.clone_graph, |edges| {
+            edges.2.len() == 0 || edges.2.iter().any(|(l, _)| l <= &tgt_lvl)
+        });
+        let mut topo = DfsPostOrder::new(&filter_graph, id_subst_to_dep(ctx.tcx, self.self_key()));
         while let Some(node) = topo.walk_next(&clone_graph.clone_graph) {
             let Some(item) = node.cloneable_id() else { continue };
 
@@ -807,7 +743,10 @@ impl<'tcx> CloneMap<'tcx> {
             let neighbors = clone_graph
                 .clone_graph
                 .edges_directed(node, Outgoing)
-                .flat_map(|(_, tgt, origs)| std::iter::repeat(tgt).zip(origs.into_iter().cloned()));
+                .flat_map(|(_, tgt, origs)| {
+                    origs.into_iter().map(move |(lvl, orig)| (*lvl, tgt, *orig))
+                })
+                .filter(|(lvl, _, _)| lvl <= &tgt_lvl);
 
             let Some(decl) = self.build_clone(ctx, node, neighbors) else { continue };
             decls.push(decl);
@@ -833,7 +772,7 @@ impl<'tcx> CloneMap<'tcx> {
 struct CloneGraph<'tcx> {
     // TODO: Push the graph into an opaque type with tight api boundary
     // Graph which is used to calculate the full clone set
-    clone_graph: DiGraphMap<DepNode<'tcx>, Vec<DepNode<'tcx>>>,
+    clone_graph: DiGraphMap<DepNode<'tcx>, Vec<(DepLevel, DepNode<'tcx>)>>,
 
     finished: HashSet<DepNode<'tcx>>,
 
@@ -845,22 +784,15 @@ impl<'tcx> CloneGraph<'tcx> {
         let mut to_visit = vec![item];
         let param_env = ctx.param_env(self.root);
 
-        self.add_dep_edge(
-            id_subst_to_dep(
-                ctx.tcx,
-                (
-                    self.root,
-                    ctx.erase_regions(InternalSubsts::identity_for_item(ctx.tcx, self.root)),
-                ),
-            ),
-            item,
+        let root_node = id_subst_to_dep(
+            ctx.tcx,
+            (self.root, ctx.erase_regions(InternalSubsts::identity_for_item(ctx.tcx, self.root))),
         );
+        self.add_dep_edge(root_node, item);
         while let Some(next) = to_visit.pop() {
             if !self.finished.insert(next) {
                 continue;
             }
-
-            // eprintln!("visiting {next:?}");
 
             let Some(next_id) = next.cloneable_id() else { continue };
 
@@ -873,11 +805,15 @@ impl<'tcx> CloneGraph<'tcx> {
 
             next_id.1.types().map(Dependency::Type).for_each(|dep| self.add_dep_edge(next, dep));
 
+            // self.laws_for(ctx, next).for_each(|dep| {
+            //     self.add_edge(root_node, dep, dep)
+            // });
+
             // HACK: Grow this until it can fully replace `ctx.dependencies` then replace that
-            let deps: Box<dyn Iterator<Item = Dependency<'tcx>>> =
+            let deps: Box<dyn Iterator<Item = (DepLevel, Dependency<'tcx>)>> =
                 match util::item_type(ctx.tcx, next_id.0) {
                     ItemType::Type => {
-                        let mut deps = IndexSet::new();
+                        let deps = IndexSet::new();
                         // let id_subst = InternalSubsts::identity_for_item(ctx.tcx, next_id.0);
                         // ctx.adt_def(next_id.0).all_fields().for_each(|f| {
                         //     f.ty(ctx.tcx, id_subst).deps(&mut |d| {
@@ -890,12 +826,12 @@ impl<'tcx> CloneGraph<'tcx> {
                         .dependencies(next_id.0)
                         .into_iter()
                         .flatten()
-                        .map(|(s, _)| id_subst_to_dep(ctx.tcx, *s)),
+                        .map(|(s, i)| (i.public, id_subst_to_dep(ctx.tcx, *s))),
                 };
 
             let deps: Vec<_> = deps.collect();
             for dep in deps {
-                let substed = EarlyBinder(dep).subst(ctx.tcx, next_id.1);
+                let substed = EarlyBinder(dep.1).subst(ctx.tcx, next_id.1);
                 let resolved = substed.resolve(ctx, param_env).unwrap_or(substed);
                 self.add_edge(next, resolved, dep);
                 to_visit.push(resolved);
@@ -909,12 +845,36 @@ impl<'tcx> CloneGraph<'tcx> {
         }
     }
 
-    fn add_edge(&mut self, src: DepNode<'tcx>, tgt: DepNode<'tcx>, orig: DepNode<'tcx>) {
+    fn add_edge(
+        &mut self,
+        src: DepNode<'tcx>,
+        tgt: DepNode<'tcx>,
+        orig: (DepLevel, DepNode<'tcx>),
+    ) {
         if !self.clone_graph.contains_edge(src, tgt) {
             self.clone_graph.add_edge(src, tgt, vec![orig]);
         } else {
             self.clone_graph[(src, tgt)].push(orig);
         }
+    }
+
+    fn laws_for<'a>(
+        &self,
+        ctx: &'a mut TranslationCtx<'tcx>,
+        dep: DepNode<'tcx>,
+    ) -> Box<dyn Iterator<Item = DepNode<'tcx>> + 'a> {
+        use std::iter::*;
+        let Some(dep) = dep.cloneable_id() else { return box empty() };
+        let Some(item) = ctx.opt_associated_item(dep.0) else { return box empty() };
+
+        // Dont clone laws into the trait / impl which defines them.
+        if let Some(self_trait) = ctx.tcx.opt_associated_item(self.root) {
+            if self_trait.container_id(ctx.tcx) == item.container_id(ctx.tcx) {
+                return box empty();
+            }
+        }
+
+        box ctx.laws(item.container_id(ctx.tcx)).into_iter().map(|id| DepNode::Item((*id, dep.1)))
     }
 }
 
@@ -1000,73 +960,6 @@ fn id_subst_to_dep<'tcx>(tcx: TyCtxt<'tcx>, dep: (DefId, SubstsRef<'tcx>)) -> De
         ItemType::Type => Dependency::Type(tcx.mk_adt(tcx.adt_def(dep.0), dep.1)),
         ItemType::AssocTy => Dependency::Type(tcx.mk_projection(dep.0, dep.1)),
         _ => Dependency::Item(dep),
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-enum SymbolKind {
-    Val(Symbol),
-    Type(Symbol),
-    Function(Symbol),
-    Predicate(Symbol),
-    Const(Symbol),
-}
-
-impl SymbolKind {
-    fn sym(&self) -> Symbol {
-        match self {
-            SymbolKind::Val(i) => *i,
-            SymbolKind::Type(i) => *i,
-            SymbolKind::Function(i) => *i,
-            SymbolKind::Predicate(i) => *i,
-            SymbolKind::Const(i) => *i,
-        }
-    }
-
-    fn ident(&self) -> Ident {
-        match self {
-            SymbolKind::Type(_) => ident_of_ty(self.sym()),
-            _ => ident_of(self.sym()),
-        }
-    }
-
-    fn to_subst(self, src: Kind, tgt: Kind) -> CloneSubst {
-        let id = self.ident();
-        match self {
-            SymbolKind::Val(_) => CloneSubst::Val(src.qname_ident(id.clone()), tgt.qname_ident(id)),
-            SymbolKind::Type(_) => CloneSubst::Type(
-                src.qname_ident(id.clone()),
-                why3::ty::Type::TConstructor(tgt.qname_ident(id)),
-            ),
-            SymbolKind::Function(_) => {
-                CloneSubst::Function(src.qname_ident(id.clone()), tgt.qname_ident(id))
-            }
-            SymbolKind::Predicate(_) => {
-                CloneSubst::Predicate(src.qname_ident(id.clone()), tgt.qname_ident(id))
-            }
-            SymbolKind::Const(_) => {
-                // TMP
-                CloneSubst::Val(src.qname_ident(id.clone()), tgt.qname_ident(id))
-            }
-        }
-    }
-}
-
-// Identify the name and kind of symbol which can be refined in a given defid
-fn refineable_symbol<'tcx>(tcx: TyCtxt<'tcx>, def_id: DefId) -> Option<SymbolKind> {
-    use util::ItemType::*;
-    match util::item_type(tcx, def_id) {
-        Logic => Some(SymbolKind::Function(tcx.item_name(def_id))),
-        Predicate => Some(SymbolKind::Predicate(tcx.item_name(def_id))),
-        Program => Some(SymbolKind::Val(tcx.item_name(def_id))),
-        AssocTy => match tcx.associated_item(def_id).container {
-            ty::TraitContainer => Some(SymbolKind::Type(tcx.item_name(def_id))),
-            ty::ImplContainer => None,
-        },
-        Trait | Impl => unreachable!("trait blocks have no refinable symbols"),
-        Type => None,
-        Constant => Some(SymbolKind::Const(tcx.item_name(def_id))),
-        _ => unreachable!(),
     }
 }
 
