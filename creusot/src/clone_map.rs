@@ -805,9 +805,10 @@ impl<'tcx> CloneGraph<'tcx> {
 
             next_id.1.types().map(Dependency::Type).for_each(|dep| self.add_dep_edge(next, dep));
 
-            // self.laws_for(ctx, next).for_each(|dep| {
-            //     self.add_edge(root_node, dep, dep)
-            // });
+            self.laws_for(ctx, next).for_each(|dep| {
+                // See if we can't make this even more private
+                self.add_edge(root_node, dep, (DepLevel::Body, dep))
+            });
 
             // HACK: Grow this until it can fully replace `ctx.dependencies` then replace that
             let deps: Box<dyn Iterator<Item = (DepLevel, Dependency<'tcx>)>> =
