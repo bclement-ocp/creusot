@@ -346,8 +346,8 @@ module C02Operators_ExpressionLogic_Interface
   axiom expression_logic_spec : forall x : usize, y : usize, z : usize . [#"../02_operators.rs" 82 10 82 16] expression_logic x y z
 end
 module C02Operators_ExpressionLogic
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function expression_logic [#"../02_operators.rs" 83 0 83 57] (x : usize) (y : usize) (z : usize) : bool =
     [#"../02_operators.rs" 84 4 84 28] div x y * z = div x y * z
   val expression_logic [#"../02_operators.rs" 83 0 83 57] (x : usize) (y : usize) (z : usize) : bool

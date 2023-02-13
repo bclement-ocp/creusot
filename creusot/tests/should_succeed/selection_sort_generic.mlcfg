@@ -34,6 +34,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -80,6 +81,7 @@ end
 module SelectionSortGeneric_Sorted
   type t
   use seq.Seq
+  use prelude.Int
   clone SelectionSortGeneric_SortedRange_Stub as SortedRange0 with
     type t = t
   predicate sorted [#"../selection_sort_generic.rs" 17 0 17 41] (s : Seq.seq t) =
@@ -181,9 +183,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -259,12 +261,12 @@ end
 module CreusotContracts_Std1_Vec_Impl1_DeepModel
   type t
   type a
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = t,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
@@ -346,6 +348,7 @@ module CreusotContracts_Logic_Seq_Impl0_PermutationOf
   type t
   use seq.Seq
   use seq.Permut
+  use prelude.Int
   predicate permutation_of (self : Seq.seq t) (o : Seq.seq t) =
     Permut.permut self o 0 (Seq.length self)
   val permutation_of (self : Seq.seq t) (o : Seq.seq t) : bool
@@ -373,7 +376,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -504,17 +506,6 @@ module CreusotContracts_Std1_Ops_Impl3_Invariant
     ensures { result = invariant' self }
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
-end
 module CreusotContracts_Std1_Iter_Iterator_Completed_Stub
   type self
   use prelude.Borrow
@@ -561,6 +552,17 @@ module CreusotContracts_Std1_Iter_Iterator_Produces
     ensures { result = produces self visited _3' }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
+end
 module Core_Iter_Range_Impl3_Next_Interface
   type a
   use prelude.Borrow
@@ -571,8 +573,6 @@ module Core_Iter_Range_Impl3_Next_Interface
     type self = Core_Ops_Range_Range_Type.t_range a,
     type Item0.item = a
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
-    type self = Core_Ops_Range_Range_Type.t_range a
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = Core_Ops_Range_Range_Type.t_range a
   clone CreusotContracts_Std1_Ops_Impl3_Invariant_Stub as Invariant0 with
     type idx = a
@@ -693,7 +693,6 @@ module CreusotContracts_Model_Impl0_DeepModel_Interface
 end
 module CreusotContracts_Model_Impl0_DeepModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
@@ -715,6 +714,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -765,11 +765,10 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
   val shallow_model (self : seq t) : Seq.seq t
@@ -931,6 +930,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -980,6 +980,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i) =
     self = res
   val into_iter_post (self : i) (res : i) : bool
@@ -1079,8 +1080,8 @@ module CreusotContracts_Logic_Int_Impl18_DeepModel_Interface
   function deep_model (self : usize) : int
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function deep_model (self : usize) : int =
     UIntSize.to_int self
   val deep_model (self : usize) : int
@@ -1137,6 +1138,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLeLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpLeLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1169,6 +1171,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLtLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpLtLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1190,6 +1193,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_GeLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GeLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1220,6 +1224,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpGeLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpGeLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1241,6 +1246,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_GtLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GtLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1271,6 +1277,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpGtLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpGtLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1299,6 +1306,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Refl_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Refl
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1325,6 +1333,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Trans_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Trans
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1353,6 +1362,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Antisym1_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Antisym1
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1380,6 +1390,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Antisym2_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Antisym2
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1407,6 +1418,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_EqCmp_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_EqCmp
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1432,9 +1444,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) =
     UIntSize.to_int self < Seq.length seq
   val in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) : bool
@@ -1457,9 +1469,9 @@ module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) =
     Seq.get seq (UIntSize.to_int self) = out
   val has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) : bool
@@ -1495,8 +1507,8 @@ module SelectionSortGeneric_SelectionSort_Interface
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    function DeepModel0.deep_model = DeepModel1.deep_model,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy,
+    function DeepModel0.deep_model = DeepModel1.deep_model,
     val Max0.mAX' = Max0.mAX',
     axiom .
   val selection_sort [#"../selection_sort_generic.rs" 30 0 32 29] (v : borrowed (Alloc_Vec_Vec_Type.t_vec t (Alloc_Alloc_Global_Type.t_global))) : ()
@@ -1674,7 +1686,6 @@ module SelectionSortGeneric_SelectionSort
   clone Core_Iter_Range_Impl3_Next_Interface as Next0 with
     type a = usize,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = usize,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone SelectionSortGeneric_Partition as Partition0 with
@@ -1687,8 +1698,8 @@ module SelectionSortGeneric_SelectionSort
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    function DeepModel0.deep_model = DeepModel2.deep_model,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy,
+    function DeepModel0.deep_model = DeepModel2.deep_model,
     val Max0.mAX' = Max0.mAX',
     axiom .
   clone CreusotContracts_Model_Impl2_DeepModel as DeepModel1 with

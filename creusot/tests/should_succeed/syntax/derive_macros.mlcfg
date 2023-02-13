@@ -132,7 +132,6 @@ module CreusotContracts_Model_Impl0_DeepModel_Interface
 end
 module CreusotContracts_Model_Impl0_DeepModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
@@ -449,6 +448,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve
   type t1
   type t2
+  use prelude.Int
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve1 with
     type self = t2
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with

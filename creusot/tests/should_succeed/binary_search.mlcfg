@@ -388,8 +388,8 @@ module BinarySearch_Impl1_IsSorted_Interface
   predicate is_sorted [#"../binary_search.rs" 88 4 88 30] (self : BinarySearch_List_Type.t_list uint32)
 end
 module BinarySearch_Impl1_IsSorted
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   use BinarySearch_List_Type as BinarySearch_List_Type
   clone BinarySearch_Impl0_Get_Stub as Get0 with

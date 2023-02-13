@@ -62,7 +62,7 @@ fn builtin_body<'tcx>(
     ctx: &mut TranslationCtx<'tcx>,
     def_id: DefId,
 ) -> (Module, CloneSummary<'tcx>) {
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Stub);
+    let (clones, mut names, summary) = CloneMap::from_static_deps(ctx, def_id, CloneLevel::Stub);
     let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
     let (val_args, val_binders) = binders_to_args(ctx, sig.args);
     sig.args = val_binders;
@@ -94,7 +94,6 @@ fn builtin_body<'tcx>(
     }
 
     let mut decls: Vec<_> = all_generic_decls_for(ctx.tcx, def_id).collect();
-    let (clones, summary) = names.to_clones(ctx);
 
     decls.extend(clones);
     if !builtin.module.is_empty() {
@@ -118,7 +117,7 @@ fn body_module<'tcx>(
     ctx: &mut TranslationCtx<'tcx>,
     def_id: DefId,
 ) -> (Module, CloneSummary<'tcx>) {
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Stub);
+    let (clones, mut names, summary) = CloneMap::from_static_deps(ctx, def_id, CloneLevel::Stub);
 
     let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
     let mut val_sig = sig.clone();
@@ -191,7 +190,6 @@ fn body_module<'tcx>(
 
     let name = module_name(ctx.tcx, def_id);
 
-    let (clones, summary) = names.to_clones(ctx);
     let decls = closure_generic_decls(ctx.tcx, def_id)
         .chain(clones.into_iter())
         .chain(decls.into_iter())

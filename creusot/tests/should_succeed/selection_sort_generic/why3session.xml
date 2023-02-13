@@ -62,7 +62,7 @@
   <proof prover="0"><result status="valid" time="0.08" steps="450"/></proof>
   </goal>
   <goal name="selection_sort&#39;vc.17" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" time="0.09" steps="1689"/></proof>
+  <proof prover="0"><result status="valid" time="0.09" steps="1688"/></proof>
   </goal>
   <goal name="selection_sort&#39;vc.18" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" time="0.03" steps="60"/></proof>

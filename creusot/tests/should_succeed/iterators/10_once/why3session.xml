@@ -14,14 +14,14 @@
  <goal name="produces_trans&#39;vc" expl="VC for produces_trans" proved="true">
  <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
   <goal name="produces_trans&#39;vc.0" expl="VC for produces_trans" proved="true">
-  <proof prover="0"><result status="valid" time="0.03" steps="188"/></proof>
+  <proof prover="0"><result status="valid" time="0.03" steps="190"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="C10Once_Impl0_Next" proved="true">
  <goal name="next&#39;vc" expl="VC for next" proved="true">
- <proof prover="0"><result status="valid" time="0.01" steps="77"/></proof>
+ <proof prover="0"><result status="valid" time="0.01" steps="80"/></proof>
  </goal>
 </theory>
 <theory name="C10Once_Impl0" proved="true">

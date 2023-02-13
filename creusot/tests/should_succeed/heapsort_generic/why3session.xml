@@ -43,7 +43,7 @@
   <proof prover="2"><result status="valid" time="0.01" steps="27"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.9" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="90"/></proof>
+  <proof prover="2"><result status="valid" time="0.01" steps="91"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.10" expl="integer overflow" proved="true">
   <proof prover="2"><result status="valid" time="0.03" steps="398"/></proof>
@@ -82,7 +82,7 @@
   <proof prover="2"><result status="valid" time="0.07" steps="1181"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.22" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1361"/></proof>
+  <proof prover="2"><result status="valid" time="0.07" steps="1359"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.23" expl="loop invariant preservation" proved="true">
   <proof prover="3"><result status="valid" time="0.20" steps="37821"/></proof>
@@ -134,7 +134,7 @@
   <proof prover="2"><result status="valid" time="0.12" steps="236"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.4" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.04" steps="449"/></proof>
+  <proof prover="2"><result status="valid" time="0.04" steps="450"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.5" expl="loop invariant init" proved="true">
   <proof prover="2"><result status="valid" time="0.05" steps="108"/></proof>
@@ -185,7 +185,7 @@
   <proof prover="2"><result status="valid" time="0.05" steps="666"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.21" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1332"/></proof>
+  <proof prover="2"><result status="valid" time="0.07" steps="1335"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.22" expl="loop invariant preservation" proved="true">
   <proof prover="2"><result status="valid" time="0.11" steps="183"/></proof>
@@ -193,14 +193,14 @@
   <goal name="heap_sort&#39;vc.23" expl="loop invariant preservation" proved="true">
   <transf name="split_vc" proved="true" >
    <goal name="heap_sort&#39;vc.23.0" expl="loop invariant preservation" proved="true">
-   <proof prover="0"><result status="valid" time="1.79" steps="515317"/></proof>
+   <proof prover="0"><result status="valid" time="1.46" steps="515317"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="heap_sort&#39;vc.24" expl="loop invariant preservation" proved="true">
   <transf name="split_vc" proved="true" >
    <goal name="heap_sort&#39;vc.24.0" expl="loop invariant preservation" proved="true">
-   <proof prover="0"><result status="valid" time="1.69" steps="412137"/></proof>
+   <proof prover="0"><result status="valid" time="1.37" steps="412131"/></proof>
    </goal>
   </transf>
   </goal>
@@ -220,7 +220,7 @@
   <proof prover="2"><result status="valid" time="0.18" steps="1073"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.30" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.13" steps="562"/></proof>
+  <proof prover="2"><result status="valid" time="0.13" steps="563"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.31" expl="loop invariant preservation" proved="true">
   <proof prover="2"><result status="valid" time="0.17" steps="733"/></proof>

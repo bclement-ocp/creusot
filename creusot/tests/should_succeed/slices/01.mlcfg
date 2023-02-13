@@ -40,7 +40,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -86,11 +85,10 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
   val shallow_model (self : seq t) : Seq.seq t
@@ -198,6 +196,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -313,8 +312,8 @@ module CreusotContracts_Resolve_Resolve_Resolve
 end
 module C01_SliceFirst_Interface
   type t
-  use prelude.Borrow
   use seq.Seq
+  use prelude.Borrow
   use prelude.Slice
   use prelude.Seq
   use seq.Seq

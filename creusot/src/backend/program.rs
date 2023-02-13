@@ -1,5 +1,5 @@
 use crate::{
-    clone_map::{CloneLevel, PreludeModule},
+    clone_map::{CloneLevel, Cloner, PreludeModule},
     ctx::{CloneMap, TranslationCtx},
     translation::{
         binop_to_binop,
@@ -257,16 +257,16 @@ impl<'tcx> Expr<'tcx> {
             Expr::UnaryOp(op, arg) => {
                 Exp::UnaryOp(unop_to_unop(op), box arg.to_why(ctx, names, body))
             }
-            Expr::Constructor(id, subst, args) => {
+            Expr::Constructor(id, subst, variant, args) => {
                 let args = args.into_iter().map(|a| a.to_why(ctx, names, body)).collect();
 
                 match ctx.def_kind(id) {
                     DefKind::Closure => {
-                        let ctor = names.constructor(id, subst);
+                        let ctor = names.constructor(id, subst, variant);
                         Exp::Constructor { ctor, args }
                     }
                     _ => {
-                        let ctor = names.constructor(id, subst);
+                        let ctor = names.constructor(id, subst, variant);
                         Exp::Constructor { ctor, args }
                     }
                 }
@@ -353,7 +353,7 @@ impl<'tcx> Expr<'tcx> {
                 r.invalidated_places(places)
             }
             Expr::UnaryOp(_, e) => e.invalidated_places(places),
-            Expr::Constructor(_, _, es) => es.iter().for_each(|e| e.invalidated_places(places)),
+            Expr::Constructor(_, _, _, es) => es.iter().for_each(|e| e.invalidated_places(places)),
             Expr::Call(_, _, es) => es.iter().for_each(|e| e.invalidated_places(places)),
             Expr::Constant(_) => {}
             Expr::Cast(e, _, _) => e.invalidated_places(places),
@@ -484,7 +484,7 @@ impl<'tcx> Branches<'tcx> {
                     .map(|(var, bb)| {
                         let variant = &adt.variant(var);
                         let wilds = variant.fields.iter().map(|_| Pattern::Wildcard).collect();
-                        let cons_name = names.constructor(variant.def_id, substs);
+                        let cons_name = names.constructor(adt.did(), substs, var, );
                         (Pattern::ConsP(cons_name, wilds), Goto(BlockId(bb.into())))
                     })
                     .chain(std::iter::once((Pattern::Wildcard, Goto(BlockId(def.into())))))

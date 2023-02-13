@@ -198,8 +198,9 @@ module C06MapPrecond_Impl0_Completed
   type b
   type f
   use prelude.Borrow
-  use prelude.Ghost
+  use prelude.Int
   use seq.Seq
+  use prelude.Ghost
   clone C06MapPrecond_Common_Iterator_Completed_Stub as Completed0 with
     type self = i
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
@@ -344,9 +345,9 @@ module C06MapPrecond_Impl1_Preservation
   type i
   type b
   type f
-  use prelude.Borrow
   use seq.Seq
   use prelude.Ghost
+  use prelude.Borrow
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
   use seq.Seq
@@ -389,12 +390,13 @@ module C06MapPrecond_Impl1_Reinitialize
   type b
   type f
   use prelude.Borrow
+  use prelude.Int
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = i
   clone C06MapPrecond_Impl1_Preservation_Stub as Preservation0 with
     type i = i,
     type b = b,
     type f = f
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = i
   use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Impl1_NextPrecondition_Stub as NextPrecondition0 with
     type i = i,
@@ -615,6 +617,7 @@ end
 module CreusotContracts_Std1_Ops_Impl1_FnMutOnce
   type args
   type f
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
@@ -670,8 +673,9 @@ module C06MapPrecond_Impl1_PreservationInv
   type i
   type b
   type f
-  use prelude.Ghost
+  use prelude.Int
   use seq.Seq
+  use prelude.Ghost
   use prelude.Borrow
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
@@ -778,8 +782,8 @@ module C06MapPrecond_Impl1_PreservationInv_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant0.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces0.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -813,13 +817,14 @@ module C06MapPrecond_Impl0_Invariant
   type i
   type b
   type f
+  use prelude.Int
   clone C06MapPrecond_Impl1_Preservation_Stub as Preservation0 with
     type i = i,
     type b = b,
     type f = f
+  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Impl1_NextPrecondition_Stub as NextPrecondition0 with
     type i = i,
     type b = b,
@@ -831,8 +836,8 @@ module C06MapPrecond_Impl0_Invariant
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     axiom .
   clone C06MapPrecond_Impl1_Reinitialize_Stub as Reinitialize0 with
     type i = i,
@@ -871,9 +876,9 @@ module C06MapPrecond_Impl0_Produces
   type b
   type f
   use seq.Seq
+  use prelude.Int
   use prelude.Ghost
   use prelude.Borrow
-  use prelude.Int
   use seq_ext.SeqExt
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
@@ -1053,8 +1058,8 @@ module C06MapPrecond_Impl0_ProducesRefl_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant1.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -1071,8 +1076,8 @@ module C06MapPrecond_Impl0_ProducesRefl_Impl
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
@@ -1083,11 +1088,11 @@ module C06MapPrecond_Impl0_ProducesRefl_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = Item0.item
   clone C06MapPrecond_Impl0_Produces as Produces0 with
     type i = i,
     type b = b,
@@ -1270,8 +1275,8 @@ module C06MapPrecond_Impl0_ProducesTrans_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant1.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -1288,8 +1293,8 @@ module C06MapPrecond_Impl0_ProducesTrans_Impl
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
@@ -1300,11 +1305,11 @@ module C06MapPrecond_Impl0_ProducesTrans_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = Item0.item
   clone C06MapPrecond_Impl0_Produces as Produces0 with
     type i = i,
     type b = b,
@@ -1334,17 +1339,6 @@ module C06MapPrecond_Impl0_ProducesTrans_Impl
     
    = [@vc:do_not_keep_trace] [@vc:sp]
     [#"../06_map_precond.rs" 31 4 31 10] ()
-end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
 end
 module C06MapPrecond_Impl1_ProducesOne_Stub
   type i
@@ -1383,6 +1377,7 @@ module C06MapPrecond_Impl1_ProducesOne
   type i
   type b
   type f
+  use prelude.Int
   use seq.Seq
   use prelude.Borrow
   use prelude.Ghost
@@ -1424,9 +1419,9 @@ module C06MapPrecond_Impl1_ProducesOne_Impl
   use prelude.Ghost
   clone C06MapPrecond_Common_Iterator_Completed_Interface as Completed1 with
     type self = i
+  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Impl0_Completed as Completed0 with
     type i = i,
     type b = b,
@@ -1454,8 +1449,8 @@ module C06MapPrecond_Impl1_ProducesOne_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant1.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -1472,8 +1467,8 @@ module C06MapPrecond_Impl1_ProducesOne_Impl
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
@@ -1484,11 +1479,11 @@ module C06MapPrecond_Impl1_ProducesOne_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = Item0.item
   clone CreusotContracts_Resolve_Resolve_Resolve_Interface as Resolve0 with
     type self = f
   clone CreusotContracts_Std1_Ops_Impl0_PostconditionOnce as PostconditionOnce0 with
@@ -1572,6 +1567,17 @@ module C06MapPrecond_Impl1_ProducesOne_Impl
     
    = [@vc:do_not_keep_trace] [@vc:sp]
     [#"../06_map_precond.rs" 151 8 157 9] pure {exists f : borrowed f .  * f = C06MapPrecond_Map_Type.map_func self /\  ^ f = C06MapPrecond_Map_Type.map_func succ /\ (exists e : Item0.item . Produces1.produces (C06MapPrecond_Map_Type.map_iter self) (Seq.singleton e) (C06MapPrecond_Map_Type.map_iter succ) /\ Ghost.inner (C06MapPrecond_Map_Type.map_produced succ) = Seq.snoc (Ghost.inner (C06MapPrecond_Map_Type.map_produced self)) e /\ Precondition0.precondition ( * f) (e, C06MapPrecond_Map_Type.map_produced self) /\ PostconditionMut0.postcondition_mut f (e, C06MapPrecond_Map_Type.map_produced self) visited)}
+end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
 end
 module C06MapPrecond_Common_Iterator_Next_Interface
   type self
@@ -1658,6 +1664,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -1668,9 +1675,9 @@ module C06MapPrecond_Impl1_ProducesOneInvariant_Stub
   type i
   type b
   type f
+  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type b = b,
@@ -1697,9 +1704,9 @@ module C06MapPrecond_Impl1_ProducesOneInvariant_Interface
   type i
   type b
   type f
+  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type b = b,
@@ -1727,9 +1734,9 @@ module C06MapPrecond_Impl1_ProducesOneInvariant
   type i
   type b
   type f
+  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type b = b,
@@ -1851,8 +1858,8 @@ module C06MapPrecond_Impl1_ProducesOneInvariant_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant1.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -1869,8 +1876,8 @@ module C06MapPrecond_Impl1_ProducesOneInvariant_Impl
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
@@ -1881,11 +1888,11 @@ module C06MapPrecond_Impl1_ProducesOneInvariant_Impl
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = Item0.item
   clone C06MapPrecond_Impl0_Invariant as Invariant0 with
     type i = i,
     type b = b,
@@ -1936,9 +1943,9 @@ module C06MapPrecond_Impl0_Next_Interface
   type b
   type f
   use prelude.Borrow
+  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   clone C06MapPrecond_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type b = b,
@@ -2046,8 +2053,8 @@ module C06MapPrecond_Impl0_Next
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant1.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -2064,8 +2071,8 @@ module C06MapPrecond_Impl0_Next
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
@@ -2082,11 +2089,11 @@ module C06MapPrecond_Impl0_Next
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = Item0.item
   clone C06MapPrecond_Common_Iterator_ProducesTrans_Interface as ProducesTrans0 with
     type self = i,
     predicate Invariant0.invariant' = Invariant1.invariant',
@@ -2149,9 +2156,9 @@ module C06MapPrecond_Impl0_Next
   clone C06MapPrecond_Common_Iterator_Next_Interface as Next0 with
     type self = i,
     predicate Invariant0.invariant' = Invariant1.invariant',
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed1.completed,
-    predicate Produces0.produces = Produces1.produces
+    predicate Produces0.produces = Produces1.produces,
+    type Item0.item = Item0.item
   let rec cfg next [#"../06_map_precond.rs" 74 4 74 44] [@cfg:stackify] [@cfg:subregion_analysis] (self : borrowed (C06MapPrecond_Map_Type.t_map i Item0.item f)) : Core_Option_Option_Type.t_option b
     requires {[#"../06_map_precond.rs" 73 4 73 40] Invariant0.invariant' ( * self)}
     ensures { [#"../06_map_precond.rs" 69 14 72 5] match (result) with
@@ -2397,8 +2404,8 @@ module C06MapPrecond_Map
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant0.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces0.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -2407,8 +2414,8 @@ module C06MapPrecond_Map
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces0.produces,
@@ -2433,11 +2440,11 @@ module C06MapPrecond_Map
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = Item0.item
   clone C06MapPrecond_Impl0_Invariant as Invariant1 with
     type i = i,
     type b = b,
@@ -2974,8 +2981,8 @@ module C06MapPrecond_Increment
     predicate Unnest0.unnest = Closure30.unnest,
     predicate Precondition0.precondition = Closure30.precondition,
     predicate PostconditionMut0.postcondition_mut = Closure30.postcondition_mut,
-    type Item0.item = uint32,
     predicate Invariant0.invariant' = Invariant0.invariant',
+    type Item0.item = uint32,
     predicate Produces0.produces = Produces0.produces
   clone C06MapPrecond_Impl1_PreservationInv as PreservationInv0 with
     type i = i,
@@ -2984,8 +2991,8 @@ module C06MapPrecond_Increment
     predicate Unnest0.unnest = Closure30.unnest,
     predicate Precondition0.precondition = Closure30.precondition,
     predicate PostconditionMut0.postcondition_mut = Closure30.postcondition_mut,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = uint32,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate Produces0.produces = Produces0.produces,
     axiom .
@@ -3002,11 +3009,11 @@ module C06MapPrecond_Increment
     type i = i,
     type b = uint32,
     type f = Closure30.c06mapprecond_increment_closure3 i,
-    type Item0.item = uint32,
     predicate Completed0.completed = Completed1.completed,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = uint32
   clone C06MapPrecond_Impl0_Invariant as Invariant1 with
     type i = i,
     type b = uint32,
@@ -3289,8 +3296,8 @@ module C06MapPrecond_Counter
     predicate Unnest0.unnest = Closure30.unnest,
     predicate Precondition0.precondition = Closure30.precondition,
     predicate PostconditionMut0.postcondition_mut = Closure30.postcondition_mut,
-    type Item0.item = uint32,
     predicate Invariant0.invariant' = Invariant0.invariant',
+    type Item0.item = uint32,
     predicate Produces0.produces = Produces0.produces
   clone C06MapPrecond_Impl1_PreservationInv as PreservationInv0 with
     type i = i,
@@ -3299,8 +3306,8 @@ module C06MapPrecond_Counter
     predicate Unnest0.unnest = Closure30.unnest,
     predicate Precondition0.precondition = Closure30.precondition,
     predicate PostconditionMut0.postcondition_mut = Closure30.postcondition_mut,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = uint32,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate Produces0.produces = Produces0.produces,
     axiom .
@@ -3324,11 +3331,11 @@ module C06MapPrecond_Counter
     type i = i,
     type b = uint32,
     type f = Closure30.c06mapprecond_counter_closure3 i,
-    type Item0.item = uint32,
     predicate Completed0.completed = Completed1.completed,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = uint32
   clone C06MapPrecond_Impl0_Invariant as Invariant1 with
     type i = i,
     type b = uint32,
@@ -3461,8 +3468,8 @@ module C06MapPrecond_Impl0
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Invariant0.invariant' = Invariant1.invariant',
+    type Item0.item = Item0.item,
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
@@ -3480,8 +3487,8 @@ module C06MapPrecond_Impl0
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate Unnest0.unnest = Unnest0.unnest,
     predicate Produces0.produces = Produces1.produces,
@@ -3498,13 +3505,11 @@ module C06MapPrecond_Impl0
     type i = i,
     type b = b,
     type f = f,
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant1.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item1 with
-    type self = C06MapPrecond_Map_Type.t_map i Item0.item f
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = Item0.item
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone C06MapPrecond_Impl0_Produces as Produces0 with
     type i = i,

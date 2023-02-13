@@ -133,6 +133,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool

@@ -48,8 +48,7 @@ module Borrow
   ensures { *result = a }
 end
 module Slice
-  use seq.Seq
-  type rust_array 'a = seq 'a
+  use export seq.Seq
   function id (s : seq 'a) : seq 'a = s
 end
 

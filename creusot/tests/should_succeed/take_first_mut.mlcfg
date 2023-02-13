@@ -1,15 +1,4 @@
 
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
-end
 module Core_Num_Impl12_Max_Stub
   use prelude.Int
   use prelude.UIntSize
@@ -44,11 +33,10 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
   val shallow_model (self : seq t) : Seq.seq t
@@ -70,11 +58,23 @@ module CreusotContracts_Logic_Seq_Impl0_Tail
   type t
   use seq.Seq
   use seq_ext.SeqExt
+  use prelude.Int
   function tail (self : Seq.seq t) : Seq.seq t =
     SeqExt.subsequence self 1 (Seq.length self)
   val tail (self : Seq.seq t) : Seq.seq t
     ensures { result = tail self }
     
+end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
 end
 module CreusotContracts_Std1_Default_Default_IsDefault_Stub
   type self
@@ -191,6 +191,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -230,8 +231,9 @@ module CreusotContracts_Std1_Slice_Impl2_IsDefault
   type t
   use prelude.Borrow
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
   use seq.Seq
+  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   use seq.Seq
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel1 with

@@ -64,6 +64,7 @@ module C12Zip_Impl0_Completed
   type i
   type j
   use prelude.Borrow
+  use prelude.Int
   clone C12Zip_Common_Iterator_Completed_Stub as Completed1 with
     type self = j
   clone C12Zip_Common_Iterator_Completed_Stub as Completed0 with
@@ -257,6 +258,7 @@ end
 module C12Zip_Impl0_Invariant
   type i
   type j
+  use prelude.Int
   clone C12Zip_Common_Iterator_Invariant_Stub as Invariant1 with
     type self = j
   clone C12Zip_Common_Iterator_Invariant_Stub as Invariant0 with
@@ -439,11 +441,11 @@ module C12Zip_Impl0_ProducesTrans
   type i
   type j
   use seq.Seq
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
   clone C12Zip_Common_Iterator_Item_Type as Item1 with
     type self = j
   clone C12Zip_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
   clone C12Zip_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type j = j,
@@ -579,6 +581,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -613,6 +616,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve
   type t1
   type t2
+  use prelude.Int
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve1 with
     type self = t2
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
@@ -628,11 +632,11 @@ module C12Zip_Impl0_Next_Interface
   type j
   use prelude.Borrow
   use seq.Seq
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
   clone C12Zip_Common_Iterator_Item_Type as Item1 with
     type self = j
   clone C12Zip_Common_Iterator_Item_Type as Item0 with
     type self = i
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
   clone C12Zip_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type j = j,
@@ -723,15 +727,15 @@ module C12Zip_Impl0_Next
   clone C12Zip_Common_Iterator_Next_Interface as Next1 with
     type self = j,
     predicate Invariant0.invariant' = Invariant2.invariant',
-    type Item0.item = Item1.item,
     predicate Completed0.completed = Completed2.completed,
-    predicate Produces0.produces = Produces2.produces
+    predicate Produces0.produces = Produces2.produces,
+    type Item0.item = Item1.item
   clone C12Zip_Common_Iterator_Next_Interface as Next0 with
     type self = i,
     predicate Invariant0.invariant' = Invariant1.invariant',
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed1.completed,
-    predicate Produces0.produces = Produces1.produces
+    predicate Produces0.produces = Produces1.produces,
+    type Item0.item = Item0.item
   clone C12Zip_Impl0_Produces as Produces0 with
     type i = i,
     type j = j,
@@ -877,8 +881,6 @@ module C12Zip_Impl0
   clone C12Zip_Common_Iterator_Invariant_Interface as Invariant1 with
     type self = i
   use C12Zip_Zip_Type as C12Zip_Zip_Type
-  clone C12Zip_Common_Iterator_Item_Type as Item2 with
-    type self = C12Zip_Zip_Type.t_zip i j
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone C12Zip_Impl0_Completed as Completed0 with
     type i = i,

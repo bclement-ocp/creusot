@@ -558,7 +558,7 @@ impl<'a, 'tcx> ThirTerm<'a, 'tcx> {
                     .collect();
 
                 Ok(Pattern::Constructor {
-                    adt: adt_def.variants()[*variant_index].def_id,
+                    adt: adt_def.did(),
                     substs,
                     variant: *variant_index,
                     fields,
@@ -589,7 +589,7 @@ impl<'a, 'tcx> ThirTerm<'a, 'tcx> {
                         .map(|el| el.reduce(|_, a| a).1)
                         .collect();
                     Ok(Pattern::Constructor {
-                        adt: adt_def.variants()[0usize.into()].def_id,
+                        adt: adt_def.did(),
                         substs,
                         variant: 0u32.into(),
                         fields,
@@ -840,7 +840,7 @@ fn field_pattern(ty: Ty, field: Field) -> Option<Pattern> {
             fields[field.as_usize()] = Pattern::Binder(Symbol::intern("a"));
 
             Some(Pattern::Constructor {
-                adt: variant.def_id,
+                adt: adt.did(),
                 substs,
                 variant: 0usize.into(),
                 fields,

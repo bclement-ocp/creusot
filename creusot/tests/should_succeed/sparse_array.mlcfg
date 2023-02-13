@@ -105,9 +105,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -132,7 +132,6 @@ module SparseArray_Impl1_IsElt_Interface
 end
 module SparseArray_Impl1_IsElt
   type t
-  use prelude.Borrow
   use prelude.Int
   use prelude.UIntSize
   use seq.Seq
@@ -204,13 +203,12 @@ module SparseArray_Impl0_ShallowModel_Interface
 end
 module SparseArray_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
+  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max_Stub as Max0
-  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -219,6 +217,7 @@ module SparseArray_Impl0_ShallowModel
   use SparseArray_Sparse_Type as SparseArray_Sparse_Type
   clone SparseArray_Impl1_IsElt_Stub as IsElt0 with
     type t = t
+  use Core_Option_Option_Type as Core_Option_Option_Type
   function shallow_model [#"../sparse_array.rs" 41 4 41 50] (self : SparseArray_Sparse_Type.t_sparse t) : Seq.seq (Core_Option_Option_Type.t_option t)
     
   val shallow_model [#"../sparse_array.rs" 41 4 41 50] (self : SparseArray_Sparse_Type.t_sparse t) : Seq.seq (Core_Option_Option_Type.t_option t)
@@ -271,7 +270,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -297,14 +295,13 @@ module SparseArray_Impl1_SparseInv_Interface
 end
 module SparseArray_Impl1_SparseInv
   type t
-  use prelude.Borrow
-  use prelude.UIntSize
   use prelude.Int
+  use prelude.UIntSize
   use seq.Seq
-  use Core_Option_Option_Type as Core_Option_Option_Type
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
+  use Core_Option_Option_Type as Core_Option_Option_Type
   use seq.Seq
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel2 with
     type t = usize,
@@ -451,9 +448,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) =
     UIntSize.to_int self < Seq.length seq
   val in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) : bool
@@ -476,9 +473,9 @@ module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) =
     Seq.get seq (UIntSize.to_int self) = out
   val has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) : bool
@@ -746,10 +743,9 @@ module SparseArray_Impl1_LemmaPermutation_Impl
   use prelude.Int
   use prelude.UIntSize
   use seq.Seq
-  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max as Max0
+  use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
-  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel1 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -765,6 +761,7 @@ module SparseArray_Impl1_LemmaPermutation_Impl
     type t = t,
     function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
     val Max0.mAX' = Max0.mAX'
+  use Core_Option_Option_Type as Core_Option_Option_Type
   clone SparseArray_Impl0_ShallowModel as ShallowModel3 with
     type t = t,
     predicate IsElt0.is_elt = IsElt0.is_elt,
@@ -902,6 +899,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -924,9 +922,9 @@ module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate resolve_elswhere [@inline:trivial] (self : usize) (old' : Seq.seq t) (fin : Seq.seq t) =
     forall i : int . 0 <= i /\ i <> UIntSize.to_int self /\ i < Seq.length old' -> Seq.get old' i = Seq.get fin i
   val resolve_elswhere [@inline:trivial] (self : usize) (old' : Seq.seq t) (fin : Seq.seq t) : bool
@@ -939,9 +937,9 @@ module SparseArray_Impl1_Set_Interface
   use prelude.UIntSize
   use seq.Seq
   use prelude.Int
+  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel2 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -1269,9 +1267,9 @@ module SparseArray_Create_Interface
   use prelude.Int
   use seq.Seq
   use prelude.UIntSize
+  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel1 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -1413,8 +1411,8 @@ module CreusotContracts_Logic_Int_Impl23_ShallowModel_Interface
   function shallow_model (self : int32) : int
 end
 module CreusotContracts_Logic_Int_Impl23_ShallowModel
-  use prelude.Int
   use prelude.Int32
+  use prelude.Int
   function shallow_model (self : int32) : int =
     Int32.to_int self
   val shallow_model (self : int32) : int
@@ -1440,7 +1438,6 @@ module SparseArray_F
     axiom .
   clone CreusotContracts_Logic_Int_Impl23_ShallowModel as ShallowModel5
   use prelude.Int
-  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel as ShallowModel2 with
     type t = int32,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -1451,6 +1448,7 @@ module SparseArray_F
     type t = int32,
     function ShallowModel0.shallow_model = ShallowModel6.shallow_model,
     val Max0.mAX' = Max0.mAX'
+  use Core_Option_Option_Type as Core_Option_Option_Type
   clone SparseArray_Impl0_ShallowModel as ShallowModel1 with
     type t = int32,
     predicate IsElt0.is_elt = IsElt0.is_elt,

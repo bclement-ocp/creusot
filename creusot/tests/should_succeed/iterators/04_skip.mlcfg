@@ -106,9 +106,9 @@ end
 module C04Skip_Impl0_Completed
   type i
   use prelude.Borrow
+  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
-  use prelude.Int
   clone C04Skip_Common_Iterator_Completed_Stub as Completed0 with
     type self = i
   clone C04Skip_Common_Iterator_Item_Type as Item0 with
@@ -237,8 +237,8 @@ end
 module C04Skip_Impl0_Produces
   type i
   use seq.Seq
-  use prelude.UIntSize
   use prelude.Int
+  use prelude.UIntSize
   clone C04Skip_Common_Iterator_Item_Type as Item0 with
     type self = i
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
@@ -394,9 +394,9 @@ end
 module C04Skip_Impl0_ProducesTrans
   type i
   use seq.Seq
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
   clone C04Skip_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
   clone C04Skip_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -532,6 +532,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -549,8 +550,8 @@ module CreusotContracts_Std1_Default_Impl2_IsDefault_Interface
   predicate is_default (self : usize)
 end
 module CreusotContracts_Std1_Default_Impl2_IsDefault
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   predicate is_default (self : usize) =
     self = (0 : usize)
   val is_default (self : usize) : bool
@@ -561,9 +562,9 @@ module C04Skip_Impl0_Next_Interface
   type i
   use prelude.Borrow
   use seq.Seq
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
   clone C04Skip_Common_Iterator_Item_Type as Item0 with
     type self = i
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
   clone C04Skip_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -624,9 +625,9 @@ module C04Skip_Impl0_Next
   clone C04Skip_Common_Iterator_Next_Interface as Next0 with
     type self = i,
     predicate Invariant0.invariant' = Invariant1.invariant',
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed1.completed,
-    predicate Produces0.produces = Produces1.produces
+    predicate Produces0.produces = Produces1.produces,
+    type Item0.item = Item0.item
   clone CreusotContracts_Resolve_Resolve_Resolve_Interface as Resolve1 with
     type self = Item0.item
   clone CreusotContracts_Resolve_Impl1_Resolve as Resolve0 with
@@ -793,8 +794,6 @@ module C04Skip_Impl0
   clone C04Skip_Common_Iterator_Invariant_Interface as Invariant1 with
     type self = i
   use C04Skip_Skip_Type as C04Skip_Skip_Type
-  clone C04Skip_Common_Iterator_Item_Type as Item1 with
-    type self = C04Skip_Skip_Type.t_skip i
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone C04Skip_Impl0_Produces as Produces0 with
     type i = i,

@@ -14,7 +14,6 @@ end
 module Mutex_Inv_Inv
   type self
   type t
-  use prelude.Borrow
   predicate inv [#"../mutex.rs" 7 4 7 32] (self : self) (x : t)
   val inv [#"../mutex.rs" 7 4 7 32] (self : self) (x : t) : bool
     ensures { result = inv self x }
@@ -139,9 +138,8 @@ module Mutex_Impl2_Inv_Interface
   predicate inv [#"../mutex.rs" 65 4 65 33] (self : Mutex_Even_Type.t_even) (x : uint32)
 end
 module Mutex_Impl2_Inv
-  use prelude.Borrow
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   use Mutex_Even_Type as Mutex_Even_Type
   predicate inv [#"../mutex.rs" 65 4 65 33] (self : Mutex_Even_Type.t_even) (x : uint32) =
     [#"../mutex.rs" 66 8 66 24] mod x (2 : uint32) = (0 : uint32)
@@ -291,12 +289,6 @@ module Mutex_Impl3_Call
   }
   
 end
-module Core_Result_Result_Type
-  type t_result 't 'e =
-    | C_Ok 't
-    | C_Err 'e
-    
-end
 module Mutex_JoinHandleInner_Type
   type t_joinhandleinner 't
 end
@@ -310,6 +302,12 @@ module Mutex_JoinHandle_Type
     match (self) with
       | C_JoinHandle _ a -> a
       end
+end
+module Core_Result_Result_Type
+  type t_result 't 'e =
+    | C_Ok 't
+    | C_Err 'e
+    
 end
 module Mutex_Impl4_Join_Interface
   type t
@@ -405,7 +403,6 @@ module Mutex_Impl5_Inv_Interface
 end
 module Mutex_Impl5_Inv
   type f
-  use prelude.Borrow
   clone Mutex_FakeFnOnce_Return_Type as Return0 with
     type self = f
   clone Mutex_FakeFnOnce_Postcondition_Stub as Postcondition0 with
@@ -439,6 +436,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool

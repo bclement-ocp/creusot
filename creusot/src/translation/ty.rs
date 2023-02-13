@@ -43,19 +43,19 @@ enum TyTranslation {
 }
 
 // Translate a type usage
-pub(crate) fn translate_ty<'tcx>(
+pub(crate) fn translate_ty<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     span: Span,
     ty: Ty<'tcx>,
 ) -> MlT {
     translate_ty_inner(TyTranslation::Usage, ctx, names, span, ty)
 }
 
-fn translate_ty_inner<'tcx>(
+fn translate_ty_inner<'tcx, C: Cloner<'tcx>>(
     trans: TyTranslation,
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     span: Span,
     ty: Ty<'tcx>,
 ) -> MlT {
@@ -182,9 +182,9 @@ fn translate_ty_inner<'tcx>(
     }
 }
 
-pub(crate) fn translate_projection_ty<'tcx>(
+pub(crate) fn translate_projection_ty<'tcx, C: Cloner<'tcx>>(
     _ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     pty: &AliasTy<'tcx>,
 ) -> MlT {
     // ctx.translate(pty.trait_def_id(ctx.tcx));
@@ -192,9 +192,9 @@ pub(crate) fn translate_projection_ty<'tcx>(
     MlT::TConstructor(name)
 }
 
-pub(crate) fn translate_closure_ty<'tcx>(
+pub(crate) fn translate_closure_ty<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     did: DefId,
     subst: SubstsRef<'tcx>,
 ) -> TyDecl {
@@ -208,7 +208,7 @@ pub(crate) fn translate_closure_ty<'tcx>(
         })
         .collect();
 
-    let cons_name = names.constructor(did, subst).name;
+    let cons_name = names.constructor(did, subst, 0u32.into()).name;
     let kind = AdtDecl {
         ty_name,
         ty_params: ty_param_names(ctx.tcx, did).collect(),
@@ -361,9 +361,9 @@ pub(crate) fn translate_tydecl(ctx: &mut TranslationCtx<'_>, did: DefId) {
     ctx.add_type(did, modls);
 }
 
-fn build_ty_decl<'tcx>(
+fn build_ty_decl<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     did: DefId,
 ) -> AdtDecl {
     let adt = ctx.tcx.adt_def(did);
@@ -378,7 +378,7 @@ fn build_ty_decl<'tcx>(
         let substs = InternalSubsts::identity_for_item(ctx.tcx, did);
         let mut ml_ty_def = Vec::new();
 
-        for var_def in adt.variants().iter() {
+        for (ix, var_def) in adt.variants().iter_enumerated() {
             let field_tys: Vec<_> = var_def
                 .fields
                 .iter()
@@ -387,7 +387,7 @@ fn build_ty_decl<'tcx>(
                     Field { ty, ghost }
                 })
                 .collect();
-            let var_name = names.constructor(var_def.def_id, substs);
+            let var_name = names.constructor(var_def.def_id, substs, ix);
 
             ml_ty_def.push(ConstructorDecl { name: var_name.name, fields: field_tys });
         }
@@ -420,9 +420,9 @@ pub(crate) fn ty_param_names(
         .map(Ident::from)
 }
 
-fn field_ty<'tcx>(
+fn field_ty<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     field: &FieldDef,
     substs: SubstsRef<'tcx>,
 ) -> (MlT, bool) {
@@ -480,8 +480,8 @@ pub(crate) fn translate_accessor(
 
     let variant_arities: Vec<_> = adt_def
         .variants()
-        .iter()
-        .map(|var| (names.constructor(var.def_id, substs), var.fields.len()))
+        .iter_enumerated()
+        .map(|(ix, var)| (names.constructor(var.def_id, substs, ix), var.fields.len()))
         .collect();
 
     let this = MlT::TApp(
@@ -600,7 +600,10 @@ pub(crate) fn build_closure_accessor<'tcx>(
     (pre_sig, term)
 }
 
-pub(crate) fn intty_to_ty(names: &mut CloneMap<'_>, ity: &rustc_middle::ty::IntTy) -> MlT {
+pub(crate) fn intty_to_ty<'tcx, C: Cloner<'tcx>>(
+    names: &mut C,
+    ity: &rustc_middle::ty::IntTy,
+) -> MlT {
     use rustc_middle::ty::IntTy::*;
     names.import_prelude_module(PreludeModule::Int);
 
@@ -632,7 +635,10 @@ pub(crate) fn intty_to_ty(names: &mut CloneMap<'_>, ity: &rustc_middle::ty::IntT
     }
 }
 
-pub(crate) fn uintty_to_ty(names: &mut CloneMap<'_>, ity: &rustc_middle::ty::UintTy) -> MlT {
+pub(crate) fn uintty_to_ty<'tcx, C: Cloner<'tcx>>(
+    names: &mut C,
+    ity: &rustc_middle::ty::UintTy,
+) -> MlT {
     use rustc_middle::ty::UintTy::*;
     names.import_prelude_module(PreludeModule::Int);
 
@@ -664,7 +670,7 @@ pub(crate) fn uintty_to_ty(names: &mut CloneMap<'_>, ity: &rustc_middle::ty::Uin
     }
 }
 
-fn floatty_to_ty(names: &mut CloneMap<'_>, fty: &rustc_middle::ty::FloatTy) -> MlT {
+fn floatty_to_ty<'tcx, C: Cloner<'tcx>>(names: &mut C, fty: &rustc_middle::ty::FloatTy) -> MlT {
     use rustc_middle::ty::FloatTy::*;
 
     match fty {

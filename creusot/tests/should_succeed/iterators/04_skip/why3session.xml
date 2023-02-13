@@ -67,7 +67,7 @@
   <proof prover="1"><result status="valid" time="0.06" steps="12393"/></proof>
   </goal>
   <goal name="next&#39;vc.14" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.12" steps="27351"/></proof>
+  <proof prover="1"><result status="valid" time="0.12" steps="27329"/></proof>
   </goal>
  </transf>
  </goal>

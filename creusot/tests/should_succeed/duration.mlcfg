@@ -78,8 +78,8 @@ module CreusotContracts_Std1_Time_Impl0_ShallowModel
   use prelude.Int
   use prelude.UInt64
   use Core_Time_Duration_Type as Core_Time_Duration_Type
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   function shallow_model (self : Core_Time_Duration_Type.t_duration) : int
   val shallow_model (self : Core_Time_Duration_Type.t_duration) : int
     ensures { result = shallow_model self }
@@ -94,8 +94,8 @@ module Core_Time_Impl1_New_Interface
   clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   clone CreusotContracts_Std1_Time_NanosToSecs_Stub as NanosToSecs0
   val new (secs : uint64) (nanos : uint32) : Core_Time_Duration_Type.t_duration
@@ -144,7 +144,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -180,8 +179,8 @@ module Core_Time_Impl1_FromSecs_Interface
   use Core_Time_Duration_Type as Core_Time_Duration_Type
   clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val from_secs (secs : uint64) : Core_Time_Duration_Type.t_duration
     ensures { ShallowModel0.shallow_model result = SecsToNanos0.secs_to_nanos (UInt64.to_int secs) }
@@ -190,12 +189,12 @@ end
 module Core_Time_Impl1_FromMillis_Interface
   use prelude.UInt64
   use prelude.Int
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   use Core_Time_Duration_Type as Core_Time_Duration_Type
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val from_millis (millis : uint64) : Core_Time_Duration_Type.t_duration
     ensures { ShallowModel0.shallow_model result = UInt64.to_int millis * 1000000 }
@@ -204,12 +203,12 @@ end
 module Core_Time_Impl1_FromMicros_Interface
   use prelude.UInt64
   use prelude.Int
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   use Core_Time_Duration_Type as Core_Time_Duration_Type
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val from_micros (micros : uint64) : Core_Time_Duration_Type.t_duration
     ensures { ShallowModel0.shallow_model result = UInt64.to_int micros * 1000 }
@@ -218,12 +217,12 @@ end
 module Core_Time_Impl1_FromNanos_Interface
   use prelude.UInt64
   use prelude.Int
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   use Core_Time_Duration_Type as Core_Time_Duration_Type
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val from_nanos (nanos : uint64) : Core_Time_Duration_Type.t_duration
     ensures { ShallowModel0.shallow_model result = UInt64.to_int nanos }
@@ -439,8 +438,8 @@ module Core_Time_Impl1_CheckedAdd_Interface
   clone Core_Num_Impl10_Max_Stub as Max0
   clone CreusotContracts_Std1_Time_NanosToSecs_Stub as NanosToSecs0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val checked_add (self : Core_Time_Duration_Type.t_duration) (rhs : Core_Time_Duration_Type.t_duration) : Core_Option_Option_Type.t_option (Core_Time_Duration_Type.t_duration)
     ensures { NanosToSecs0.nanos_to_secs (ShallowModel0.shallow_model self + ShallowModel0.shallow_model rhs) > UInt64.to_int Max0.mAX' -> result = Core_Option_Option_Type.C_None }
@@ -466,16 +465,16 @@ end
 module Core_Time_Impl1_CheckedSub_Interface
   use prelude.Int
   use prelude.Int
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   use Core_Time_Duration_Type as Core_Time_Duration_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Model_Impl10_DeepModel_Stub as DeepModel0 with
     type t = Core_Time_Duration_Type.t_duration,
     type DeepModelTy0.deepModelTy = int
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val checked_sub (self : Core_Time_Duration_Type.t_duration) (rhs : Core_Time_Duration_Type.t_duration) : Core_Option_Option_Type.t_option (Core_Time_Duration_Type.t_duration)
     ensures { ShallowModel0.shallow_model self - ShallowModel0.shallow_model rhs < 0 -> result = Core_Option_Option_Type.C_None }
@@ -496,8 +495,8 @@ module Core_Time_Impl1_CheckedMul_Interface
   clone Core_Num_Impl10_Max_Stub as Max0
   clone CreusotContracts_Std1_Time_NanosToSecs_Stub as NanosToSecs0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val checked_mul (self : Core_Time_Duration_Type.t_duration) (rhs : uint32) : Core_Option_Option_Type.t_option (Core_Time_Duration_Type.t_duration)
     ensures { NanosToSecs0.nanos_to_secs (ShallowModel0.shallow_model self * UInt32.to_int rhs) > UInt64.to_int Max0.mAX' -> result = Core_Option_Option_Type.C_None }
@@ -507,14 +506,14 @@ end
 module Core_Time_Impl1_CheckedDiv_Interface
   use prelude.Int
   use prelude.UInt32
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   use prelude.Int
   use Core_Time_Duration_Type as Core_Time_Duration_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   clone CreusotContracts_Model_Impl10_DeepModel_Stub as DeepModel0 with
     type t = Core_Time_Duration_Type.t_duration,
@@ -531,8 +530,8 @@ module Core_Time_Impl2_Add_Interface
   clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val add (self : Core_Time_Duration_Type.t_duration) (rhs : Core_Time_Duration_Type.t_duration) : Core_Time_Duration_Type.t_duration
     requires {ShallowModel0.shallow_model self + ShallowModel0.shallow_model rhs <= SecsToNanos0.secs_to_nanos (UInt64.to_int Max0.mAX') + 999999999}
@@ -541,12 +540,12 @@ module Core_Time_Impl2_Add_Interface
 end
 module Core_Time_Impl4_Sub_Interface
   use prelude.Int
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   use Core_Time_Duration_Type as Core_Time_Duration_Type
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   val sub (self : Core_Time_Duration_Type.t_duration) (rhs : Core_Time_Duration_Type.t_duration) : Core_Time_Duration_Type.t_duration
     requires {ShallowModel0.shallow_model self - ShallowModel0.shallow_model rhs >= 0}
@@ -557,11 +556,11 @@ module CreusotContracts_Std1_Time_Impl1_DeepModel_Stub
   use prelude.Int
   use prelude.UInt64
   use Core_Time_Duration_Type as Core_Time_Duration_Type
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   function deep_model (self : Core_Time_Duration_Type.t_duration) : int
 end
@@ -569,11 +568,11 @@ module CreusotContracts_Std1_Time_Impl1_DeepModel_Interface
   use prelude.Int
   use prelude.UInt64
   use Core_Time_Duration_Type as Core_Time_Duration_Type
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   function deep_model (self : Core_Time_Duration_Type.t_duration) : int
   axiom deep_model_spec : forall self : Core_Time_Duration_Type.t_duration . deep_model self = ShallowModel0.shallow_model self && deep_model self >= 0 /\ deep_model self <= SecsToNanos0.secs_to_nanos (UInt64.to_int Max0.mAX') + 999999999
@@ -582,11 +581,11 @@ module CreusotContracts_Std1_Time_Impl1_DeepModel
   use prelude.Int
   use prelude.UInt64
   use Core_Time_Duration_Type as Core_Time_Duration_Type
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   function deep_model (self : Core_Time_Duration_Type.t_duration) : int
   val deep_model (self : Core_Time_Duration_Type.t_duration) : int
@@ -604,15 +603,15 @@ module Duration_TestDuration
   use prelude.UInt64
   use prelude.UInt32
   use Core_Time_Duration_Type as Core_Time_Duration_Type
-  clone CreusotContracts_Std1_Time_SecsToNanos as SecsToNanos0
   clone Core_Num_Impl10_Max as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos as SecsToNanos0
   clone CreusotContracts_Std1_Time_Impl0_ShallowModel as ShallowModel0 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     axiom .
   clone CreusotContracts_Std1_Time_Impl1_DeepModel as DeepModel1 with
-    val Max0.mAX' = Max0.mAX',
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX',
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     axiom .
   use prelude.Int
@@ -630,8 +629,8 @@ module Duration_TestDuration
   clone CreusotContracts_Std1_Time_NanosToSecs as NanosToSecs0
   clone Core_Time_Impl4_Sub_Interface as Sub0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    val Max0.mAX' = Max0.mAX',
-    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos
+    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX'
   clone Core_Time_Impl2_Add_Interface as Add0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     val Max0.mAX' = Max0.mAX',
@@ -639,8 +638,8 @@ module Duration_TestDuration
   clone Core_Time_Impl1_CheckedDiv_Interface as CheckedDiv0 with
     function DeepModel0.deep_model = DeepModel0.deep_model,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    val Max0.mAX' = Max0.mAX',
-    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos
+    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX'
   clone Core_Time_Impl1_CheckedMul_Interface as CheckedMul0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     function NanosToSecs0.nanos_to_secs = NanosToSecs0.nanos_to_secs,
@@ -650,8 +649,8 @@ module Duration_TestDuration
   clone Core_Time_Impl1_CheckedSub_Interface as CheckedSub0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     function DeepModel0.deep_model = DeepModel0.deep_model,
-    val Max0.mAX' = Max0.mAX',
-    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos
+    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX'
   clone Core_Option_Impl0_IsSome_Interface as IsSome0 with
     type t = Core_Time_Duration_Type.t_duration
   clone Core_Option_Impl0_IsNone_Interface as IsNone0 with
@@ -683,16 +682,16 @@ module Duration_TestDuration
     function ShallowModel0.shallow_model = ShallowModel1.shallow_model
   clone Core_Time_Impl1_FromNanos_Interface as FromNanos0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    val Max0.mAX' = Max0.mAX',
-    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos
+    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX'
   clone Core_Time_Impl1_FromMicros_Interface as FromMicros0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    val Max0.mAX' = Max0.mAX',
-    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos
+    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX'
   clone Core_Time_Impl1_FromMillis_Interface as FromMillis0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    val Max0.mAX' = Max0.mAX',
-    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos
+    function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,
+    val Max0.mAX' = Max0.mAX'
   clone Core_Time_Impl1_FromSecs_Interface as FromSecs0 with
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     function SecsToNanos0.secs_to_nanos = SecsToNanos0.secs_to_nanos,

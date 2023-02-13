@@ -41,6 +41,7 @@ module LogicFunctions_LogicPearlite_Interface
   function logic_pearlite [#"../logic_functions.rs" 14 0 14 27] (_1' : ()) : bool
 end
 module LogicFunctions_LogicPearlite
+  use prelude.Int
   function logic_pearlite [#"../logic_functions.rs" 14 0 14 27] (_1' : ()) : bool =
     [#"../logic_functions.rs" 15 16 15 22] 0 = 0
   val logic_pearlite [#"../logic_functions.rs" 14 0 14 27] (_1' : ()) : bool
@@ -119,7 +120,6 @@ module LogicFunctions_DerefPat_Interface
   function deref_pat [#"../logic_functions.rs" 40 0 40 47] (o : Core_Option_Option_Type.t_option int) : int
 end
 module LogicFunctions_DerefPat
-  use prelude.Borrow
   use prelude.Int
   use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type

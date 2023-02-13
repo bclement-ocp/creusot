@@ -209,17 +209,6 @@ module CreusotContracts_Std1_Ops_Impl3_Invariant
     ensures { result = invariant' self }
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
-end
 module CreusotContracts_Std1_Iter_Iterator_Completed_Stub
   type self
   use prelude.Borrow
@@ -266,6 +255,17 @@ module CreusotContracts_Std1_Iter_Iterator_Produces
     ensures { result = produces self visited _3' }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
+end
 module Core_Iter_Range_Impl3_Next_Interface
   type a
   use prelude.Borrow
@@ -276,8 +276,6 @@ module Core_Iter_Range_Impl3_Next_Interface
     type self = Core_Ops_Range_Range_Type.t_range a,
     type Item0.item = a
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
-    type self = Core_Ops_Range_Range_Type.t_range a
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = Core_Ops_Range_Range_Type.t_range a
   clone CreusotContracts_Std1_Ops_Impl3_Invariant_Stub as Invariant0 with
     type idx = a
@@ -359,6 +357,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -393,6 +392,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i) =
     self = res
   val into_iter_post (self : i) (res : i) : bool
@@ -492,8 +492,8 @@ module CreusotContracts_Logic_Int_Impl12_DeepModel_Interface
   function deep_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function deep_model (self : uint32) : int =
     UInt32.to_int self
   val deep_model (self : uint32) : int
@@ -586,7 +586,6 @@ module SumOfOdds_ComputeSumOfOdd
   clone Core_Iter_Range_Impl3_Next_Interface as Next0 with
     type a = uint32,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = uint32,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone Core_Iter_Traits_Collect_Impl0_IntoIter_Interface as IntoIter0 with

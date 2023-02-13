@@ -38,12 +38,6 @@ module Alloc_Alloc_Global_Type
     | C_Global
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-end
 module Core_Num_Impl12_Max_Stub
   use prelude.Int
   use prelude.UIntSize
@@ -79,9 +73,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -143,6 +137,12 @@ module CreusotContracts_Model_Impl3_ShallowModel
     ensures { result = shallow_model self }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+end
 module Alloc_Vec_Impl1_Pop_Interface
   type t
   type a
@@ -182,6 +182,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool

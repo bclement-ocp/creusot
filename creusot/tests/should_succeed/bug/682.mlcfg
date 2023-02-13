@@ -23,6 +23,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -79,7 +80,6 @@ module CreusotContracts_Ghost_Impl0_Deref_Interface
 end
 module CreusotContracts_Ghost_Impl0_Deref
   type t
-  use prelude.Borrow
   use prelude.Ghost
   function deref (self : Ghost.ghost_ty t) : t =
     Ghost.inner self

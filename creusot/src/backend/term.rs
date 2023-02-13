@@ -13,9 +13,9 @@ use why3::{
     Ident, QName,
 };
 
-pub(crate) fn lower_pure<'tcx>(
+pub(crate) fn lower_pure<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     term: Term<'tcx>,
 ) -> Exp {
     let span = term.span;
@@ -28,9 +28,9 @@ pub(crate) fn lower_pure<'tcx>(
     term
 }
 
-pub(crate) fn lower_impure<'tcx>(
+pub(crate) fn lower_impure<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     term: Term<'tcx>,
 ) -> Exp {
     let span = term.span;
@@ -43,13 +43,13 @@ pub(crate) fn lower_impure<'tcx>(
     term
 }
 
-pub(super) struct Lower<'a, 'tcx> {
+pub(super) struct Lower<'a, 'tcx, C> {
     pub(super) ctx: &'a mut TranslationCtx<'tcx>,
-    pub(super) names: &'a mut CloneMap<'tcx>,
+    pub(super) names: &'a mut C,
     // true when we are translating a purely logical term
     pub(super) pure: Purity,
 }
-impl<'tcx> Lower<'_, 'tcx> {
+impl<'tcx, C: Cloner<'tcx>> Lower<'_, 'tcx, C> {
     pub(crate) fn lower_term(&mut self, term: Term<'tcx>) -> Exp {
         match term.kind {
             TermKind::Lit(l) => {
@@ -173,7 +173,7 @@ impl<'tcx> Lower<'_, 'tcx> {
                 let TyKind::Adt(_, subst) = term.ty.kind() else { unreachable!() };
                 let args = fields.into_iter().map(|f| self.lower_term(f)).collect();
 
-                let ctor = self.names.constructor(adt.variants()[variant].def_id, subst);
+                let ctor = self.names.constructor(adt.did(), subst, variant);
                 Exp::Constructor { ctor, args }
             }
             TermKind::Cur { box term } => {
@@ -206,7 +206,6 @@ impl<'tcx> Lower<'_, 'tcx> {
                         box self.lower_term(false_br),
                     )
                 } else {
-                    let _ = translate_ty(self.ctx, self.names, rustc_span::DUMMY_SP, scrutinee.ty);
                     let arms = arms
                         .into_iter()
                         .map(|(pat, body)| (self.lower_pat(pat), self.lower_term(body)))
@@ -302,11 +301,11 @@ impl<'tcx> Lower<'_, 'tcx> {
 
     fn lower_pat(&mut self, pat: Pattern<'tcx>) -> Pat {
         match pat {
-            Pattern::Constructor { adt, variant: _, fields, substs } => {
+            Pattern::Constructor { adt, variant, fields, substs } => {
                 // let variant = &adt.variants()[variant];
                 let fields = fields.into_iter().map(|pat| self.lower_pat(pat)).collect();
                 // eprintln!("{adt:?}");
-                Pat::ConsP(self.names.constructor(adt, substs), fields)
+                Pat::ConsP(self.names.constructor(adt, substs, variant), fields)
             }
             Pattern::Wildcard => Pat::Wildcard,
             Pattern::Binder(name) => Pat::VarP(name.to_string().into()),
@@ -360,9 +359,9 @@ impl<'tcx> Lower<'_, 'tcx> {
 use rustc_hir::def_id::DefId;
 use rustc_middle::ty::{subst::SubstsRef, TyCtxt};
 
-pub(crate) fn lower_literal<'tcx>(
+pub(crate) fn lower_literal<'tcx, C: Cloner<'tcx>>(
     _ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     lit: Literal<'tcx>,
 ) -> Exp {
     match lit {
@@ -384,8 +383,7 @@ pub(crate) fn lower_literal<'tcx>(
             }
         }
         Literal::Function(id, subst) => {
-            #[allow(deprecated)]
-            names.insert(id, subst);
+            names.value(id, subst);
             Exp::Tuple(Vec::new())
         }
         Literal::Float(f) => Constant::Float(f).into(),

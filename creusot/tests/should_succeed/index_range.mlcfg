@@ -68,9 +68,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -379,7 +379,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -660,6 +659,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -684,9 +684,9 @@ module CreusotContracts_Std1_Slice_Impl6_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl6_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate in_bounds (self : Core_Ops_Range_Range_Type.t_range usize) (seq : Seq.seq t) =
     UIntSize.to_int (Core_Ops_Range_Range_Type.range_start self) <= UIntSize.to_int (Core_Ops_Range_Range_Type.range_end self) /\ UIntSize.to_int (Core_Ops_Range_Range_Type.range_end self) <= Seq.length seq
@@ -717,11 +717,10 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
   val shallow_model (self : seq t) : Seq.seq t
@@ -751,11 +750,10 @@ module CreusotContracts_Std1_Slice_Impl6_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl6_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
@@ -787,9 +785,9 @@ module CreusotContracts_Std1_Slice_Impl6_ResolveElswhere_Interface
 end
 module CreusotContracts_Std1_Slice_Impl6_ResolveElswhere
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate resolve_elswhere (self : Core_Ops_Range_Range_Type.t_range usize) (old' : Seq.seq t) (fin : Seq.seq t) =
     forall i : int . 0 <= i /\ (i < UIntSize.to_int (Core_Ops_Range_Range_Type.range_start self) \/ UIntSize.to_int (Core_Ops_Range_Range_Type.range_end self) <= i) /\ i < Seq.length old' -> Seq.get old' i = Seq.get fin i
@@ -813,9 +811,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) =
     UIntSize.to_int self < Seq.length seq
   val in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) : bool
@@ -838,9 +836,9 @@ module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) =
     Seq.get seq (UIntSize.to_int self) = out
   val has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) : bool
@@ -1642,9 +1640,9 @@ module CreusotContracts_Std1_Slice_Impl7_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl7_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   predicate in_bounds (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (seq : Seq.seq t) =
     UIntSize.to_int (Core_Ops_Range_RangeTo_Type.rangeto_end self) <= Seq.length seq
@@ -1674,11 +1672,10 @@ module CreusotContracts_Std1_Slice_Impl7_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl7_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
@@ -1710,9 +1707,9 @@ module CreusotContracts_Std1_Slice_Impl7_ResolveElswhere_Interface
 end
 module CreusotContracts_Std1_Slice_Impl7_ResolveElswhere
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeTo_Type as Core_Ops_Range_RangeTo_Type
   predicate resolve_elswhere (self : Core_Ops_Range_RangeTo_Type.t_rangeto usize) (old' : Seq.seq t) (fin : Seq.seq t) =
     forall i : int . UIntSize.to_int (Core_Ops_Range_RangeTo_Type.rangeto_end self) <= i /\ i < Seq.length old' -> Seq.get old' i = Seq.get fin i
@@ -2278,9 +2275,9 @@ module CreusotContracts_Std1_Slice_Impl8_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl8_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   predicate in_bounds (self : Core_Ops_Range_RangeFrom_Type.t_rangefrom usize) (seq : Seq.seq t) =
     UIntSize.to_int (Core_Ops_Range_RangeFrom_Type.rangefrom_start self) <= Seq.length seq
@@ -2310,11 +2307,10 @@ module CreusotContracts_Std1_Slice_Impl8_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl8_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
@@ -2348,9 +2344,9 @@ module CreusotContracts_Std1_Slice_Impl8_ResolveElswhere_Interface
 end
 module CreusotContracts_Std1_Slice_Impl8_ResolveElswhere
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeFrom_Type as Core_Ops_Range_RangeFrom_Type
   predicate resolve_elswhere (self : Core_Ops_Range_RangeFrom_Type.t_rangefrom usize) (old' : Seq.seq t) (fin : Seq.seq t)
     
@@ -2976,7 +2972,7 @@ module CreusotContracts_Std1_Slice_Impl9_HasValue
   type t
   use seq.Seq
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
@@ -3548,9 +3544,9 @@ module CreusotContracts_Std1_Slice_Impl10_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl10_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   predicate in_bounds (self : Core_Ops_Range_RangeToInclusive_Type.t_rangetoinclusive usize) (seq : Seq.seq t) =
     UIntSize.to_int (Core_Ops_Range_RangeToInclusive_Type.rangetoinclusive_end self) < Seq.length seq
@@ -3582,11 +3578,10 @@ module CreusotContracts_Std1_Slice_Impl10_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl10_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
   use seq_ext.SeqExt
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
@@ -3622,9 +3617,9 @@ module CreusotContracts_Std1_Slice_Impl10_ResolveElswhere_Interface
 end
 module CreusotContracts_Std1_Slice_Impl10_ResolveElswhere
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeToInclusive_Type as Core_Ops_Range_RangeToInclusive_Type
   predicate resolve_elswhere (self : Core_Ops_Range_RangeToInclusive_Type.t_rangetoinclusive usize) (old' : Seq.seq t) (fin : Seq.seq t)
     

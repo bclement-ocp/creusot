@@ -404,9 +404,9 @@ pub(crate) fn pre_sig_of<'tcx>(
     PreSignature { inputs, output, contract }
 }
 
-pub(crate) fn sig_to_why3<'tcx>(
+pub(crate) fn sig_to_why3<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     pre_sig: PreSignature<'tcx>,
     // FIXME: Get rid of this def id
     // The PreSig should have the name and the id should be replaced by a param env (if by anything at all...)
@@ -448,9 +448,9 @@ pub(crate) fn sig_to_why3<'tcx>(
     Signature { name, attrs, retty: Some(retty), args, contract }
 }
 
-pub(crate) fn signature_of<'tcx>(
+pub(crate) fn signature_of<'tcx, C: Cloner<'tcx>>(
     ctx: &mut TranslationCtx<'tcx>,
-    names: &mut CloneMap<'tcx>,
+    names: &mut C,
     def_id: DefId,
 ) -> Signature {
     debug!("signature_of {def_id:?}");

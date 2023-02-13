@@ -129,9 +129,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -339,7 +339,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -392,6 +391,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -514,6 +514,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i) =
     self = res
   val into_iter_post (self : i) (res : i) : bool
@@ -619,9 +620,9 @@ module C08CollectExtend_Extend
   clone Core_Iter_Traits_Iterator_Iterator_Next_Interface as Next0 with
     type self = i,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = t,
     predicate Completed0.completed = Completed0.completed,
-    predicate Produces0.produces = Produces0.produces
+    predicate Produces0.produces = Produces0.produces,
+    type Item0.item = t
   clone CreusotContracts_Ghost_Impl1_ShallowModel as ShallowModel2 with
     type t = borrowed (Alloc_Vec_Vec_Type.t_vec t (Alloc_Alloc_Global_Type.t_global)),
     type ShallowModelTy0.shallowModelTy = Seq.seq t,
@@ -927,9 +928,9 @@ module C08CollectExtend_Collect
   clone Core_Iter_Traits_Iterator_Iterator_Next_Interface as Next0 with
     type self = i,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
-    predicate Produces0.produces = Produces0.produces
+    predicate Produces0.produces = Produces0.produces,
+    type Item0.item = Item0.item
   clone Core_Iter_Traits_Collect_Impl0_IntoIter_Interface as IntoIter0 with
     type i = i,
     predicate IntoIterPre0.into_iter_pre = IntoIterPre0.into_iter_pre,
@@ -1175,6 +1176,7 @@ end
 module CreusotContracts_Std1_Vec_Impl2_IntoIterPost
   type t
   type a
+  use prelude.Int
   clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Vec_IntoIter_IntoIter_Type as Alloc_Vec_IntoIter_IntoIter_Type
   clone CreusotContracts_Std1_Vec_Impl5_ShallowModel_Stub as ShallowModel1 with
@@ -1287,6 +1289,7 @@ module CreusotContracts_Std1_Vec_Impl7_Completed
   type t
   type a
   use prelude.Borrow
+  use prelude.Int
   use seq.Seq
   use seq.Seq
   use Alloc_Vec_IntoIter_IntoIter_Type as Alloc_Vec_IntoIter_IntoIter_Type
@@ -1321,6 +1324,7 @@ module CreusotContracts_Std1_Vec_Impl7_Produces
   type t
   type a
   use seq.Seq
+  use prelude.Int
   use Alloc_Vec_IntoIter_IntoIter_Type as Alloc_Vec_IntoIter_IntoIter_Type
   clone CreusotContracts_Std1_Vec_Impl5_ShallowModel_Stub as ShallowModel0 with
     type t = t,
@@ -1356,11 +1360,10 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
   val shallow_model (self : seq t) : Seq.seq t

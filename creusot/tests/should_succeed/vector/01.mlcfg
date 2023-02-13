@@ -68,9 +68,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -153,7 +153,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -284,17 +283,6 @@ module CreusotContracts_Std1_Ops_Impl3_Invariant
     ensures { result = invariant' self }
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
-end
 module CreusotContracts_Std1_Iter_Iterator_Completed_Stub
   type self
   use prelude.Borrow
@@ -341,6 +329,17 @@ module CreusotContracts_Std1_Iter_Iterator_Produces
     ensures { result = produces self visited _3' }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
+end
 module Core_Iter_Range_Impl3_Next_Interface
   type a
   use prelude.Borrow
@@ -351,8 +350,6 @@ module Core_Iter_Range_Impl3_Next_Interface
     type self = Core_Ops_Range_Range_Type.t_range a,
     type Item0.item = a
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
-    type self = Core_Ops_Range_Range_Type.t_range a
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = Core_Ops_Range_Range_Type.t_range a
   clone CreusotContracts_Std1_Ops_Impl3_Invariant_Stub as Invariant0 with
     type idx = a
@@ -594,6 +591,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -628,6 +626,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i) =
     self = res
   val into_iter_post (self : i) (res : i) : bool
@@ -727,8 +726,8 @@ module CreusotContracts_Logic_Int_Impl18_DeepModel_Interface
   function deep_model (self : usize) : int
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function deep_model (self : usize) : int =
     UIntSize.to_int self
   val deep_model (self : usize) : int
@@ -780,9 +779,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) =
     UIntSize.to_int self < Seq.length seq
   val in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) : bool
@@ -805,9 +804,9 @@ module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) =
     Seq.get seq (UIntSize.to_int self) = out
   val has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) : bool
@@ -830,9 +829,9 @@ module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate resolve_elswhere [@inline:trivial] (self : usize) (old' : Seq.seq t) (fin : Seq.seq t) =
     forall i : int . 0 <= i /\ i <> UIntSize.to_int self /\ i < Seq.length old' -> Seq.get old' i = Seq.get fin i
   val resolve_elswhere [@inline:trivial] (self : usize) (old' : Seq.seq t) (fin : Seq.seq t) : bool
@@ -944,7 +943,6 @@ module C01_AllZero
   clone Core_Iter_Range_Impl3_Next_Interface as Next0 with
     type a = usize,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = usize,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone CreusotContracts_Ghost_Impl1_ShallowModel as ShallowModel2 with

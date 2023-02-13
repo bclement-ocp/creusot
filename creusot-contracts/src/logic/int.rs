@@ -71,8 +71,10 @@ macro_rules! mach_int {
         impl DeepModel for $t {
             type DeepModelTy = Int;
             #[logic]
+            #[creusot::builtins = concat!($ty_nm, ".to_int")]
             fn deep_model(self) -> Self::DeepModelTy {
-                pearlite! { @self }
+                // pearlite! { @self }
+                absurd
             }
         }
     };

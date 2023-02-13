@@ -43,7 +43,6 @@ end
 module CreusotContracts_Std1_Ops_FnExt_Postcondition
   type self
   type args
-  use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = self,
     type args = args
@@ -107,7 +106,6 @@ end
 module CreusotContracts_Std1_Ops_Impl2_Postcondition
   type args
   type f
-  use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
     type args = args
@@ -159,6 +157,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -207,6 +206,7 @@ end
 module CreusotContracts_Std1_Ops_Impl2_FnMut
   type args
   type f
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
@@ -294,6 +294,7 @@ end
 module CreusotContracts_Std1_Ops_Impl2_FnOnce
   type args
   type f
+  use prelude.Int
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
     type args = args
@@ -490,6 +491,7 @@ end
 module CreusotContracts_Std1_Ops_Impl1_FnMutOnce
   type args
   type f
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,

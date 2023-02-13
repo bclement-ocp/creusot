@@ -43,6 +43,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -82,8 +83,8 @@ end
 module C05Take_Impl0_Completed
   type i
   use prelude.Borrow
-  use prelude.UIntSize
   use prelude.Int
+  use prelude.UIntSize
   clone C05Take_Common_Iterator_Completed_Stub as Completed0 with
     type self = i
   use C05Take_Take_Type as C05Take_Take_Type
@@ -235,8 +236,8 @@ end
 module C05Take_Impl0_Produces
   type i
   use seq.Seq
-  use prelude.UIntSize
   use prelude.Int
+  use prelude.UIntSize
   clone C05Take_Common_Iterator_Item_Type as Item0 with
     type self = i
   clone C05Take_Common_Iterator_Produces_Stub as Produces0 with
@@ -387,9 +388,9 @@ end
 module C05Take_Impl0_ProducesTrans
   type i
   use seq.Seq
+  use C05Take_Take_Type as C05Take_Take_Type
   clone C05Take_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C05Take_Take_Type as C05Take_Take_Type
   clone C05Take_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -483,9 +484,9 @@ module C05Take_Impl0_Next_Interface
   type i
   use prelude.Borrow
   use seq.Seq
-  use C05Take_Take_Type as C05Take_Take_Type
   clone C05Take_Common_Iterator_Item_Type as Item0 with
     type self = i
+  use C05Take_Take_Type as C05Take_Take_Type
   clone C05Take_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -537,9 +538,9 @@ module C05Take_Impl0_Next
   clone C05Take_Common_Iterator_Next_Interface as Next0 with
     type self = i,
     predicate Invariant0.invariant' = Invariant1.invariant',
-    type Item0.item = Item0.item,
     predicate Completed0.completed = Completed1.completed,
-    predicate Produces0.produces = Produces1.produces
+    predicate Produces0.produces = Produces1.produces,
+    type Item0.item = Item0.item
   clone C05Take_Impl0_Produces as Produces0 with
     type i = i,
     type Item0.item = Item0.item,
@@ -614,8 +615,6 @@ module C05Take_Impl0
     type t = C05Take_Take_Type.t_take i
   clone C05Take_Common_Iterator_Invariant_Interface as Invariant1 with
     type self = i
-  clone C05Take_Common_Iterator_Item_Type as Item1 with
-    type self = C05Take_Take_Type.t_take i
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone C05Take_Impl0_Produces as Produces0 with
     type i = i,

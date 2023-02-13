@@ -1,10 +1,11 @@
+use indexmap::IndexSet;
 use rustc_ast::Mutability;
 use rustc_hir::{def::DefKind, def_id::DefId};
 use rustc_middle::{
     mir::{tcx::PlaceTy, Place, PlaceElem},
     ty::{
-        List, ParamEnv, SubstsRef, Ty, TyCtxt, TyKind, TypeSuperVisitable, TypeVisitable,
-        TypeVisitor, DefIdTree,
+        DefIdTree, GenericArgKind, InternalSubsts, List, ParamEnv, SubstsRef, Ty, TyCtxt, TyKind,
+        TypeSuperVisitable, TypeVisitable, TypeVisitor,
     },
 };
 use rustc_span::Symbol;
@@ -14,10 +15,10 @@ use crate::{
     ctx::TranslationCtx,
     translation::{
         fmir::{Block, Body, Branches, Expr, RValue, Statement, Terminator},
-        pearlite::{super_visit_term, Term, TermKind, TermVisitor},
+        pearlite::{super_visit_term, Pattern, Term, TermKind, TermVisitor},
         traits::{self, TraitImpl},
     },
-    util::{PreSignature, self},
+    util::{self, ItemType, PreSignature},
 };
 
 /// Dependencies between items and the resolution logic to find the 'monomorphic' forms accounting
@@ -53,6 +54,13 @@ impl<'tcx> Dependency<'tcx> {
                 TyKind::Alias(AliasKind::Projection, aty) => Some((aty.def_id, aty.substs)),
                 _ => None,
             },
+        }
+    }
+
+    pub(crate) fn as_ty(self) -> Option<Ty<'tcx>> {
+        match self {
+            Dependency::Type(t) => Some(t),
+            Dependency::Item(_) => None,
         }
     }
 }
@@ -115,21 +123,75 @@ fn closure_hack<'tcx>(
     (def_id, subst)
 }
 
-pub(crate) fn get_deps<'tcx>(tcx: TyCtxt<'tcx>, id: DefId) -> impl Iterator<Item = Dependency<'tcx>> {
-    match util::item_type(tcx, id) {
-        util::ItemType::Logic => todo!(),
-        util::ItemType::Predicate => todo!(),
-        util::ItemType::Program => todo!(),
-        util::ItemType::Closure => todo!(),
-        util::ItemType::Trait => todo!(),
-        util::ItemType::Impl => todo!(),
-        util::ItemType::Type => todo!(),
-        util::ItemType::AssocTy => todo!(),
-        util::ItemType::Constant => todo!(),
-        util::ItemType::Unsupported(_) => todo!(),
-    }
+#[derive(Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy, Debug)]
+pub(crate) enum DepLevel {
+    Body,
+    Signature,
 }
 
+pub(crate) fn get_deps<'tcx>(
+    ctx: &mut TranslationCtx<'tcx>,
+    def_id: DefId,
+) -> impl Iterator<Item = (DepLevel, Dependency<'tcx>)> {
+    let mut deps = IndexSet::new();
+    match util::item_type(ctx.tcx, def_id) {
+        ItemType::Type if !util::is_trusted(ctx.tcx, def_id) => {
+            let substs = InternalSubsts::identity_for_item(ctx.tcx, def_id);
+            let tys = ctx
+                .adt_def(def_id)
+                .all_fields()
+                .map(|f| f.ty(ctx.tcx, substs))
+                .flat_map(|fld| fld.walk());
+
+            for arg in tys {
+                match arg.unpack() {
+                    GenericArgKind::Type(ty) => {
+                        ty.deps(ctx.tcx, &mut |dep| {
+                            deps.insert((DepLevel::Body, dep));
+                        });
+                    }
+                    GenericArgKind::Lifetime(_) => {}
+                    // TODO: slightly wrong if there are const args
+                    GenericArgKind::Const(_) => {} // a => panic!("{a:?}"),
+                }
+            }
+        }
+        ItemType::Type => {}
+        ItemType::Logic | ItemType::Predicate => deps.extend(term_dependencies(ctx, def_id)),
+        ItemType::Program => todo!(),
+        ItemType::Closure => todo!(),
+        ItemType::Trait => todo!(),
+        ItemType::Impl => todo!(),
+        ItemType::Type => todo!(),
+        ItemType::AssocTy => todo!(),
+        ItemType::Constant => todo!(),
+        ItemType::Unsupported(_) => todo!(),
+    }
+
+    deps.into_iter()
+}
+
+fn term_dependencies<'tcx>(
+    ctx: &mut TranslationCtx<'tcx>,
+    def_id: DefId,
+) -> Vec<(DepLevel, Dependency<'tcx>)> {
+    let mut deps = IndexSet::new();
+
+    let tcx = ctx.tcx;
+    let sig = ctx.sig(def_id);
+    sig.deps(tcx, &mut |dep| {
+        deps.insert((DepLevel::Signature, dep));
+    });
+
+    let tcx = ctx.tcx;
+    if let Some(term) = ctx.term(def_id) {
+        term.deps(tcx, &mut |dep| {
+            deps.insert((DepLevel::Body, dep));
+        });
+    }
+
+    deps.into_iter().collect()
+}
 
 struct TermDep<'tcx, F> {
     f: F,
@@ -183,7 +245,7 @@ impl<'tcx> VisitDeps<'tcx> for Expr<'tcx> {
                 r.deps(tcx, f)
             }
             Expr::UnaryOp(_, e) => e.deps(tcx, f),
-            Expr::Constructor(id, sub, args) => {
+            Expr::Constructor(id, sub, _, args) => {
                 // NOTE: we actually insert a dependency on the type and not hte constructor itself
                 // in the interest of coherence we may want ot change that.. idk
 
@@ -298,6 +360,22 @@ impl<'tcx> VisitDeps<'tcx> for Place<'tcx> {
     }
 }
 
+impl<'tcx> VisitDeps<'tcx> for Pattern<'tcx> {
+    fn deps<F: FnMut(Dependency<'tcx>)>(&self, tcx: TyCtxt<'tcx>, f: &mut F) {
+        match self {
+            Pattern::Constructor { adt, substs, variant, fields } => {
+                // FIXME: Make this `Dependency::Type`
+                (f)(Dependency::Item((*adt, substs)));
+                fields.iter().for_each(|fld| fld.deps(tcx, f))
+            }
+            Pattern::Tuple(flds) => flds.iter().for_each(|fld| fld.deps(tcx, f)),
+            Pattern::Wildcard => {}
+            Pattern::Binder(_) => {}
+            Pattern::Boolean(_) => {}
+        }
+    }
+}
+
 impl<'tcx, F: FnMut(Dependency<'tcx>)> TermVisitor<'tcx> for TermDep<'tcx, F> {
     fn visit_term(&mut self, term: &Term<'tcx>) {
         match &term.kind {
@@ -312,21 +390,31 @@ impl<'tcx, F: FnMut(Dependency<'tcx>)> TermVisitor<'tcx> for TermDep<'tcx, F> {
             }
             TermKind::Constructor { adt: _, variant: _, fields: _ } => {
                 if let TyKind::Adt(def, subst) = term.ty.kind() {
-                    (self.f)(Dependency::Item((def.did(), subst)))
+                    (self.f)(Dependency::Type(term.ty))
                 } else {
                     unreachable!()
                 }
             }
+            TermKind::Fin { term } => {
+                (self.f)(Dependency::Type(term.ty));
+            }
             TermKind::Projection { name, lhs } => match lhs.ty.kind() {
-                TyKind::Closure(def, substs) => (self.f)(Dependency::Item((*def, substs))),
+                // TyKind::Closure(def, substs) => (self.f)(Dependency::Item((*def, substs))),
                 TyKind::Adt(def, substs) => {
-                    let field = &def.variants()[0u32.into()].fields[name.as_usize()];
-                    (self.f)(Dependency::Item((field.did, substs)))
+                    // let field = &def.variants()[0u32.into()].fields[name.as_usize()];
+                    // (self.f)(Dependency::Item((field.did, substs)))
+                    (self.f)(Dependency::Type(lhs.ty))
                 }
+                _ => {}
                 _ => unreachable!("{:?}", lhs.ty),
             },
             TermKind::Lit(_) => {
                 self.visit_ty(term.ty);
+            }
+            TermKind::Match { arms, .. } => {
+                arms.iter().for_each(|(pat, _)| {
+                    pat.deps(self.tcx, &mut self.f);
+                });
             }
             _ => {}
         };
@@ -337,12 +425,14 @@ impl<'tcx, F: FnMut(Dependency<'tcx>)> TermVisitor<'tcx> for TermDep<'tcx, F> {
 impl<'tcx, F: FnMut(Dependency<'tcx>)> TypeVisitor<'tcx> for TermDep<'tcx, F> {
     fn visit_ty(&mut self, t: Ty<'tcx>) -> std::ops::ControlFlow<Self::BreakTy> {
         match t.kind() {
-            TyKind::Adt(def, sub) => {
+            TyKind::Adt(_, sub) => {
                 sub.visit_with(self);
-                (self.f)(Dependency::Item((def.did(), *sub)))
+                (self.f)(Dependency::Type(t))
             }
             TyKind::Closure(def, sub) => {
-                (self.f)(Dependency::Item((*def, sub)));
+                if !util::is_logic(self.tcx, *def) {
+                    (self.f)(Dependency::Type(t));
+                }
             }
             TyKind::Alias(_, pty) => (self.f)(Dependency::Item((pty.def_id, pty.substs))),
             TyKind::Int(_) | TyKind::Uint(_) => (self.f)(Dependency::Type(t)),
@@ -350,6 +440,8 @@ impl<'tcx, F: FnMut(Dependency<'tcx>)> TypeVisitor<'tcx> for TermDep<'tcx, F> {
             TyKind::RawPtr(_) => (self.f)(Dependency::Type(t)),
             TyKind::Bool => (self.f)(Dependency::Type(t)),
             TyKind::Char => (self.f)(Dependency::Type(t)),
+            TyKind::Slice(_) => (self.f)(Dependency::Type(t)),
+            TyKind::Array(_, _) => (self.f)(Dependency::Type(t)),
             _ => {}
         };
         t.super_visit_with(self)

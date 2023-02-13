@@ -79,7 +79,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -110,9 +109,8 @@ module C08Haystack_MatchAt_Interface
     
 end
 module C08Haystack_MatchAt
-  use prelude.Borrow
-  use prelude.Int
   use prelude.UInt8
+  use prelude.Int
   use seq.Seq
   use seq.Seq
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
@@ -245,6 +243,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -289,18 +288,18 @@ module CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Interface
 end
 module CreusotContracts_Std1_Ops_Impl5_IsEmptyLog
   type idx
-  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
-    type self = idx
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
-  clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
-    type self = DeepModelTy0.deepModelTy
   clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
     type idx = idx
+  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
+    type idx = idx
+  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
+    type self = idx
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = idx,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
-  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
-    type idx = idx
+  clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
+    type self = DeepModelTy0.deepModelTy
   predicate is_empty_log (self : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx)
   val is_empty_log (self : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx) : bool
     ensures { result = is_empty_log self }
@@ -312,22 +311,22 @@ module Core_Ops_Range_Impl7_New_Interface
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = idx
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
-  clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
-    type self = DeepModelTy0.deepModelTy
   clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
+    type idx = idx
+  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
     type idx = idx
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = idx,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
-  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
-    type idx = idx
+  clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
+    type self = DeepModelTy0.deepModelTy
   clone CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Stub as IsEmptyLog0 with
     type idx = idx,
-    function StartLog0.start_log = StartLog0.start_log,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy,
+    predicate LeLog0.le_log = LeLog0.le_log,
+    function DeepModel0.deep_model = DeepModel0.deep_model,
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log,
     axiom .
   val new (start : idx) (end' : idx) : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx
     ensures { StartLog0.start_log result = start }
@@ -425,17 +424,6 @@ module CreusotContracts_Std1_Ops_Impl4_Invariant
     ensures { result = invariant' self }
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
-end
 module CreusotContracts_Std1_Iter_Iterator_Completed_Stub
   type self
   use prelude.Borrow
@@ -482,6 +470,17 @@ module CreusotContracts_Std1_Iter_Iterator_Produces
     ensures { result = produces self visited _3' }
     
 end
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
+end
 module Core_Iter_Range_Impl12_Next_Interface
   type a
   use prelude.Borrow
@@ -492,8 +491,6 @@ module Core_Iter_Range_Impl12_Next_Interface
     type self = Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive a,
     type Item0.item = a
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
-    type self = Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive a
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive a
   clone CreusotContracts_Std1_Ops_Impl4_Invariant_Stub as Invariant0 with
     type idx = a
@@ -548,8 +545,6 @@ module Core_Iter_Range_Impl3_Next_Interface
     type self = Core_Ops_Range_Range_Type.t_range a,
     type Item0.item = a
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
-    type self = Core_Ops_Range_Range_Type.t_range a
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = Core_Ops_Range_Range_Type.t_range a
   clone CreusotContracts_Std1_Ops_Impl3_Invariant_Stub as Invariant0 with
     type idx = a
@@ -664,7 +659,6 @@ module CreusotContracts_Logic_Ord_Impl2_LeLog_Interface
 end
 module CreusotContracts_Logic_Ord_Impl2_LeLog
   use prelude.Int
-  use int.Int
   predicate le_log (self : int) (_2' : int) =
     Int.(<=) self _2'
   val le_log (self : int) (_2' : int) : bool
@@ -674,46 +668,46 @@ end
 module CreusotContracts_Std1_Iter_Range_RangeInclusiveLen_Stub
   type idx
   use prelude.Int
-  use prelude.Int
-  clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
     type idx = idx
+  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
+    type idx = idx
+  use prelude.Int
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = idx,
     type DeepModelTy0.deepModelTy = int
-  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
-    type idx = idx
+  clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
   clone CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Stub as IsEmptyLog0 with
     type idx = idx,
-    function StartLog0.start_log = StartLog0.start_log,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log,
     type DeepModelTy0.deepModelTy = int,
+    predicate LeLog0.le_log = LeLog0.le_log,
+    function DeepModel0.deep_model = DeepModel0.deep_model,
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log,
     axiom .
   function range_inclusive_len (r : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx) : int
 end
 module CreusotContracts_Std1_Iter_Range_RangeInclusiveLen_Interface
   type idx
   use prelude.Int
-  use prelude.Int
-  clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
     type idx = idx
+  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
+    type idx = idx
+  use prelude.Int
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = idx,
     type DeepModelTy0.deepModelTy = int
-  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
-    type idx = idx
+  clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
   clone CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Stub as IsEmptyLog0 with
     type idx = idx,
-    function StartLog0.start_log = StartLog0.start_log,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log,
     type DeepModelTy0.deepModelTy = int,
+    predicate LeLog0.le_log = LeLog0.le_log,
+    function DeepModel0.deep_model = DeepModel0.deep_model,
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log,
     axiom .
   function range_inclusive_len (r : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx) : int
   axiom range_inclusive_len_spec : forall r : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx . IsEmptyLog0.is_empty_log r = (range_inclusive_len r = 0)
@@ -721,23 +715,23 @@ end
 module CreusotContracts_Std1_Iter_Range_RangeInclusiveLen
   type idx
   use prelude.Int
-  use prelude.Int
   clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
+  use prelude.Int
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
+    type idx = idx
+  clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
     type idx = idx
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = idx,
     type DeepModelTy0.deepModelTy = int
-  clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
-    type idx = idx
   clone CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Stub as IsEmptyLog0 with
     type idx = idx,
-    function StartLog0.start_log = StartLog0.start_log,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log,
     type DeepModelTy0.deepModelTy = int,
+    predicate LeLog0.le_log = LeLog0.le_log,
+    function DeepModel0.deep_model = DeepModel0.deep_model,
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log,
     axiom .
   function range_inclusive_len (r : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx) : int =
     if IsEmptyLog0.is_empty_log r then
@@ -768,8 +762,8 @@ module CreusotContracts_Std1_Iter_Range_Impl1_Produces
   type idx
   use seq.Seq
   use prelude.Int
-  use prelude.Int
   clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
+  use prelude.Int
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
     type idx = idx
@@ -780,17 +774,17 @@ module CreusotContracts_Std1_Iter_Range_Impl1_Produces
     type idx = idx
   clone CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Stub as IsEmptyLog0 with
     type idx = idx,
-    function StartLog0.start_log = StartLog0.start_log,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log,
     type DeepModelTy0.deepModelTy = int,
+    predicate LeLog0.le_log = LeLog0.le_log,
+    function DeepModel0.deep_model = DeepModel0.deep_model,
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log,
     axiom .
   clone CreusotContracts_Std1_Iter_Range_RangeInclusiveLen_Stub as RangeInclusiveLen0 with
     type idx = idx,
     predicate IsEmptyLog0.is_empty_log = IsEmptyLog0.is_empty_log,
-    function EndLog0.end_log = EndLog0.end_log,
     function DeepModel0.deep_model = DeepModel0.deep_model,
+    function EndLog0.end_log = EndLog0.end_log,
     function StartLog0.start_log = StartLog0.start_log,
     predicate LeLog0.le_log = LeLog0.le_log,
     axiom .
@@ -815,6 +809,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -887,9 +882,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -909,8 +904,8 @@ module CreusotContracts_Logic_Int_Impl18_DeepModel_Interface
   function deep_model (self : usize) : int
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function deep_model (self : usize) : int =
     UIntSize.to_int self
   val deep_model (self : usize) : int
@@ -945,6 +940,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i) =
     self = res
   val into_iter_post (self : i) (res : i) : bool
@@ -1049,23 +1045,23 @@ module CreusotContracts_Std1_Iter_Range_Impl1_Completed
   type idx
   use prelude.Borrow
   use prelude.Int
-  use prelude.Int
-  clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
     type idx = idx
+  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
+    type idx = idx
+  use prelude.Int
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = idx,
     type DeepModelTy0.deepModelTy = int
-  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
-    type idx = idx
+  clone CreusotContracts_Logic_Ord_Impl2_LeLog_Stub as LeLog0
   clone CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Stub as IsEmptyLog0 with
     type idx = idx,
-    function StartLog0.start_log = StartLog0.start_log,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log,
     type DeepModelTy0.deepModelTy = int,
+    predicate LeLog0.le_log = LeLog0.le_log,
+    function DeepModel0.deep_model = DeepModel0.deep_model,
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log,
     axiom .
   predicate completed (self : borrowed (Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx)) =
     IsEmptyLog0.is_empty_log ( * self) /\ IsEmptyLog0.is_empty_log ( ^ self)
@@ -1200,9 +1196,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) =
     UIntSize.to_int self < Seq.length seq
   val in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t) : bool
@@ -1225,9 +1221,9 @@ module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) =
     Seq.get seq (UIntSize.to_int self) = out
   val has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t) : bool
@@ -1296,32 +1292,32 @@ module C08Haystack_Search
   clone CreusotContracts_Std1_Iter_Impl0_IntoIterPre as IntoIterPre1 with
     type i = Core_Ops_Range_Range_Type.t_range usize,
     predicate Invariant0.invariant' = Invariant1.invariant'
-  clone CreusotContracts_Logic_Ord_Impl2_LeLog as LeLog0
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   clone CreusotContracts_Std1_Ops_Impl5_EndLog as EndLog0 with
     type idx = usize
   clone CreusotContracts_Std1_Ops_Impl5_StartLog as StartLog0 with
     type idx = usize
+  clone CreusotContracts_Logic_Ord_Impl2_LeLog as LeLog0
   clone CreusotContracts_Std1_Ops_Impl5_IsEmptyLog as IsEmptyLog0 with
     type idx = usize,
-    function StartLog0.start_log = StartLog0.start_log,
-    function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log,
     type DeepModelTy0.deepModelTy = int,
+    predicate LeLog0.le_log = LeLog0.le_log,
+    function DeepModel0.deep_model = DeepModel0.deep_model,
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log,
     axiom .
   clone CreusotContracts_Std1_Iter_Range_Impl1_Completed as Completed0 with
     type idx = usize,
     predicate IsEmptyLog0.is_empty_log = IsEmptyLog0.is_empty_log,
-    function StartLog0.start_log = StartLog0.start_log,
+    predicate LeLog0.le_log = LeLog0.le_log,
     function DeepModel0.deep_model = DeepModel0.deep_model,
-    function EndLog0.end_log = EndLog0.end_log,
-    predicate LeLog0.le_log = LeLog0.le_log
+    function StartLog0.start_log = StartLog0.start_log,
+    function EndLog0.end_log = EndLog0.end_log
   clone CreusotContracts_Std1_Iter_Range_RangeInclusiveLen as RangeInclusiveLen0 with
     type idx = usize,
     predicate IsEmptyLog0.is_empty_log = IsEmptyLog0.is_empty_log,
-    function EndLog0.end_log = EndLog0.end_log,
     function DeepModel0.deep_model = DeepModel0.deep_model,
+    function EndLog0.end_log = EndLog0.end_log,
     function StartLog0.start_log = StartLog0.start_log,
     predicate LeLog0.le_log = LeLog0.le_log,
     axiom .
@@ -1374,7 +1370,6 @@ module C08Haystack_Search
   clone Core_Iter_Range_Impl3_Next_Interface as Next1 with
     type a = usize,
     predicate Invariant0.invariant' = Invariant1.invariant',
-    type Item0.item = usize,
     predicate Completed0.completed = Completed1.completed,
     predicate Produces0.produces = Produces1.produces
   clone Core_Iter_Traits_Collect_Impl0_IntoIter_Interface as IntoIter1 with
@@ -1387,7 +1382,6 @@ module C08Haystack_Search
   clone Core_Iter_Range_Impl12_Next_Interface as Next0 with
     type a = usize,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = usize,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone Core_Iter_Traits_Collect_Impl0_IntoIter_Interface as IntoIter0 with

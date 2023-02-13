@@ -180,6 +180,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -242,8 +243,8 @@ module CreusotContracts_Std1_Default_Impl11_IsDefault_Interface
   predicate is_default (self : int32)
 end
 module CreusotContracts_Std1_Default_Impl11_IsDefault
-  use prelude.Int
   use prelude.Int32
+  use prelude.Int
   predicate is_default (self : int32) =
     self = (0 : int32)
   val is_default (self : int32) : bool

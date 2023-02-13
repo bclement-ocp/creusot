@@ -10,7 +10,6 @@ module C594_TestLogic_Interface
   function test_logic [#"../594.rs" 5 0 5 44] (_1' : (uint32, uint32)) : uint32
 end
 module C594_TestLogic
-  use prelude.Int
   use prelude.UInt32
   function test_logic [#"../594.rs" 5 0 5 44] (_1' : (uint32, uint32)) : uint32 =
     [#"../594.rs" 6 4 6 5] let (x, _) = _1' in x
@@ -46,6 +45,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve
   type t1
   type t2
+  use prelude.Int
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve1 with
     type self = t2
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with

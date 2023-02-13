@@ -13,6 +13,7 @@ module CreusotContracts_Logic_Seq_Impl0_Tail
   type t
   use seq.Seq
   use seq_ext.SeqExt
+  use prelude.Int
   function tail (self : Seq.seq t) : Seq.seq t =
     SeqExt.subsequence self 1 (Seq.length self)
   val tail (self : Seq.seq t) : Seq.seq t
@@ -30,8 +31,8 @@ module C217_Ex_Interface
   function ex [#"../217.rs" 10 0 10 37] (c : Seq.seq int) (a : int) : int
 end
 module C217_Ex
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use prelude.Int
   clone CreusotContracts_Logic_Seq_Impl0_Tail_Stub as Tail0 with
     type t = int

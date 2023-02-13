@@ -1,5 +1,4 @@
 #![allow(deprecated)]
-
 use heck::ToUpperCamelCase;
 use indexmap::{IndexMap, IndexSet};
 use petgraph::{graphmap::DiGraphMap, visit::DfsPostOrder, EdgeDirection::Outgoing};
@@ -12,13 +11,15 @@ use rustc_middle::ty::{
 };
 use rustc_resolve::Namespace;
 use rustc_span::{Symbol, DUMMY_SP};
+use rustc_target::abi::VariantIdx;
+use rustc_type_ir::{FloatTy, IntTy, UintTy};
 use why3::{
     declaration::{CloneKind, CloneSubst, Decl, DeclClone, Use},
     Ident, QName,
 };
 
 use crate::{
-    backend::dependency::Dependency,
+    backend::dependency::{get_deps, DepLevel, Dependency},
     ctx::{self, *},
     translation::interface,
     util::{self, get_builtin, ident_of, ident_of_ty, item_name, module_name},
@@ -116,19 +117,6 @@ pub struct CloneMap<'tcx> {
     used_types: IndexSet<DefId>,
 }
 
-impl<'tcx> Drop for CloneMap<'tcx> {
-    fn drop(&mut self) {
-        if self.last_cloned != self.names.len() {
-            debug!(
-                "Dropping clone map with un-emitted clones. {:?} clones emitted of {:?} total {:?}",
-                self.last_cloned,
-                self.names.len(),
-                self.self_id,
-            );
-        }
-    }
-}
-
 type DepNode<'tcx> = Dependency<'tcx>;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, TyEncodable, TyDecodable, Hash)]
@@ -198,16 +186,237 @@ impl<'tcx> CloneInfo {
     }
 }
 
-impl<'tcx> CloneMap<'tcx> {
-    pub(crate) fn from_static_deps(ctx: &TranslationCtx<'tcx>, self_id: DefId, clone_level: CloneLevel) -> (Vec<Decl>, CloneSummary<'tcx> ) {
-        let mut names = Self::new(ctx.tcx, self_id, clone_level);
+pub(crate) struct CloneRead<'tcx> {
+    tcx: TyCtxt<'tcx>,
+    names: IndexMap<CloneNode<'tcx>, CloneInfo>,
+}
 
-        get_deps(ctx.tcx, self_id).for_each(|dep| {
+pub(crate) trait Cloner<'tcx> {
+    // Deprecated
+    fn import_builtin_module(&mut self, _: QName);
 
-        });
+    // Deprecated
+    fn import_prelude_module(&mut self, _: PreludeModule);
 
+    fn accessor(
+        &mut self,
+        def_id: DefId,
+        subst: SubstsRef<'tcx>,
+        variant: usize,
+        ix: usize,
+    ) -> QName;
+
+    fn value(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName;
+
+    fn ty(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName;
+
+    fn constructor(&mut self, def_id: DefId, subst: SubstsRef<'tcx>, ix: VariantIdx) -> QName;
+
+    fn with_public_clones<F, A>(&mut self, f: F) -> A
+    where
+        F: FnOnce(&mut Self) -> A;
+}
+
+impl<'tcx> Cloner<'tcx> for CloneRead<'tcx> {
+    fn accessor(
+        &mut self,
+        def_id: DefId,
+        subst: SubstsRef<'tcx>,
+        variant: usize,
+        ix: usize,
+    ) -> QName {
+        let tcx = self.tcx;
+        let clone = self.get(def_id, subst);
+        let name: Ident = match util::item_type(tcx, def_id) {
+            ItemType::Closure => format!("field_{}", ix).into(),
+            ItemType::Type => {
+                let variant_def = &tcx.adt_def(def_id).variants()[variant.into()];
+                let variant = variant_def;
+                format!(
+                    "{}_{}",
+                    variant.name.as_str().to_ascii_lowercase(),
+                    variant.fields[ix].name
+                )
+                .into()
+            }
+            _ => panic!("accessor: invalid item kind"),
+        };
+
+        clone.qname_ident(name.into())
     }
 
+    fn value(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
+        let name = item_name(self.tcx, def_id, Namespace::ValueNS);
+        self.get(def_id, subst).qname_ident(name.into())
+    }
+
+    fn ty(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
+        let name = item_name(self.tcx, def_id, Namespace::TypeNS);
+        self.get(def_id, subst).qname_ident(name.into())
+    }
+
+    fn constructor(&mut self, def_id: DefId, subst: SubstsRef<'tcx>, variant: VariantIdx) -> QName {
+        let type_id = match self.tcx.def_kind(def_id) {
+            DefKind::Closure | DefKind::Struct | DefKind::Enum | DefKind::Union => def_id,
+            DefKind::Variant => self.tcx.parent(def_id),
+            _ => unreachable!("Not a type or constructor"),
+        };
+
+        let var_id = match self.tcx.def_kind(type_id) {
+            DefKind::Closure => type_id,
+            _ => self.tcx.adt_def(type_id).variants()[variant].def_id,
+        };
+
+        let mut name = item_name(self.tcx, var_id, Namespace::ValueNS);
+        name.capitalize();
+        self.get(type_id, subst).qname_ident(name.into())
+    }
+
+    fn import_prelude_module(&mut self, _: PreludeModule) {
+        ()
+    }
+
+    fn import_builtin_module(&mut self, _: QName) {
+        ()
+    }
+
+    fn with_public_clones<F, A>(&mut self, f: F) -> A
+    where
+        F: FnOnce(&mut Self) -> A,
+    {
+        f(self)
+    }
+}
+
+impl<'tcx> CloneRead<'tcx> {
+    fn get(&self, def_id: DefId, substs: SubstsRef<'tcx>) -> &CloneInfo {
+        self.names
+            .get(&(def_id, substs))
+            .unwrap_or_else(|| panic!("could not find {:?} in {:?}", (def_id, substs), self.names))
+    }
+}
+
+impl<'tcx> Cloner<'tcx> for CloneMap<'tcx> {
+    /// Creates a name for a type or closure projection ie: x.field1
+    /// This also includes projections from `enum` types
+    ///
+    /// * `def_id` - The id of the type or closure being projected
+    /// * `subst` - Substitution that type is being accessed at
+    /// * `variant` - The constructor being used. For closures this is always 0
+    /// * `ix` - The field in that constructor being accessed.
+    fn accessor(
+        &mut self,
+        def_id: DefId,
+        subst: SubstsRef<'tcx>,
+        variant: usize,
+        ix: usize,
+    ) -> QName {
+        let tcx = self.tcx;
+        let clone = self.insert(def_id, subst);
+        let name: Ident = match util::item_type(tcx, def_id) {
+            ItemType::Closure => format!("field_{}", ix).into(),
+            ItemType::Type => {
+                let variant_def = &tcx.adt_def(def_id).variants()[variant.into()];
+                let variant = variant_def;
+                format!(
+                    "{}_{}",
+                    variant.name.as_str().to_ascii_lowercase(),
+                    variant.fields[ix].name
+                )
+                .into()
+            }
+            _ => panic!("accessor: invalid item kind"),
+        };
+
+        clone.qname_ident(name.into())
+    }
+    fn value(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
+        let name = item_name(self.tcx, def_id, Namespace::ValueNS);
+        self.insert(def_id, subst).qname_ident(name.into())
+    }
+
+    fn ty(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
+        let name = item_name(self.tcx, def_id, Namespace::TypeNS);
+        self.insert(def_id, subst).qname_ident(name.into())
+    }
+
+    fn constructor(&mut self, def_id: DefId, subst: SubstsRef<'tcx>, variant: VariantIdx) -> QName {
+        let type_id = match self.tcx.def_kind(def_id) {
+            DefKind::Closure | DefKind::Struct | DefKind::Enum | DefKind::Union => def_id,
+            DefKind::Variant => self.tcx.parent(def_id),
+            _ => unreachable!("Not a type or constructor"),
+        };
+
+        let var_id = match self.tcx.def_kind(type_id) {
+            DefKind::Closure => type_id,
+            _ => self.tcx.adt_def(type_id).variants()[variant].def_id,
+        };
+
+        let mut name = item_name(self.tcx, var_id, Namespace::ValueNS);
+        name.capitalize();
+        self.insert(type_id, subst).qname_ident(name.into())
+    }
+
+    fn import_prelude_module(&mut self, module: PreludeModule) {
+        self.prelude.entry(module.qname()).or_insert(false);
+    }
+
+    fn import_builtin_module(&mut self, module: QName) {
+        self.prelude.entry(module).or_insert(false);
+    }
+
+    fn with_public_clones<F, A>(&mut self, f: F) -> A
+    where
+        F: FnOnce(&mut Self) -> A,
+    {
+        let public = std::mem::replace(&mut self.public, true);
+        let ret = f(self);
+        self.public = public;
+        ret
+    }
+}
+
+impl<'tcx> CloneMap<'tcx> {
+    pub(crate) fn from_static_deps(
+        ctx: &mut TranslationCtx<'tcx>,
+        self_id: DefId,
+        clone_level: CloneLevel,
+    ) -> (Vec<Decl>, CloneRead<'tcx>, CloneSummary<'tcx>) {
+        let mut names = Self::new(ctx.tcx, self_id, clone_level);
+
+        get_deps(ctx, self_id).for_each(|dep| {
+            let builtin = dep
+                .1
+                .cloneable_id()
+                .and_then(|(id, _)| get_builtin(ctx.tcx, id))
+                .map(|sym| QName::from_string(&sym.as_str()).unwrap().module_qname())
+                .or_else(|| dep.1.as_ty().and_then(base_ty_name));
+
+            if let Some(builtin) = builtin {
+                match dep.0 {
+                    DepLevel::Body => {
+                        names.import_builtin_module(builtin);
+                    }
+                    DepLevel::Signature => names.with_public_clones(|names| {
+                        names.import_builtin_module(builtin);
+                    }),
+                }
+            } else if let Some((id, subst)) = dep.1.cloneable_id() {
+                match dep.0 {
+                    DepLevel::Body => {
+                        names.insert(id, subst);
+                    }
+                    DepLevel::Signature => names.with_public_clones(|names| {
+                        names.insert(id, subst);
+                    }),
+                };
+            };
+        });
+
+        let (clones, names, summary) = names.to_clones_inner(ctx);
+
+        (clones, CloneRead { names, tcx: ctx.tcx }, summary)
+    }
 
     pub(crate) fn new(tcx: TyCtxt<'tcx>, self_id: DefId, clone_level: CloneLevel) -> Self {
         let names = IndexMap::new();
@@ -236,16 +445,6 @@ impl<'tcx> CloneMap<'tcx> {
                 _ => None,
             })
             .collect()
-    }
-
-    pub(crate) fn with_public_clones<F, A>(&mut self, f: F) -> A
-    where
-        F: FnOnce(&mut Self) -> A,
-    {
-        let public = std::mem::replace(&mut self.public, true);
-        let ret = f(self);
-        self.public = public;
-        ret
     }
 
     /// Internal: only meant for mutually recursive type declaration
@@ -287,61 +486,6 @@ impl<'tcx> CloneMap<'tcx> {
         })
     }
 
-    pub(crate) fn value(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
-        let name = item_name(self.tcx, def_id, Namespace::ValueNS);
-        self.insert(def_id, subst).qname_ident(name.into())
-    }
-
-    pub(crate) fn ty(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
-        let name = item_name(self.tcx, def_id, Namespace::TypeNS);
-        self.insert(def_id, subst).qname_ident(name.into())
-    }
-
-    pub(crate) fn constructor(&mut self, def_id: DefId, subst: SubstsRef<'tcx>) -> QName {
-        let type_id = match self.tcx.def_kind(def_id) {
-            DefKind::Closure | DefKind::Struct | DefKind::Enum | DefKind::Union => def_id,
-            DefKind::Variant => self.tcx.parent(def_id),
-            _ => unreachable!("Not a type or constructor"),
-        };
-        let mut name = item_name(self.tcx, def_id, Namespace::ValueNS);
-        name.capitalize();
-        self.insert(type_id, subst).qname_ident(name.into())
-    }
-
-    /// Creates a name for a type or closure projection ie: x.field1
-    /// This also includes projections from `enum` types
-    ///
-    /// * `def_id` - The id of the type or closure being projected
-    /// * `subst` - Substitution that type is being accessed at
-    /// * `variant` - The constructor being used. For closures this is always 0
-    /// * `ix` - The field in that constructor being accessed.
-    pub(crate) fn accessor(
-        &mut self,
-        def_id: DefId,
-        subst: SubstsRef<'tcx>,
-        variant: usize,
-        ix: usize,
-    ) -> QName {
-        let tcx = self.tcx;
-        let clone = self.insert(def_id, subst);
-        let name: Ident = match util::item_type(tcx, def_id) {
-            ItemType::Closure => format!("field_{}", ix).into(),
-            ItemType::Type => {
-                let variant_def = &tcx.adt_def(def_id).variants()[variant.into()];
-                let variant = variant_def;
-                format!(
-                    "{}_{}",
-                    variant.name.as_str().to_ascii_lowercase(),
-                    variant.fields[ix].name
-                )
-                .into()
-            }
-            _ => panic!("accessor: invalid item kind"),
-        };
-
-        clone.qname_ident(name.into())
-    }
-
     fn self_key(&self) -> (DefId, SubstsRef<'tcx>) {
         let subst = match self.tcx.def_kind(self.self_id) {
             DefKind::Closure => match self.tcx.type_of(self.self_id).kind() {
@@ -353,14 +497,6 @@ impl<'tcx> CloneMap<'tcx> {
 
         let subst = self.tcx.erase_regions(subst);
         (self.self_id, subst)
-    }
-
-    pub(crate) fn import_prelude_module(&mut self, module: PreludeModule) {
-        self.prelude.entry(module.qname()).or_insert(false);
-    }
-
-    pub(crate) fn import_builtin_module(&mut self, module: QName) {
-        self.prelude.entry(module).or_insert(false);
     }
 
     fn closure_hack(&self, def_id: DefId, subst: SubstsRef<'tcx>) -> (DefId, SubstsRef<'tcx>) {
@@ -637,9 +773,17 @@ impl<'tcx> CloneMap<'tcx> {
     }
 
     pub(crate) fn to_clones(
-        mut self,
+        self,
         ctx: &mut ctx::TranslationCtx<'tcx>,
     ) -> (Vec<Decl>, CloneSummary<'tcx>) {
+        let (clones, _n, summary) = self.to_clones_inner(ctx);
+        (clones, summary)
+    }
+
+    fn to_clones_inner(
+        mut self,
+        ctx: &mut ctx::TranslationCtx<'tcx>,
+    ) -> (Vec<Decl>, IndexMap<CloneNode<'tcx>, CloneInfo>, CloneSummary<'tcx>) {
         trace!("emitting clones for {:?}", self.self_id);
         let mut decls = Vec::new();
 
@@ -690,7 +834,8 @@ impl<'tcx> CloneMap<'tcx> {
             .map(|q| Decl::UseDecl(Use { name: q.clone(), as_: None, export: false }))
             .chain(decls.into_iter())
             .collect();
-        (clones, self.summary())
+        let summary = self.summary();
+        (clones, self.names, summary)
     }
 }
 
@@ -831,9 +976,9 @@ fn refineable_symbol<'tcx>(tcx: TyCtxt<'tcx>, def_id: DefId) -> Option<SymbolKin
             ty::ImplContainer => None,
         },
         Trait | Impl => unreachable!("trait blocks have no refinable symbols"),
-        Type => None,
+        Type | Closure => None,
         Constant => Some(SymbolKind::Const(tcx.item_name(def_id))),
-        _ => unreachable!(),
+        it => unreachable!("{it:?}"),
     }
 }
 
@@ -877,5 +1022,35 @@ impl<'tcx, F: FnMut(&AliasTy<'tcx>)> TypeVisitor<'tcx> for ProjectionTyVisitor<'
             }
             _ => t.super_visit_with(self),
         }
+    }
+}
+
+fn base_ty_name(ty: Ty) -> Option<QName> {
+    match ty.kind() {
+        TyKind::Bool => None,
+        TyKind::Char => QName::from_string("prelude.Char"),
+        TyKind::Int(IntTy::I8) => QName::from_string("prelude.Int8"),
+        TyKind::Int(IntTy::I16) => QName::from_string("prelude.Int16"),
+        TyKind::Int(IntTy::I32) => QName::from_string("prelude.Int32"),
+        TyKind::Int(IntTy::I64) => QName::from_string("prelude.Int64"),
+        TyKind::Int(IntTy::I128) => QName::from_string("prelude.Int128"),
+        TyKind::Uint(UintTy::U8) => QName::from_string("prelude.UInt8"),
+        TyKind::Uint(UintTy::U16) => QName::from_string("prelude.UInt16"),
+        TyKind::Uint(UintTy::U32) => QName::from_string("prelude.UInt32"),
+        TyKind::Uint(UintTy::U64) => QName::from_string("prelude.UInt64"),
+        TyKind::Uint(UintTy::U128) => QName::from_string("prelude.UInt128"),
+        TyKind::Int(IntTy::Isize) => QName::from_string("prelude.IntSize"),
+        TyKind::Uint(UintTy::Usize) => QName::from_string("prelude.UIntSize"),
+        TyKind::Float(FloatTy::F32) => QName::from_string("prelude.Float32"),
+        TyKind::Float(FloatTy::F64) => QName::from_string("prelude.Float64"),
+        TyKind::Str => None,
+        TyKind::Slice(_) => QName::from_string("prelude.Slice"),
+        TyKind::RawPtr(_) => QName::from_string("prelude.Opaque"),
+        TyKind::Ref(_, _, _) => QName::from_string("prelude.Borrow"),
+        TyKind::Never => None,
+        TyKind::Tuple(_) => None,
+        TyKind::Array(_, _) => QName::from_string("seq.Seq"),
+        _ => None,
+        // _ => panic!("base_ty_name: can only be called on basic types. [{ty:?}]"),
     }
 }

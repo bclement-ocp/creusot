@@ -40,7 +40,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -90,9 +89,7 @@ module CreusotContracts_Std1_Slice_Impl13_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl13_ShallowModel
   type t
-  use prelude.Borrow
   use prelude.Slice
-  use prelude.Seq
   use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
   function shallow_model (self : Core_Slice_Iter_Iter_Type.t_iter t) : seq t
   val shallow_model (self : Core_Slice_Iter_Iter_Type.t_iter t) : seq t
@@ -204,17 +201,6 @@ module Core_Iter_Traits_Collect_Impl0_IntoIter_Interface
     ensures { Invariant0.invariant' result }
     
 end
-module Core_Option_Option_Type
-  type t_option 't =
-    | C_None
-    | C_Some 't
-    
-  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
-    match (self) with
-      | C_None -> any 't
-      | C_Some a -> a
-      end
-end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
@@ -228,38 +214,11 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
     ensures { result = resolve self }
-    
-end
-module CreusotContracts_Model_Impl3_ShallowModel_Stub
-  type t
-  use prelude.Borrow
-  clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
-    type self = t
-  function shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
-end
-module CreusotContracts_Model_Impl3_ShallowModel_Interface
-  type t
-  use prelude.Borrow
-  clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
-    type self = t
-  function shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
-end
-module CreusotContracts_Model_Impl3_ShallowModel
-  type t
-  use prelude.Borrow
-  clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
-    type self = t
-  clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
-    type self = t,
-    type ShallowModelTy0.shallowModelTy = ShallowModelTy0.shallowModelTy
-  function shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy =
-    ShallowModel0.shallow_model ( * self)
-  val shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
-    ensures { result = shallow_model self }
     
 end
 module Core_Num_Impl12_Max_Stub
@@ -296,17 +255,44 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
   val shallow_model (self : seq t) : Seq.seq t
     ensures { result = shallow_model self }
     
   axiom shallow_model_spec : forall self : seq t . shallow_model self = Slice.id self && Seq.length (shallow_model self) <= UIntSize.to_int Max0.mAX'
+end
+module CreusotContracts_Model_Impl3_ShallowModel_Stub
+  type t
+  use prelude.Borrow
+  clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
+    type self = t
+  function shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
+end
+module CreusotContracts_Model_Impl3_ShallowModel_Interface
+  type t
+  use prelude.Borrow
+  clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
+    type self = t
+  function shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
+end
+module CreusotContracts_Model_Impl3_ShallowModel
+  type t
+  use prelude.Borrow
+  clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
+    type self = t
+  clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
+    type self = t,
+    type ShallowModelTy0.shallowModelTy = ShallowModelTy0.shallowModelTy
+  function shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy =
+    ShallowModel0.shallow_model ( * self)
+  val shallow_model (self : borrowed t) : ShallowModelTy0.shallowModelTy
+    ensures { result = shallow_model self }
+    
 end
 module CreusotContracts_Std1_Slice_Impl15_Completed_Stub
   type t
@@ -323,22 +309,23 @@ end
 module CreusotContracts_Std1_Slice_Impl15_Completed
   type t
   use prelude.Borrow
+  use prelude.Int
   use seq.Seq
   use prelude.Slice
   use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
-  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel1 with
+  use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
+  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
+    type t = Core_Slice_Iter_Iter_Type.t_iter t,
+    type ShallowModelTy0.shallowModelTy = seq t
+  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
-  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel0 with
-    type t = Core_Slice_Iter_Iter_Type.t_iter t,
-    type ShallowModelTy0.shallowModelTy = seq t
   clone CreusotContracts_Resolve_Impl1_Resolve_Stub as Resolve0 with
     type t = Core_Slice_Iter_Iter_Type.t_iter t
   predicate completed (self : borrowed (Core_Slice_Iter_Iter_Type.t_iter t)) =
-    Resolve0.resolve self /\ ShallowModel1.shallow_model (ShallowModel0.shallow_model self) = Seq.empty 
+    Resolve0.resolve self /\ ShallowModel0.shallow_model (ShallowModel1.shallow_model self) = Seq.empty 
   val completed (self : borrowed (Core_Slice_Iter_Iter_Type.t_iter t)) : bool
     ensures { result = completed self }
     
@@ -372,9 +359,8 @@ module CreusotContracts_Std1_Slice_Impl4_ToRefSeq_Interface
 end
 module CreusotContracts_Std1_Slice_Impl4_ToRefSeq
   type t
-  use seq.Seq
   use prelude.Int
-  use prelude.Borrow
+  use seq.Seq
   use prelude.Slice
   use prelude.Seq
   use seq.Seq
@@ -406,20 +392,20 @@ end
 module CreusotContracts_Std1_Slice_Impl15_Produces
   type t
   use seq.Seq
-  use prelude.Borrow
+  use prelude.Int
   use prelude.Slice
   use prelude.Seq
   use seq.Seq
   clone CreusotContracts_Model_Impl1_ShallowModel_Stub as ShallowModel1 with
     type t = seq t,
     type ShallowModelTy0.shallowModelTy = Seq.seq t
+  use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
+  clone CreusotContracts_Std1_Slice_Impl13_ShallowModel_Stub as ShallowModel0 with
+    type t = t
   clone CreusotContracts_Std1_Slice_Impl4_ToRefSeq_Stub as ToRefSeq0 with
     type t = t,
     function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
     axiom .
-  use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
-  clone CreusotContracts_Std1_Slice_Impl13_ShallowModel_Stub as ShallowModel0 with
-    type t = t
   predicate produces (self : Core_Slice_Iter_Iter_Type.t_iter t) (visited : Seq.seq t) (tl : Core_Slice_Iter_Iter_Type.t_iter t)
     
    =
@@ -428,9 +414,16 @@ module CreusotContracts_Std1_Slice_Impl15_Produces
     ensures { result = produces self visited tl }
     
 end
-module Core_Iter_Traits_Iterator_Iterator_Item_Type
-  type self
-  type item
+module Core_Option_Option_Type
+  type t_option 't =
+    | C_None
+    | C_Some 't
+    
+  let function some_0 (self : t_option 't) : 't = [@vc:do_not_keep_trace] [@vc:sp]
+    match (self) with
+      | C_None -> any 't
+      | C_Some a -> a
+      end
 end
 module Core_Slice_Iter_Impl181_Next_Interface
   type t
@@ -442,8 +435,6 @@ module Core_Slice_Iter_Impl181_Next_Interface
     type t = t
   clone CreusotContracts_Std1_Slice_Impl15_Completed_Stub as Completed0 with
     type t = t
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
-    type self = Core_Slice_Iter_Iter_Type.t_iter t
   clone CreusotContracts_Std1_Slice_Impl14_Invariant_Stub as Invariant0 with
     type t = t
   val next (self : borrowed (Core_Slice_Iter_Iter_Type.t_iter t)) : Core_Option_Option_Type.t_option t
@@ -498,6 +489,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i) =
     self = res
   val into_iter_post (self : i) (res : i) : bool
@@ -558,7 +550,6 @@ end
 module CreusotContracts_Std1_Slice_Impl15_ProducesTrans
   type t
   use seq.Seq
-  use prelude.Borrow
   use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
   clone CreusotContracts_Std1_Slice_Impl15_Produces_Stub as Produces0 with
     type t = t
@@ -619,8 +610,8 @@ module C03StdIterators_SliceIter
   clone CreusotContracts_Std1_Slice_Impl15_Completed as Completed0 with
     type t = t,
     predicate Resolve0.resolve = Resolve1.resolve,
-    function ShallowModel0.shallow_model = ShallowModel3.shallow_model,
-    function ShallowModel1.shallow_model = ShallowModel1.shallow_model,
+    function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
+    function ShallowModel1.shallow_model = ShallowModel3.shallow_model,
     val Max0.mAX' = Max0.mAX'
   clone CreusotContracts_Model_Impl1_ShallowModel as ShallowModel0 with
     type t = seq t,
@@ -632,8 +623,8 @@ module C03StdIterators_SliceIter
     axiom .
   clone CreusotContracts_Std1_Slice_Impl15_Produces as Produces0 with
     type t = t,
-    function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
     function ToRefSeq0.to_ref_seq = ToRefSeq0.to_ref_seq,
+    function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
     function ShallowModel1.shallow_model = ShallowModel0.shallow_model
   clone CreusotContracts_Std1_Slice_Impl15_ProducesTrans as ProducesTrans0 with
     type t = t,
@@ -662,7 +653,6 @@ module C03StdIterators_SliceIter
   clone Core_Slice_Iter_Impl181_Next_Interface as Next0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = t,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone Core_Iter_Traits_Collect_Impl0_IntoIter_Interface as IntoIter0 with
@@ -823,7 +813,6 @@ end
 module CreusotContracts_Std1_Vec_Impl3_IntoIterPre
   type t
   type a
-  use prelude.Borrow
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   predicate into_iter_pre (self : Alloc_Vec_Vec_Type.t_vec t a) =
     true
@@ -850,23 +839,23 @@ end
 module CreusotContracts_Std1_Vec_Impl3_IntoIterPost
   type t
   type a
-  use prelude.Borrow
+  use prelude.Int
   use prelude.Slice
   use prelude.Seq
   use seq.Seq
   use seq.Seq
-  clone CreusotContracts_Model_Impl1_ShallowModel_Stub as ShallowModel2 with
+  use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
+  clone CreusotContracts_Std1_Slice_Impl13_ShallowModel_Stub as ShallowModel2 with
+    type t = t
+  clone CreusotContracts_Model_Impl1_ShallowModel_Stub as ShallowModel1 with
     type t = seq t,
     type ShallowModelTy0.shallowModelTy = Seq.seq t
-  use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
-  clone CreusotContracts_Std1_Slice_Impl13_ShallowModel_Stub as ShallowModel1 with
-    type t = t
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone CreusotContracts_Model_Impl1_ShallowModel_Stub as ShallowModel0 with
     type t = Alloc_Vec_Vec_Type.t_vec t a,
     type ShallowModelTy0.shallowModelTy = Seq.seq t
   predicate into_iter_post (self : Alloc_Vec_Vec_Type.t_vec t a) (res : Core_Slice_Iter_Iter_Type.t_iter t) =
-    ShallowModel0.shallow_model self = ShallowModel2.shallow_model (ShallowModel1.shallow_model res)
+    ShallowModel0.shallow_model self = ShallowModel1.shallow_model (ShallowModel2.shallow_model res)
   val into_iter_post (self : Alloc_Vec_Vec_Type.t_vec t a) (res : Core_Slice_Iter_Iter_Type.t_iter t) : bool
     ensures { result = into_iter_post self res }
     
@@ -915,9 +904,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -972,8 +961,8 @@ module C03StdIterators_VecIter
   clone CreusotContracts_Std1_Slice_Impl15_Completed as Completed0 with
     type t = t,
     predicate Resolve0.resolve = Resolve1.resolve,
-    function ShallowModel0.shallow_model = ShallowModel5.shallow_model,
-    function ShallowModel1.shallow_model = ShallowModel4.shallow_model,
+    function ShallowModel0.shallow_model = ShallowModel4.shallow_model,
+    function ShallowModel1.shallow_model = ShallowModel5.shallow_model,
     val Max0.mAX' = Max0.mAX'
   clone CreusotContracts_Model_Impl1_ShallowModel as ShallowModel3 with
     type t = seq t,
@@ -985,8 +974,8 @@ module C03StdIterators_VecIter
     axiom .
   clone CreusotContracts_Std1_Slice_Impl15_Produces as Produces0 with
     type t = t,
-    function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
     function ToRefSeq0.to_ref_seq = ToRefSeq0.to_ref_seq,
+    function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
     function ShallowModel1.shallow_model = ShallowModel3.shallow_model
   clone CreusotContracts_Std1_Slice_Impl15_ProducesTrans as ProducesTrans0 with
     type t = t,
@@ -1011,8 +1000,8 @@ module C03StdIterators_VecIter
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
-    function ShallowModel1.shallow_model = ShallowModel2.shallow_model,
-    function ShallowModel2.shallow_model = ShallowModel3.shallow_model
+    function ShallowModel1.shallow_model = ShallowModel3.shallow_model,
+    function ShallowModel2.shallow_model = ShallowModel2.shallow_model
   clone CreusotContracts_Std1_Vec_Impl3_IntoIterPre as IntoIterPre0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global
@@ -1030,7 +1019,6 @@ module C03StdIterators_VecIter
   clone Core_Slice_Iter_Impl181_Next_Interface as Next0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = t,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone Alloc_Vec_Impl19_IntoIter_Interface as IntoIter0 with
@@ -1209,10 +1197,10 @@ module CreusotContracts_Std1_Slice_Impl16_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl16_ShallowModel
   type t
-  use prelude.Borrow
+  use prelude.Int
   use seq.Seq
+  use prelude.Borrow
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
@@ -1237,21 +1225,22 @@ module CreusotContracts_Std1_Slice_Impl17_Invariant_Interface
 end
 module CreusotContracts_Std1_Slice_Impl17_Invariant
   type t
-  use prelude.Borrow
+  use prelude.Int
   use seq.Seq
+  use prelude.Borrow
   clone Core_Num_Impl12_Max_Stub as Max0
-  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel1 with
+  use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
+  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
-  clone CreusotContracts_Std1_Slice_Impl16_ShallowModel_Stub as ShallowModel0 with
+  clone CreusotContracts_Std1_Slice_Impl16_ShallowModel_Stub as ShallowModel1 with
     type t = t,
-    function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
+    function ShallowModel0.shallow_model = ShallowModel0.shallow_model,
     val Max0.mAX' = Max0.mAX',
     axiom .
   predicate invariant' (self : Core_Slice_Iter_IterMut_Type.t_itermut t) =
-    Seq.length (ShallowModel1.shallow_model ( ^ ShallowModel0.shallow_model self)) = Seq.length (ShallowModel1.shallow_model ( * ShallowModel0.shallow_model self))
+    Seq.length (ShallowModel0.shallow_model ( ^ ShallowModel1.shallow_model self)) = Seq.length (ShallowModel0.shallow_model ( * ShallowModel1.shallow_model self))
   val invariant' (self : Core_Slice_Iter_IterMut_Type.t_itermut t) : bool
     ensures { result = invariant' self }
     
@@ -1294,22 +1283,23 @@ end
 module CreusotContracts_Std1_Slice_Impl18_Completed
   type t
   use prelude.Borrow
+  use prelude.Int
   use seq.Seq
   use prelude.Slice
   use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
-  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel1 with
+  use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
+  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
+    type t = Core_Slice_Iter_IterMut_Type.t_itermut t,
+    type ShallowModelTy0.shallowModelTy = borrowed (seq t)
+  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
-  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel0 with
-    type t = Core_Slice_Iter_IterMut_Type.t_itermut t,
-    type ShallowModelTy0.shallowModelTy = borrowed (seq t)
   clone CreusotContracts_Resolve_Impl1_Resolve_Stub as Resolve0 with
     type t = Core_Slice_Iter_IterMut_Type.t_itermut t
   predicate completed (self : borrowed (Core_Slice_Iter_IterMut_Type.t_itermut t)) =
-    Resolve0.resolve self /\ ShallowModel1.shallow_model ( * ShallowModel0.shallow_model self) = Seq.empty 
+    Resolve0.resolve self /\ ShallowModel0.shallow_model ( * ShallowModel1.shallow_model self) = Seq.empty 
   val completed (self : borrowed (Core_Slice_Iter_IterMut_Type.t_itermut t)) : bool
     ensures { result = completed self }
     
@@ -1353,9 +1343,9 @@ module CreusotContracts_Std1_Slice_Impl4_ToMutSeq_Interface
 end
 module CreusotContracts_Std1_Slice_Impl4_ToMutSeq
   type t
-  use seq.Seq
   use prelude.Int
   use prelude.Borrow
+  use seq.Seq
   use prelude.Slice
   use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
@@ -1391,29 +1381,30 @@ module CreusotContracts_Std1_Slice_Impl18_Produces_Interface
 end
 module CreusotContracts_Std1_Slice_Impl18_Produces
   type t
-  use seq.Seq
   use prelude.Borrow
+  use seq.Seq
+  use prelude.Int
   use prelude.Slice
   use prelude.Seq
+  clone Core_Num_Impl12_Max_Stub as Max0
   use seq.Seq
-  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel2 with
+  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel2 with
+    type t = t,
+    val Max0.mAX' = Max0.mAX',
+    axiom .
+  clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel1 with
     type t = seq t,
     type ShallowModelTy0.shallowModelTy = Seq.seq t
-  clone Core_Num_Impl12_Max_Stub as Max0
-  clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel1 with
+  use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
+  clone CreusotContracts_Std1_Slice_Impl16_ShallowModel_Stub as ShallowModel0 with
     type t = t,
+    function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
     val Max0.mAX' = Max0.mAX',
     axiom .
   clone CreusotContracts_Std1_Slice_Impl4_ToMutSeq_Stub as ToMutSeq0 with
     type t = t,
-    function ShallowModel0.shallow_model = ShallowModel2.shallow_model,
-    function ShallowModel1.shallow_model = ShallowModel1.shallow_model,
-    val Max0.mAX' = Max0.mAX',
-    axiom .
-  use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
-  clone CreusotContracts_Std1_Slice_Impl16_ShallowModel_Stub as ShallowModel0 with
-    type t = t,
     function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
+    function ShallowModel1.shallow_model = ShallowModel2.shallow_model,
     val Max0.mAX' = Max0.mAX',
     axiom .
   predicate produces (self : Core_Slice_Iter_IterMut_Type.t_itermut t) (visited : Seq.seq (borrowed t)) (tl : Core_Slice_Iter_IterMut_Type.t_itermut t)
@@ -1434,8 +1425,6 @@ module Core_Slice_Iter_Impl187_Next_Interface
     type t = t
   clone CreusotContracts_Std1_Slice_Impl18_Completed_Stub as Completed0 with
     type t = t
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
-    type self = Core_Slice_Iter_IterMut_Type.t_itermut t
   clone CreusotContracts_Std1_Slice_Impl17_Invariant_Stub as Invariant0 with
     type t = t
   val next (self : borrowed (Core_Slice_Iter_IterMut_Type.t_itermut t)) : Core_Option_Option_Type.t_option (borrowed t)
@@ -1459,6 +1448,7 @@ module CreusotContracts_Std1_Slice_Impl19_Resolve_Interface
 end
 module CreusotContracts_Std1_Slice_Impl19_Resolve
   type t
+  use prelude.Int
   use prelude.Borrow
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel1 with
@@ -1497,6 +1487,7 @@ end
 module CreusotContracts_Std1_Slice_Impl18_ProducesRefl
   type t
   use seq.Seq
+  use prelude.Borrow
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   clone CreusotContracts_Std1_Slice_Impl18_Produces_Stub as Produces0 with
     type t = t
@@ -1530,8 +1521,8 @@ module CreusotContracts_Std1_Slice_Impl18_ProducesTrans_Interface
 end
 module CreusotContracts_Std1_Slice_Impl18_ProducesTrans
   type t
-  use seq.Seq
   use prelude.Borrow
+  use seq.Seq
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   clone CreusotContracts_Std1_Slice_Impl18_Produces_Stub as Produces0 with
     type t = t
@@ -1597,8 +1588,8 @@ module C03StdIterators_AllZero
   clone CreusotContracts_Std1_Slice_Impl18_Completed as Completed0 with
     type t = usize,
     predicate Resolve0.resolve = Resolve2.resolve,
-    function ShallowModel0.shallow_model = ShallowModel5.shallow_model,
-    function ShallowModel1.shallow_model = ShallowModel3.shallow_model,
+    function ShallowModel0.shallow_model = ShallowModel3.shallow_model,
+    function ShallowModel1.shallow_model = ShallowModel5.shallow_model,
     val Max0.mAX' = Max0.mAX'
   use seq.Seq
   clone CreusotContracts_Model_Impl3_ShallowModel as ShallowModel2 with
@@ -1613,11 +1604,11 @@ module C03StdIterators_AllZero
     axiom .
   clone CreusotContracts_Std1_Slice_Impl18_Produces as Produces0 with
     type t = usize,
-    function ShallowModel0.shallow_model = ShallowModel4.shallow_model,
     function ToMutSeq0.to_mut_seq = ToMutSeq0.to_mut_seq,
-    function ShallowModel1.shallow_model = ShallowModel3.shallow_model,
-    val Max0.mAX' = Max0.mAX',
-    function ShallowModel2.shallow_model = ShallowModel2.shallow_model
+    function ShallowModel0.shallow_model = ShallowModel4.shallow_model,
+    function ShallowModel1.shallow_model = ShallowModel2.shallow_model,
+    function ShallowModel2.shallow_model = ShallowModel3.shallow_model,
+    val Max0.mAX' = Max0.mAX'
   clone CreusotContracts_Std1_Slice_Impl18_ProducesTrans as ProducesTrans0 with
     type t = usize,
     predicate Produces0.produces = Produces0.produces,
@@ -1630,8 +1621,8 @@ module C03StdIterators_AllZero
     type i = Core_Slice_Iter_IterMut_Type.t_itermut usize
   clone CreusotContracts_Std1_Slice_Impl17_Invariant as Invariant0 with
     type t = usize,
-    function ShallowModel0.shallow_model = ShallowModel4.shallow_model,
-    function ShallowModel1.shallow_model = ShallowModel3.shallow_model,
+    function ShallowModel0.shallow_model = ShallowModel3.shallow_model,
+    function ShallowModel1.shallow_model = ShallowModel4.shallow_model,
     val Max0.mAX' = Max0.mAX'
   clone CreusotContracts_Std1_Iter_Impl0_IntoIterPre as IntoIterPre0 with
     type i = Core_Slice_Iter_IterMut_Type.t_itermut usize,
@@ -1647,7 +1638,6 @@ module C03StdIterators_AllZero
   clone Core_Slice_Iter_Impl187_Next_Interface as Next0 with
     type t = usize,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = borrowed usize,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone Core_Iter_Traits_Collect_Impl0_IntoIter_Interface as IntoIter0 with
@@ -1830,11 +1820,11 @@ module CreusotContracts_Std1_Iter_Take_Impl1_Invariant_Interface
 end
 module CreusotContracts_Std1_Iter_Take_Impl1_Invariant
   type i
-  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
-    type self = i
   use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone CreusotContracts_Std1_Iter_Take_Impl0_Iter_Stub as Iter0 with
     type i = i
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = i
   predicate invariant' (self : Core_Iter_Adapters_Take_Take_Type.t_take i) =
     Invariant0.invariant' (Iter0.iter self)
   val invariant' (self : Core_Iter_Adapters_Take_Take_Type.t_take i) : bool
@@ -1929,11 +1919,11 @@ module CreusotContracts_Std1_Iter_Skip_Impl1_Invariant_Interface
 end
 module CreusotContracts_Std1_Iter_Skip_Impl1_Invariant
   type i
-  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
-    type self = i
   use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone CreusotContracts_Std1_Iter_Skip_Impl0_Iter_Stub as Iter0 with
     type i = i
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = i
   predicate invariant' (self : Core_Iter_Adapters_Skip_Skip_Type.t_skip i) =
     Invariant0.invariant' (Iter0.iter self)
   val invariant' (self : Core_Iter_Adapters_Skip_Skip_Type.t_skip i) : bool
@@ -2009,6 +1999,10 @@ module CreusotContracts_Std1_Iter_Iterator_Completed
     ensures { result = completed self }
     
 end
+module Core_Iter_Traits_Iterator_Iterator_Item_Type
+  type self
+  type item
+end
 module CreusotContracts_Std1_Iter_Iterator_Produces_Stub
   type self
   use seq.Seq
@@ -2037,20 +2031,18 @@ module Core_Iter_Adapters_Skip_Impl1_Next_Interface
   type i
   use prelude.Borrow
   use seq.Seq
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item1 with
+  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use Core_Option_Option_Type as Core_Option_Option_Type
   use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone CreusotContracts_Std1_Iter_Iterator_Produces_Stub as Produces0 with
     type self = Core_Iter_Adapters_Skip_Skip_Type.t_skip i,
-    type Item0.item = Item1.item
+    type Item0.item = Item0.item
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
-    type self = Core_Iter_Adapters_Skip_Skip_Type.t_skip i
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = Core_Iter_Adapters_Skip_Skip_Type.t_skip i
   clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
     type self = Core_Iter_Adapters_Skip_Skip_Type.t_skip i
-  val next (self : borrowed (Core_Iter_Adapters_Skip_Skip_Type.t_skip i)) : Core_Option_Option_Type.t_option Item1.item
+  val next (self : borrowed (Core_Iter_Adapters_Skip_Skip_Type.t_skip i)) : Core_Option_Option_Type.t_option Item0.item
     requires {Invariant0.invariant' ( * self)}
     ensures { Invariant0.invariant' ( ^ self) }
     ensures { match (result) with
@@ -2071,11 +2063,11 @@ module CreusotContracts_Std1_Iter_Skip_Impl3_Resolve_Interface
 end
 module CreusotContracts_Std1_Iter_Skip_Impl3_Resolve
   type i
-  clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
-    type self = i
   use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone CreusotContracts_Std1_Iter_Skip_Impl0_Iter_Stub as Iter0 with
     type i = i
+  clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
+    type self = i
   predicate resolve (self : Core_Iter_Adapters_Skip_Skip_Type.t_skip i) =
     Resolve0.resolve (Iter0.iter self)
   val resolve (self : Core_Iter_Adapters_Skip_Skip_Type.t_skip i) : bool
@@ -2097,8 +2089,8 @@ end
 module CreusotContracts_Std1_Iter_Skip_Impl2_Completed
   type i
   use prelude.Borrow
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
     type self = i
@@ -2106,12 +2098,12 @@ module CreusotContracts_Std1_Iter_Skip_Impl2_Completed
     type self = i
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
     type self = Item0.item
-  clone CreusotContracts_Std1_Iter_Iterator_Produces_Stub as Produces0 with
-    type self = i,
-    type Item0.item = Item0.item
   use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone CreusotContracts_Std1_Iter_Skip_Impl0_Iter_Stub as Iter0 with
     type i = i
+  clone CreusotContracts_Std1_Iter_Iterator_Produces_Stub as Produces0 with
+    type self = i,
+    type Item0.item = Item0.item
   clone CreusotContracts_Std1_Iter_Skip_Impl0_N_Stub as N0 with
     type i = i,
     val Max0.mAX' = Max0.mAX',
@@ -2149,12 +2141,12 @@ module CreusotContracts_Std1_Iter_Skip_Impl2_Produces
     type self = i
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
     type self = Item0.item
-  clone CreusotContracts_Std1_Iter_Iterator_Produces_Stub as Produces0 with
-    type self = i,
-    type Item0.item = Item0.item
   use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone CreusotContracts_Std1_Iter_Skip_Impl0_Iter_Stub as Iter0 with
     type i = i
+  clone CreusotContracts_Std1_Iter_Iterator_Produces_Stub as Produces0 with
+    type self = i,
+    type Item0.item = Item0.item
   clone CreusotContracts_Std1_Iter_Skip_Impl0_N_Stub as N0 with
     type i = i,
     val Max0.mAX' = Max0.mAX',
@@ -2179,11 +2171,11 @@ module CreusotContracts_Std1_Iter_Take_Impl3_Resolve_Interface
 end
 module CreusotContracts_Std1_Iter_Take_Impl3_Resolve
   type i
-  clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
-    type self = i
   use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone CreusotContracts_Std1_Iter_Take_Impl0_Iter_Stub as Iter0 with
     type i = i
+  clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
+    type self = i
   predicate resolve (self : Core_Iter_Adapters_Take_Take_Type.t_take i) =
     Resolve0.resolve (Iter0.iter self)
   val resolve (self : Core_Iter_Adapters_Take_Take_Type.t_take i) : bool
@@ -2268,9 +2260,9 @@ end
 module CreusotContracts_Std1_Iter_Skip_Impl2_ProducesTrans
   type i
   use seq.Seq
+  use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
-  use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone CreusotContracts_Std1_Iter_Skip_Impl2_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -2313,14 +2305,14 @@ module CreusotContracts_Std1_Iter_Take_Impl2_Produces
   use seq.Seq
   use prelude.Int
   clone Core_Num_Impl12_Max_Stub as Max0
+  use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
+  clone CreusotContracts_Std1_Iter_Take_Impl0_Iter_Stub as Iter0 with
+    type i = i
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   clone CreusotContracts_Std1_Iter_Iterator_Produces_Stub as Produces0 with
     type self = i,
     type Item0.item = Item0.item
-  use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
-  clone CreusotContracts_Std1_Iter_Take_Impl0_Iter_Stub as Iter0 with
-    type i = i
   clone CreusotContracts_Std1_Iter_Take_Impl0_N_Stub as N0 with
     type i = i,
     val Max0.mAX' = Max0.mAX',
@@ -2352,6 +2344,7 @@ module CreusotContracts_Std1_Iter_Take_Impl0_IterMut_Interface
 end
 module CreusotContracts_Std1_Iter_Take_Impl0_IterMut
   type i
+  use prelude.Int
   use prelude.Borrow
   use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone CreusotContracts_Std1_Iter_Take_Impl0_Iter_Stub as Iter0 with
@@ -2382,12 +2375,12 @@ module CreusotContracts_Std1_Iter_Take_Impl2_Completed
   clone CreusotContracts_Std1_Iter_Take_Impl0_Iter_Stub as Iter0 with
     type i = i
   clone Core_Num_Impl12_Max_Stub as Max0
-  clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
-    type self = i
   clone CreusotContracts_Std1_Iter_Take_Impl0_IterMut_Stub as IterMut0 with
     type i = i,
     function Iter0.iter = Iter0.iter,
     axiom .
+  clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
+    type self = i
   clone CreusotContracts_Resolve_Impl1_Resolve_Stub as Resolve0 with
     type t = Core_Iter_Adapters_Take_Take_Type.t_take i
   clone CreusotContracts_Std1_Iter_Take_Impl0_N_Stub as N0 with
@@ -2478,9 +2471,9 @@ end
 module CreusotContracts_Std1_Iter_Take_Impl2_ProducesTrans
   type i
   use seq.Seq
+  use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
-  use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone CreusotContracts_Std1_Iter_Take_Impl2_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -2622,8 +2615,6 @@ module C03StdIterators_SkipTake
     predicate Produces0.produces = Produces2.produces,
     type Item0.item = Item0.item,
     axiom .
-  clone CreusotContracts_Std1_Iter_Iterator_Completed_Interface as Completed2 with
-    type self = i
   use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone CreusotContracts_Std1_Iter_Take_Impl0_Iter as Iter0 with
     type i = i
@@ -2631,6 +2622,8 @@ module C03StdIterators_SkipTake
     type i = i,
     function Iter0.iter = Iter0.iter,
     axiom .
+  clone CreusotContracts_Std1_Iter_Iterator_Completed_Interface as Completed2 with
+    type self = i
   clone CreusotContracts_Resolve_Impl1_Resolve as Resolve5 with
     type t = Core_Iter_Adapters_Take_Take_Type.t_take i
   clone Core_Num_Impl12_Max as Max0
@@ -2642,13 +2635,13 @@ module C03StdIterators_SkipTake
     type i = i,
     type Item0.item = Item0.item,
     function N0.n = N0.n,
-    function Iter0.iter = Iter0.iter,
     predicate Produces0.produces = Produces2.produces,
+    function Iter0.iter = Iter0.iter,
     val Max0.mAX' = Max0.mAX'
   clone CreusotContracts_Std1_Iter_Take_Impl1_Invariant as Invariant1 with
     type i = i,
-    function Iter0.iter = Iter0.iter,
-    predicate Invariant0.invariant' = Invariant0.invariant'
+    predicate Invariant0.invariant' = Invariant0.invariant',
+    function Iter0.iter = Iter0.iter
   clone CreusotContracts_Std1_Iter_Take_Impl2_ProducesTrans as ProducesTrans1 with
     type i = i,
     predicate Invariant0.invariant' = Invariant1.invariant',
@@ -2665,8 +2658,8 @@ module C03StdIterators_SkipTake
     type i = i,
     function N0.n = N0.n,
     predicate Resolve0.resolve = Resolve5.resolve,
-    function IterMut0.iter_mut = IterMut0.iter_mut,
     predicate Completed0.completed = Completed2.completed,
+    function IterMut0.iter_mut = IterMut0.iter_mut,
     val Max0.mAX' = Max0.mAX',
     function Iter0.iter = Iter0.iter
   clone CreusotContracts_Resolve_Resolve_Resolve_Interface as Resolve4 with
@@ -2682,14 +2675,14 @@ module C03StdIterators_SkipTake
     type i = Core_Iter_Adapters_Take_Take_Type.t_take i,
     type Item0.item = Item0.item,
     function N0.n = N1.n,
-    function Iter0.iter = Iter1.iter,
     predicate Produces0.produces = Produces1.produces,
+    function Iter0.iter = Iter1.iter,
     predicate Resolve0.resolve = Resolve4.resolve,
     val Max0.mAX' = Max0.mAX'
   clone CreusotContracts_Std1_Iter_Skip_Impl1_Invariant as Invariant2 with
     type i = Core_Iter_Adapters_Take_Take_Type.t_take i,
-    function Iter0.iter = Iter1.iter,
-    predicate Invariant0.invariant' = Invariant1.invariant'
+    predicate Invariant0.invariant' = Invariant1.invariant',
+    function Iter0.iter = Iter1.iter
   clone CreusotContracts_Std1_Iter_Skip_Impl2_ProducesTrans as ProducesTrans0 with
     type i = Core_Iter_Adapters_Take_Take_Type.t_take i,
     predicate Invariant0.invariant' = Invariant2.invariant',
@@ -2706,14 +2699,14 @@ module C03StdIterators_SkipTake
     type self = i
   clone CreusotContracts_Std1_Iter_Take_Impl3_Resolve as Resolve3 with
     type i = i,
-    function Iter0.iter = Iter0.iter,
-    predicate Resolve0.resolve = Resolve0.resolve
+    predicate Resolve0.resolve = Resolve0.resolve,
+    function Iter0.iter = Iter0.iter
   clone CreusotContracts_Std1_Iter_Skip_Impl2_Completed as Completed0 with
     type i = Core_Iter_Adapters_Take_Take_Type.t_take i,
     function N0.n = N1.n,
     type Item0.item = Item0.item,
-    function Iter0.iter = Iter1.iter,
     predicate Produces0.produces = Produces1.produces,
+    function Iter0.iter = Iter1.iter,
     predicate Resolve0.resolve = Resolve4.resolve,
     predicate Completed0.completed = Completed1.completed,
     val Max0.mAX' = Max0.mAX'
@@ -2722,15 +2715,14 @@ module C03StdIterators_SkipTake
     type self = Core_Option_Option_Type.t_option Item0.item
   clone CreusotContracts_Std1_Iter_Skip_Impl3_Resolve as Resolve1 with
     type i = Core_Iter_Adapters_Take_Take_Type.t_take i,
-    function Iter0.iter = Iter1.iter,
-    predicate Resolve0.resolve = Resolve3.resolve
+    predicate Resolve0.resolve = Resolve3.resolve,
+    function Iter0.iter = Iter1.iter
   clone Core_Iter_Adapters_Skip_Impl1_Next_Interface as Next0 with
     type i = Core_Iter_Adapters_Take_Take_Type.t_take i,
     predicate Invariant0.invariant' = Invariant2.invariant',
-    type Item0.item = Item0.item,
-    type Item1.item = Item0.item,
     predicate Completed0.completed = Completed0.completed,
-    predicate Produces0.produces = Produces0.produces
+    predicate Produces0.produces = Produces0.produces,
+    type Item0.item = Item0.item
   clone Core_Iter_Traits_Iterator_Iterator_Skip_Interface as Skip1 with
     type self = Core_Iter_Adapters_Take_Take_Type.t_take i,
     predicate Invariant0.invariant' = Invariant1.invariant',
@@ -2891,8 +2883,9 @@ module CreusotContracts_Std1_Iter_MapInv_Impl0_Completed
   type b
   type f
   use prelude.Borrow
-  use prelude.Ghost
+  use prelude.Int
   use seq.Seq
+  use prelude.Ghost
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
     type self = i
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
@@ -3016,9 +3009,9 @@ module CreusotContracts_Std1_Iter_MapInv_Impl3_Preservation
   type i
   type b
   type f
-  use prelude.Borrow
   use seq.Seq
   use prelude.Ghost
+  use prelude.Borrow
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use seq.Seq
@@ -3061,12 +3054,13 @@ module CreusotContracts_Std1_Iter_MapInv_Impl3_Reinitialize
   type b
   type f
   use prelude.Borrow
+  use prelude.Int
+  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
+    type self = i
   clone CreusotContracts_Std1_Iter_MapInv_Impl3_Preservation_Stub as Preservation0 with
     type i = i,
     type b = b,
     type f = f
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
-    type self = i
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
   clone CreusotContracts_Std1_Iter_MapInv_Impl3_NextPrecondition_Stub as NextPrecondition0 with
     type i = i,
@@ -3121,8 +3115,9 @@ module CreusotContracts_Std1_Iter_MapInv_Impl3_PreservationInv
   type i
   type b
   type f
-  use prelude.Ghost
+  use prelude.Int
   use seq.Seq
+  use prelude.Ghost
   use prelude.Borrow
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
@@ -3177,13 +3172,14 @@ module CreusotContracts_Std1_Iter_MapInv_Impl1_Invariant
   type i
   type b
   type f
+  use prelude.Int
   clone CreusotContracts_Std1_Iter_MapInv_Impl3_Preservation_Stub as Preservation0 with
     type i = i,
     type b = b,
     type f = f
+  use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
-  use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
   clone CreusotContracts_Std1_Iter_MapInv_Impl3_NextPrecondition_Stub as NextPrecondition0 with
     type i = i,
     type b = b,
@@ -3195,8 +3191,8 @@ module CreusotContracts_Std1_Iter_MapInv_Impl1_Invariant
     type i = i,
     type b = b,
     type f = f,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = Item0.item,
+    predicate Preservation0.preservation = Preservation0.preservation,
     axiom .
   clone CreusotContracts_Std1_Iter_MapInv_Impl3_Reinitialize_Stub as Reinitialize0 with
     type i = i,
@@ -3455,6 +3451,7 @@ module CreusotContracts_Std1_Iter_MapInv_Impl4_Resolve
   type i
   type b
   type f
+  use prelude.Int
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve1 with
     type self = f
   clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
@@ -3493,9 +3490,9 @@ module CreusotContracts_Std1_Iter_MapInv_Impl0_Produces
   type b
   type f
   use seq.Seq
+  use prelude.Int
   use prelude.Ghost
   use prelude.Borrow
-  use prelude.Int
   use seq_ext.SeqExt
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
@@ -3544,6 +3541,7 @@ end
 module CreusotContracts_Std1_Vec_Impl8_FromIterPost
   type t
   use seq.Seq
+  use prelude.Int
   clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
@@ -3749,8 +3747,8 @@ module C03StdIterators_Counter
   clone CreusotContracts_Std1_Slice_Impl15_Completed as Completed1 with
     type t = uint32,
     predicate Resolve0.resolve = Resolve5.resolve,
-    function ShallowModel0.shallow_model = ShallowModel5.shallow_model,
-    function ShallowModel1.shallow_model = ShallowModel4.shallow_model,
+    function ShallowModel0.shallow_model = ShallowModel4.shallow_model,
+    function ShallowModel1.shallow_model = ShallowModel5.shallow_model,
     val Max0.mAX' = Max0.mAX'
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
   use seq.Seq
@@ -3765,8 +3763,8 @@ module C03StdIterators_Counter
     axiom .
   clone CreusotContracts_Std1_Slice_Impl15_Produces as Produces0 with
     type t = uint32,
-    function ShallowModel0.shallow_model = ShallowModel3.shallow_model,
     function ToRefSeq0.to_ref_seq = ToRefSeq0.to_ref_seq,
+    function ShallowModel0.shallow_model = ShallowModel3.shallow_model,
     function ShallowModel1.shallow_model = ShallowModel1.shallow_model
   clone CreusotContracts_Resolve_Impl1_Resolve as Resolve1 with
     type t = usize
@@ -3791,8 +3789,8 @@ module C03StdIterators_Counter
     predicate Unnest0.unnest = Closure00.unnest,
     predicate Precondition0.precondition = Closure00.precondition,
     predicate PostconditionMut0.postcondition_mut = Closure00.postcondition_mut,
-    type Item0.item = uint32,
     predicate Invariant0.invariant' = Invariant0.invariant',
+    type Item0.item = uint32,
     predicate Produces0.produces = Produces0.produces
   clone CreusotContracts_Std1_Iter_MapInv_Impl3_NextPrecondition as NextPrecondition0 with
     type i = Core_Slice_Iter_Iter_Type.t_iter uint32,
@@ -3809,8 +3807,8 @@ module C03StdIterators_Counter
     predicate Unnest0.unnest = Closure00.unnest,
     predicate Precondition0.precondition = Closure00.precondition,
     predicate PostconditionMut0.postcondition_mut = Closure00.postcondition_mut,
-    predicate Preservation0.preservation = Preservation0.preservation,
     type Item0.item = uint32,
+    predicate Preservation0.preservation = Preservation0.preservation,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate Produces0.produces = Produces0.produces,
     axiom .
@@ -3824,11 +3822,11 @@ module C03StdIterators_Counter
     type i = Core_Slice_Iter_Iter_Type.t_iter uint32,
     type b = uint32,
     type f = Closure00.c03stditerators_counter_closure0,
-    type Item0.item = uint32,
     predicate Completed0.completed = Completed0.completed,
     predicate Invariant0.invariant' = Invariant0.invariant',
     predicate NextPrecondition0.next_precondition = NextPrecondition0.next_precondition,
-    predicate Preservation0.preservation = Preservation0.preservation
+    predicate Preservation0.preservation = Preservation0.preservation,
+    type Item0.item = uint32
   clone CreusotContracts_Std1_Iter_MapInv_Impl1_Invariant as Invariant1 with
     type i = Core_Slice_Iter_Iter_Type.t_iter uint32,
     type b = uint32,
@@ -4049,8 +4047,6 @@ module Core_Iter_Range_Impl3_Next_Interface
     type Item0.item = a
   clone CreusotContracts_Std1_Iter_Iterator_Completed_Stub as Completed0 with
     type self = Core_Ops_Range_Range_Type.t_range a
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
-    type self = Core_Ops_Range_Range_Type.t_range a
   clone CreusotContracts_Std1_Ops_Impl3_Invariant_Stub as Invariant0 with
     type idx = a
   val next (self : borrowed (Core_Ops_Range_Range_Type.t_range a)) : Core_Option_Option_Type.t_option a
@@ -4211,8 +4207,8 @@ module CreusotContracts_Logic_Int_Impl30_DeepModel_Interface
   function deep_model (self : isize) : int
 end
 module CreusotContracts_Logic_Int_Impl30_DeepModel
-  use prelude.Int
   use prelude.IntSize
+  use prelude.Int
   function deep_model (self : isize) : int =
     IntSize.to_int self
   val deep_model (self : isize) : int
@@ -4295,7 +4291,6 @@ module C03StdIterators_SumRange
   clone Core_Iter_Range_Impl3_Next_Interface as Next0 with
     type a = isize,
     predicate Invariant0.invariant' = Invariant0.invariant',
-    type Item0.item = isize,
     predicate Completed0.completed = Completed0.completed,
     predicate Produces0.produces = Produces0.produces
   clone Core_Iter_Traits_Collect_Impl0_IntoIter_Interface as IntoIter0 with

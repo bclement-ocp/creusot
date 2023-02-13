@@ -42,10 +42,10 @@ impl<'tcx> PreContract<'tcx> {
         self
     }
 
-    pub(crate) fn to_exp(
+    pub(crate) fn to_exp<C: Cloner<'tcx>>(
         self,
         ctx: &mut TranslationCtx<'tcx>,
-        names: &mut CloneMap<'tcx>,
+        names: &mut C,
     ) -> Contract {
         let mut out = Contract::new();
         for term in self.requires {

@@ -75,8 +75,8 @@ module C01_Impl1_Inv_Interface
   predicate inv [#"../01.rs" 34 4 34 26] (x : uint32)
 end
 module C01_Impl1_Inv
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   predicate inv [#"../01.rs" 34 4 34 26] (x : uint32) =
     [#"../01.rs" 35 8 35 24] mod x (2 : uint32) = (0 : uint32)
   val inv [#"../01.rs" 34 4 34 26] (x : uint32) : bool

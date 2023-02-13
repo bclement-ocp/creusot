@@ -1,6 +1,7 @@
 use super::LocalIdent;
 use crate::{
     backend::program::uint_to_int,
+    clone_map::Cloner,
     ctx::{CloneMap, TranslationCtx},
 };
 use rustc_middle::{
@@ -82,7 +83,7 @@ pub(crate) fn create_assign_inner<'tcx>(
 
                     varexps[ix.as_usize()] = inner;
 
-                    let ctor = names.constructor(variant.def_id, subst);
+                    let ctor = names.constructor(def.did(), subst, variant_id);
                     inner = Let {
                         pattern: ConsP(ctor.clone(), field_pats),
                         arg: box translate_rplace_inner(ctx, names, body, lhs.local, stump),
@@ -118,7 +119,7 @@ pub(crate) fn create_assign_inner<'tcx>(
                         .collect();
 
                     varexps[ix.as_usize()] = inner;
-                    let cons = names.constructor(*id, subst);
+                    let cons = names.constructor(*id, subst, 0u32.into());
 
                     inner = Let {
                         pattern: ConsP(cons.clone(), field_pats),

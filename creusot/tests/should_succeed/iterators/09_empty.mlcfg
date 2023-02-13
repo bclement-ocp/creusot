@@ -39,6 +39,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t) =
      ^ self =  * self
   val resolve (self : borrowed t) : bool
@@ -86,6 +87,7 @@ end
 module C09Empty_Impl0_Produces
   type t
   use seq.Seq
+  use prelude.Int
   use C09Empty_Empty_Type as C09Empty_Empty_Type
   predicate produces [#"../09_empty.rs" 19 4 19 64] (self : C09Empty_Empty_Type.t_empty t) (visited : Seq.seq t) (o : C09Empty_Empty_Type.t_empty t)
     
@@ -294,10 +296,6 @@ module C09Empty_Impl0_Next
   }
   
 end
-module C09Empty_Common_Iterator_Item_Type
-  type self
-  type item
-end
 module C09Empty_Impl0
   type t
   use prelude.Borrow
@@ -305,8 +303,6 @@ module C09Empty_Impl0
   use C09Empty_Empty_Type as C09Empty_Empty_Type
   clone CreusotContracts_Resolve_Impl1_Resolve as Resolve0 with
     type t = C09Empty_Empty_Type.t_empty t
-  clone C09Empty_Common_Iterator_Item_Type as Item0 with
-    type self = C09Empty_Empty_Type.t_empty t
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone C09Empty_Impl0_Produces as Produces0 with
     type t = t

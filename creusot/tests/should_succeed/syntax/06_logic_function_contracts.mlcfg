@@ -10,8 +10,8 @@ module C06LogicFunctionContracts_Sum_Interface
   function sum [#"../06_logic_function_contracts.rs" 9 0 9 32] (seq : Seq.seq int) : int
 end
 module C06LogicFunctionContracts_Sum
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use seq_ext.SeqExt
   function sum [#"../06_logic_function_contracts.rs" 9 0 9 32] (seq : Seq.seq int) : int
   val sum [#"../06_logic_function_contracts.rs" 9 0 9 32] (seq : Seq.seq int) : int
@@ -49,8 +49,8 @@ module C06LogicFunctionContracts_AllZero_Interface
   predicate all_zero [#"../06_logic_function_contracts.rs" 20 0 20 38] (seq : Seq.seq int)
 end
 module C06LogicFunctionContracts_AllZero
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use seq_ext.SeqExt
   predicate all_zero [#"../06_logic_function_contracts.rs" 20 0 20 38] (seq : Seq.seq int)
   val all_zero [#"../06_logic_function_contracts.rs" 20 0 20 38] (seq : Seq.seq int) : bool

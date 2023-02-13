@@ -40,7 +40,6 @@ module CreusotContracts_Model_Impl1_ShallowModel_Interface
 end
 module CreusotContracts_Model_Impl1_ShallowModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
@@ -93,7 +92,6 @@ module CreusotContracts_Model_Impl0_DeepModel_Interface
 end
 module CreusotContracts_Model_Impl0_DeepModel
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
@@ -140,6 +138,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -186,6 +185,7 @@ end
 module CreusotContracts_Logic_Seq_Impl0_Sorted
   type t
   use seq.Seq
+  use prelude.Int
   clone CreusotContracts_Logic_Seq_Impl0_SortedRange_Stub as SortedRange0 with
     type t = t
   predicate sorted (self : Seq.seq t) =
@@ -234,11 +234,10 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
   val shallow_model (self : seq t) : Seq.seq t
@@ -285,10 +284,9 @@ module CreusotContracts_Std1_Slice_Impl1_DeepModel_Interface
 end
 module CreusotContracts_Std1_Slice_Impl1_DeepModel
   type t
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
@@ -315,6 +313,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -351,8 +350,8 @@ module Core_Slice_Impl0_BinarySearch_Interface
   clone CreusotContracts_Std1_Slice_Impl1_DeepModel_Stub as DeepModel1 with
     type t = t,
     function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
-    function DeepModel0.deep_model = DeepModel3.deep_model,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy,
+    function DeepModel0.deep_model = DeepModel3.deep_model,
     val Max0.mAX' = Max0.mAX',
     axiom .
   clone CreusotContracts_Model_Impl1_ShallowModel_Stub as ShallowModel0 with
@@ -391,7 +390,6 @@ module CreusotContracts_Logic_Ord_Impl2_LtLog_Interface
 end
 module CreusotContracts_Logic_Ord_Impl2_LtLog
   use prelude.Int
-  use int.Int
   predicate lt_log (self : int) (_2' : int) =
     Int.(<) self _2'
   val lt_log (self : int) (_2' : int) : bool
@@ -409,8 +407,8 @@ module CreusotContracts_Logic_Int_Impl12_DeepModel_Interface
   function deep_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function deep_model (self : uint32) : int =
     UInt32.to_int self
   val deep_model (self : uint32) : int
@@ -427,7 +425,6 @@ module CreusotContracts_Logic_Ord_Impl2_LeLog_Interface
 end
 module CreusotContracts_Logic_Ord_Impl2_LeLog
   use prelude.Int
-  use int.Int
   predicate le_log (self : int) (_2' : int) =
     Int.(<=) self _2'
   val le_log (self : int) (_2' : int) : bool
@@ -479,8 +476,8 @@ module C02Std_BinarySearch
   clone CreusotContracts_Std1_Slice_Impl1_DeepModel as DeepModel1 with
     type t = uint32,
     function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
-    function DeepModel0.deep_model = DeepModel3.deep_model,
     type DeepModelTy0.deepModelTy = int,
+    function DeepModel0.deep_model = DeepModel3.deep_model,
     val Max0.mAX' = Max0.mAX',
     axiom .
   clone CreusotContracts_Logic_Seq_Impl0_Sorted as Sorted0 with
