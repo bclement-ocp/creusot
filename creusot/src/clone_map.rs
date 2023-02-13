@@ -199,6 +199,16 @@ impl<'tcx> CloneInfo {
 }
 
 impl<'tcx> CloneMap<'tcx> {
+    pub(crate) fn from_static_deps(ctx: &TranslationCtx<'tcx>, self_id: DefId, clone_level: CloneLevel) -> (Vec<Decl>, CloneSummary<'tcx> ) {
+        let mut names = Self::new(ctx.tcx, self_id, clone_level);
+
+        get_deps(ctx.tcx, self_id).for_each(|dep| {
+
+        });
+
+    }
+
+
     pub(crate) fn new(tcx: TyCtxt<'tcx>, self_id: DefId, clone_level: CloneLevel) -> Self {
         let names = IndexMap::new();
         let mut c = CloneMap {
