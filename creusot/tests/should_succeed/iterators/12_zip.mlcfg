@@ -105,6 +105,83 @@ module C12Zip_Common_Iterator_Produces
     ensures { result = produces self visited _3' }
     
 end
+module C12Zip_Impl0_Produces_Stub
+  type i
+  type j
+  use seq.Seq
+  use prelude.Int
+  clone C12Zip_Common_Iterator_Item_Type as Item1 with
+    type self = j
+  clone C12Zip_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
+  predicate produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j)
+    
+end
+module C12Zip_Impl0_Produces_Interface
+  type i
+  type j
+  use seq.Seq
+  clone C12Zip_Common_Iterator_Item_Type as Item1 with
+    type self = j
+  clone C12Zip_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
+  predicate produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j)
+    
+end
+module C12Zip_Impl0_Produces
+  type i
+  type j
+  use seq.Seq
+  use prelude.Int
+  clone C12Zip_Common_Iterator_Item_Type as Item1 with
+    type self = j
+  clone C12Zip_Common_Iterator_Produces_Stub as Produces1 with
+    type self = j,
+    type Item0.item = Item1.item
+  clone C12Zip_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  clone C12Zip_Common_Iterator_Produces_Stub as Produces0 with
+    type self = i,
+    type Item0.item = Item0.item
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
+  predicate produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j)
+    
+   =
+    [#"../12_zip.rs" 23 8 29 9] exists p2 : Seq.seq Item1.item . exists p1 : Seq.seq Item0.item . Seq.length p1 = Seq.length p2 /\ Seq.length p2 = Seq.length visited /\ (forall i : int . 0 <= i /\ i < Seq.length visited -> Seq.get visited i = (Seq.get p1 i, Seq.get p2 i)) /\ Produces0.produces (C12Zip_Zip_Type.zip_iter1 self) p1 (C12Zip_Zip_Type.zip_iter1 tl) /\ Produces1.produces (C12Zip_Zip_Type.zip_iter2 self) p2 (C12Zip_Zip_Type.zip_iter2 tl)
+  val produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j) : bool
+    ensures { result = produces self visited tl }
+    
+end
+module C12Zip_Impl0_Invariant_Stub
+  type i
+  type j
+  use prelude.Int
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
+  predicate invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j)
+end
+module C12Zip_Impl0_Invariant_Interface
+  type i
+  type j
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
+  predicate invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j)
+end
+module C12Zip_Impl0_Invariant
+  type i
+  type j
+  use prelude.Int
+  clone C12Zip_Common_Iterator_Invariant_Stub as Invariant1 with
+    type self = j
+  clone C12Zip_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = i
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
+  predicate invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j) =
+    [#"../12_zip.rs" 32 4 32 16] Invariant0.invariant' (C12Zip_Zip_Type.zip_iter1 self) /\ Invariant1.invariant' (C12Zip_Zip_Type.zip_iter2 self)
+  val invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j) : bool
+    ensures { result = invariant' self }
+    
+end
 module C12Zip_Common_Iterator_ProducesRefl_Stub
   type self
   use seq.Seq
@@ -195,83 +272,6 @@ module C12Zip_Common_Iterator_ProducesTrans
     ensures { result = produces_trans a ab b bc c }
     
   axiom produces_trans_spec : forall a : self, ab : Seq.seq Item0.item, b : self, bc : Seq.seq Item0.item, c : self . ([#"../common.rs" 19 15 19 28] Invariant0.invariant' a) -> ([#"../common.rs" 20 15 20 28] Invariant0.invariant' b) -> ([#"../common.rs" 21 15 21 28] Invariant0.invariant' c) -> ([#"../common.rs" 22 15 22 32] Produces0.produces a ab b) -> ([#"../common.rs" 23 15 23 32] Produces0.produces b bc c) -> ([#"../common.rs" 24 14 24 42] Produces0.produces a (Seq.(++) ab bc) c)
-end
-module C12Zip_Impl0_Produces_Stub
-  type i
-  type j
-  use seq.Seq
-  use prelude.Int
-  clone C12Zip_Common_Iterator_Item_Type as Item1 with
-    type self = j
-  clone C12Zip_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
-  predicate produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j)
-    
-end
-module C12Zip_Impl0_Produces_Interface
-  type i
-  type j
-  use seq.Seq
-  clone C12Zip_Common_Iterator_Item_Type as Item1 with
-    type self = j
-  clone C12Zip_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
-  predicate produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j)
-    
-end
-module C12Zip_Impl0_Produces
-  type i
-  type j
-  use seq.Seq
-  use prelude.Int
-  clone C12Zip_Common_Iterator_Item_Type as Item1 with
-    type self = j
-  clone C12Zip_Common_Iterator_Produces_Stub as Produces1 with
-    type self = j,
-    type Item0.item = Item1.item
-  clone C12Zip_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  clone C12Zip_Common_Iterator_Produces_Stub as Produces0 with
-    type self = i,
-    type Item0.item = Item0.item
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
-  predicate produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j)
-    
-   =
-    [#"../12_zip.rs" 23 8 29 9] exists p2 : Seq.seq Item1.item . exists p1 : Seq.seq Item0.item . Seq.length p1 = Seq.length p2 /\ Seq.length p2 = Seq.length visited /\ (forall i : int . 0 <= i /\ i < Seq.length visited -> Seq.get visited i = (Seq.get p1 i, Seq.get p2 i)) /\ Produces0.produces (C12Zip_Zip_Type.zip_iter1 self) p1 (C12Zip_Zip_Type.zip_iter1 tl) /\ Produces1.produces (C12Zip_Zip_Type.zip_iter2 self) p2 (C12Zip_Zip_Type.zip_iter2 tl)
-  val produces [#"../12_zip.rs" 22 4 22 65] (self : C12Zip_Zip_Type.t_zip i j) (visited : Seq.seq (Item0.item, Item1.item)) (tl : C12Zip_Zip_Type.t_zip i j) : bool
-    ensures { result = produces self visited tl }
-    
-end
-module C12Zip_Impl0_Invariant_Stub
-  type i
-  type j
-  use prelude.Int
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
-  predicate invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j)
-end
-module C12Zip_Impl0_Invariant_Interface
-  type i
-  type j
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
-  predicate invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j)
-end
-module C12Zip_Impl0_Invariant
-  type i
-  type j
-  use prelude.Int
-  clone C12Zip_Common_Iterator_Invariant_Stub as Invariant1 with
-    type self = j
-  clone C12Zip_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = i
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
-  predicate invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j) =
-    [#"../12_zip.rs" 32 4 32 16] Invariant0.invariant' (C12Zip_Zip_Type.zip_iter1 self) /\ Invariant1.invariant' (C12Zip_Zip_Type.zip_iter2 self)
-  val invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j) : bool
-    ensures { result = invariant' self }
-    
 end
 module C12Zip_Impl0_ProducesRefl_Stub
   type i

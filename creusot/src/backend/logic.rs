@@ -227,20 +227,20 @@ fn proof_module(ctx: &mut TranslationCtx, def_id: DefId) -> Option<Module> {
         return None;
     }
 
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Body);
+    let sig = ctx.sig(def_id);
+    if sig.contract.is_empty() {
+        return None;
+    }
+
+    let (clones, mut names, _) = CloneMap::from_static_deps(ctx, def_id, CloneDepth::Deep, DepLevel::Body);
 
     let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
 
-    if sig.contract.is_empty() {
-        let _ = names.to_clones(ctx);
-        return None;
-    }
     let term = ctx.term(def_id).unwrap().clone();
     let body = specification::lower_impure(ctx, &mut names, term);
 
     let mut decls: Vec<_> = Vec::new();
     decls.extend(all_generic_decls_for(ctx.tcx, def_id));
-    let (clones, _) = names.to_clones(ctx);
     decls.extend(clones);
 
     let kind = match util::item_type(ctx.tcx, def_id) {

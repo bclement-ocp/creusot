@@ -26,8 +26,8 @@ module C06LogicFunctionContracts_Sum
   axiom sum_spec : forall seq : Seq.seq int . true
 end
 module C06LogicFunctionContracts_Sum_Impl
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use seq_ext.SeqExt
   let rec ghost function sum [#"../06_logic_function_contracts.rs" 9 0 9 32] (seq : Seq.seq int) : int
     variant {[#"../06_logic_function_contracts.rs" 8 10 8 19] Seq.length seq}
@@ -66,8 +66,8 @@ module C06LogicFunctionContracts_AllZero
   axiom all_zero_spec : forall seq : Seq.seq int . true
 end
 module C06LogicFunctionContracts_AllZero_Impl
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use seq_ext.SeqExt
   let rec ghost predicate all_zero [#"../06_logic_function_contracts.rs" 20 0 20 38] (seq : Seq.seq int)
     variant {[#"../06_logic_function_contracts.rs" 19 10 19 19] Seq.length seq}

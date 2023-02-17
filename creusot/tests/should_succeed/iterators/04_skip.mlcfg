@@ -128,6 +128,68 @@ module C04Skip_Impl0_Completed
     ensures { result = completed self }
     
 end
+module C04Skip_Impl0_Produces_Stub
+  type i
+  use seq.Seq
+  use prelude.Int
+  use prelude.UIntSize
+  clone C04Skip_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
+  predicate produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i)
+    
+end
+module C04Skip_Impl0_Produces_Interface
+  type i
+  use seq.Seq
+  clone C04Skip_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
+  predicate produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i)
+    
+end
+module C04Skip_Impl0_Produces
+  type i
+  use seq.Seq
+  use prelude.Int
+  use prelude.UIntSize
+  clone C04Skip_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
+    type self = Item0.item
+  clone C04Skip_Common_Iterator_Produces_Stub as Produces0 with
+    type self = i,
+    type Item0.item = Item0.item
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
+  predicate produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i)
+    
+   =
+    [#"../04_skip.rs" 35 8 42 9] visited = Seq.empty  /\ self = o \/ UIntSize.to_int (C04Skip_Skip_Type.skip_n o) = 0 /\ Seq.length visited > 0 /\ (exists s : Seq.seq Item0.item . Seq.length s = UIntSize.to_int (C04Skip_Skip_Type.skip_n self) /\ Produces0.produces (C04Skip_Skip_Type.skip_iter self) (Seq.(++) s visited) (C04Skip_Skip_Type.skip_iter o) /\ (forall i : int . 0 <= i /\ i < Seq.length s -> Resolve0.resolve (Seq.get s i)))
+  val produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i) : bool
+    ensures { result = produces self visited o }
+    
+end
+module C04Skip_Impl0_Invariant_Stub
+  type i
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
+  predicate invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i)
+end
+module C04Skip_Impl0_Invariant_Interface
+  type i
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
+  predicate invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i)
+end
+module C04Skip_Impl0_Invariant
+  type i
+  clone C04Skip_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = i
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
+  predicate invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i) =
+    [#"../04_skip.rs" 59 4 59 16] Invariant0.invariant' (C04Skip_Skip_Type.skip_iter self)
+  val invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i) : bool
+    ensures { result = invariant' self }
+    
+end
 module C04Skip_Common_Iterator_ProducesRefl_Stub
   type self
   use seq.Seq
@@ -218,68 +280,6 @@ module C04Skip_Common_Iterator_ProducesTrans
     ensures { result = produces_trans a ab b bc c }
     
   axiom produces_trans_spec : forall a : self, ab : Seq.seq Item0.item, b : self, bc : Seq.seq Item0.item, c : self . ([#"../common.rs" 19 15 19 28] Invariant0.invariant' a) -> ([#"../common.rs" 20 15 20 28] Invariant0.invariant' b) -> ([#"../common.rs" 21 15 21 28] Invariant0.invariant' c) -> ([#"../common.rs" 22 15 22 32] Produces0.produces a ab b) -> ([#"../common.rs" 23 15 23 32] Produces0.produces b bc c) -> ([#"../common.rs" 24 14 24 42] Produces0.produces a (Seq.(++) ab bc) c)
-end
-module C04Skip_Impl0_Produces_Stub
-  type i
-  use seq.Seq
-  use prelude.Int
-  use prelude.UIntSize
-  clone C04Skip_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
-  predicate produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i)
-    
-end
-module C04Skip_Impl0_Produces_Interface
-  type i
-  use seq.Seq
-  clone C04Skip_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
-  predicate produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i)
-    
-end
-module C04Skip_Impl0_Produces
-  type i
-  use seq.Seq
-  use prelude.Int
-  use prelude.UIntSize
-  clone C04Skip_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  clone CreusotContracts_Resolve_Resolve_Resolve_Stub as Resolve0 with
-    type self = Item0.item
-  clone C04Skip_Common_Iterator_Produces_Stub as Produces0 with
-    type self = i,
-    type Item0.item = Item0.item
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
-  predicate produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i)
-    
-   =
-    [#"../04_skip.rs" 35 8 42 9] visited = Seq.empty  /\ self = o \/ UIntSize.to_int (C04Skip_Skip_Type.skip_n o) = 0 /\ Seq.length visited > 0 /\ (exists s : Seq.seq Item0.item . Seq.length s = UIntSize.to_int (C04Skip_Skip_Type.skip_n self) /\ Produces0.produces (C04Skip_Skip_Type.skip_iter self) (Seq.(++) s visited) (C04Skip_Skip_Type.skip_iter o) /\ (forall i : int . 0 <= i /\ i < Seq.length s -> Resolve0.resolve (Seq.get s i)))
-  val produces [#"../04_skip.rs" 34 4 34 64] (self : C04Skip_Skip_Type.t_skip i) (visited : Seq.seq Item0.item) (o : C04Skip_Skip_Type.t_skip i) : bool
-    ensures { result = produces self visited o }
-    
-end
-module C04Skip_Impl0_Invariant_Stub
-  type i
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
-  predicate invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i)
-end
-module C04Skip_Impl0_Invariant_Interface
-  type i
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
-  predicate invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i)
-end
-module C04Skip_Impl0_Invariant
-  type i
-  clone C04Skip_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = i
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
-  predicate invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i) =
-    [#"../04_skip.rs" 59 4 59 16] Invariant0.invariant' (C04Skip_Skip_Type.skip_iter self)
-  val invariant' [#"../04_skip.rs" 60 4 60 30] (self : C04Skip_Skip_Type.t_skip i) : bool
-    ensures { result = invariant' self }
-    
 end
 module C04Skip_Impl0_ProducesRefl_Stub
   type i

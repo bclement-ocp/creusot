@@ -356,6 +356,7 @@ end
 module C02IterMut_Impl0_ProducesRefl_Impl
   type t
   use seq.Seq
+  use prelude.Borrow
   use prelude.Slice
   use prelude.Seq
   use seq.Seq
@@ -442,8 +443,8 @@ module C02IterMut_Impl0_ProducesTrans
 end
 module C02IterMut_Impl0_ProducesTrans_Impl
   type t
-  use seq.Seq
   use prelude.Borrow
+  use seq.Seq
   use prelude.Slice
   use prelude.Seq
   use seq.Seq

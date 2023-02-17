@@ -886,7 +886,7 @@ pub(crate) fn base_subst<'tcx>(
 
 // Which kind of module should we clone
 // TODO: Unify with `CloneOpacity`
-#[derive(Copy, Clone, PartialEq, Eq)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
 pub enum CloneLevel {
     Stub,
     Interface,

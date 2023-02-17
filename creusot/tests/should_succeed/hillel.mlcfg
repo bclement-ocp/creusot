@@ -2524,8 +2524,8 @@ module Hillel_SumRange
 end
 module Hillel_SumRange_Impl
   use prelude.Int
-  use seq.Seq
   use prelude.UInt32
+  use seq.Seq
   let rec ghost function sum_range [#"../hillel.rs" 121 0 121 54] (seq : Seq.seq uint32) (from : int) (to' : int) : int
     requires {[#"../hillel.rs" 119 11 119 53] 0 <= from /\ from <= to' /\ to' <= Seq.length seq}
     ensures { [#"../hillel.rs" 120 10 120 21] result >= 0 }
@@ -2575,8 +2575,8 @@ module Hillel_SumRangeSplit
 end
 module Hillel_SumRangeSplit_Impl
   use prelude.Int
-  use seq.Seq
   use prelude.UInt32
+  use seq.Seq
   clone Hillel_SumRange as SumRange0 with
     axiom .
   let rec ghost function sum_range_split [#"../hillel.rs" 133 0 133 61] (seq : Seq.seq uint32) (from : int) (to' : int) (i : int) : ()
@@ -2640,8 +2640,8 @@ module Hillel_Score
 end
 module Hillel_Score_Impl
   use prelude.Int
-  use seq.Seq
   use prelude.UInt32
+  use seq.Seq
   clone CreusotContracts_Logic_Int_Impl0_AbsDiff as AbsDiff0
   clone Hillel_SumRange as SumRange0 with
     axiom .

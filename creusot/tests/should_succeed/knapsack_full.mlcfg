@@ -105,7 +105,6 @@ module KnapsackFull_SumWeights_Impl
   type name
   use prelude.Int
   use seq.Seq
-  use prelude.Borrow
   use prelude.UIntSize
   use KnapsackFull_Item_Type as KnapsackFull_Item_Type
   let rec ghost function sum_weights [#"../knapsack_full.rs" 26 0 26 56] (s : Seq.seq (KnapsackFull_Item_Type.t_item name)) (i : int) : int
@@ -162,7 +161,6 @@ module KnapsackFull_SumValues_Impl
   type name
   use prelude.Int
   use seq.Seq
-  use prelude.Borrow
   use prelude.UIntSize
   use KnapsackFull_Item_Type as KnapsackFull_Item_Type
   let rec ghost function sum_values [#"../knapsack_full.rs" 36 0 36 55] (s : Seq.seq (KnapsackFull_Item_Type.t_item name)) (i : int) : int
@@ -211,7 +209,6 @@ module KnapsackFull_SubseqRev_Impl
   type t
   use prelude.Int
   use seq.Seq
-  use prelude.Borrow
   let rec ghost predicate subseq_rev [#"../knapsack_full.rs" 47 0 47 67] (s1 : Seq.seq t) (i1 : int) (s2 : Seq.seq t) (i2 : int)
     requires {[#"../knapsack_full.rs" 45 11 45 36] 0 <= i1 /\ i1 <= Seq.length s1}
     requires {[#"../knapsack_full.rs" 46 11 46 36] 0 <= i2 /\ i2 <= Seq.length s2}
@@ -300,7 +297,6 @@ module KnapsackFull_M_Impl
   type name
   use prelude.Int
   use seq.Seq
-  use prelude.Borrow
   use prelude.UIntSize
   use int.MinMax
   use KnapsackFull_Item_Type as KnapsackFull_Item_Type

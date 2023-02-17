@@ -63,6 +63,7 @@ module C18TraitLaws_UsesOp
 end
 module C18TraitLaws_UsesOp_Impl
   type t
+  use prelude.Int
   clone C18TraitLaws_Symmetric_Op_Interface as Op0 with
     type self = t
   clone C18TraitLaws_Symmetric_Reflexive_Interface as Reflexive0 with
@@ -109,6 +110,7 @@ module C18TraitLaws_Impl0_Reflexive
   axiom reflexive_spec : forall a : (), b : () . [#"../18_trait_laws.rs" 26 14 26 32] Op0.op a b = Op0.op b a
 end
 module C18TraitLaws_Impl0_Reflexive_Impl
+  use prelude.Int
   clone C18TraitLaws_Impl0_Op as Op0
   let rec ghost function reflexive [#"../18_trait_laws.rs" 27 4 27 34] (a : ()) (b : ()) : ()
     ensures { [#"../18_trait_laws.rs" 26 14 26 32] Op0.op a b = Op0.op b a }
@@ -135,6 +137,7 @@ module C18TraitLaws_ImplLaws
   axiom impl_laws_spec : forall _1' : () . [#"../18_trait_laws.rs" 31 10 31 24] impl_laws _1' = true
 end
 module C18TraitLaws_ImplLaws_Impl
+  use prelude.Int
   clone C18TraitLaws_Impl0_Op as Op0
   clone C18TraitLaws_Impl0_Reflexive as Reflexive0 with
     function Op0.op = Op0.op,

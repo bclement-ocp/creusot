@@ -74,7 +74,6 @@ module IncSomeList_Impl0_LemmaSumNonneg
 end
 module IncSomeList_Impl0_LemmaSumNonneg_Impl
   use prelude.Int
-  use prelude.Borrow
   use IncSomeList_List_Type as IncSomeList_List_Type
   clone IncSomeList_Impl0_Sum as Sum0
   let rec ghost function lemma_sum_nonneg [#"../inc_some_list.rs" 33 4 33 30] (self : IncSomeList_List_Type.t_list) : ()

@@ -678,8 +678,9 @@ module C05Map_Impl1_PreservationInv_Impl
   type i
   type b
   type f
-  use prelude.Borrow
+  use prelude.Int
   use seq.Seq
+  use prelude.Borrow
   clone CreusotContracts_Resolve_Resolve_Resolve_Interface as Resolve0 with
     type self = f
   clone C05Map_Common_Iterator_Item_Type as Item0 with
@@ -740,6 +741,7 @@ module C05Map_Impl1_PreservationInv_Impl
   clone CreusotContracts_Std1_Ops_Impl0_Precondition as Precondition0 with
     type args = Item0.item,
     type f = f
+  use C05Map_Map_Type as C05Map_Map_Type
   clone C05Map_Impl1_Preservation as Preservation0 with
     type i = i,
     type b = b,
@@ -750,7 +752,6 @@ module C05Map_Impl1_PreservationInv_Impl
     predicate Produces0.produces = Produces0.produces,
     predicate Precondition0.precondition = Precondition0.precondition,
     predicate PostconditionMut0.postcondition_mut = PostconditionMut0.postcondition_mut
-  use C05Map_Map_Type as C05Map_Map_Type
   let rec ghost predicate preservation_inv [#"../05_map.rs" 103 4 103 37] (self : C05Map_Map_Type.t_map i f)
     ensures { [#"../05_map.rs" 102 14 102 64] result = Preservation0.preservation (C05Map_Map_Type.map_iter self) (C05Map_Map_Type.map_func self) }
     
@@ -1319,6 +1320,7 @@ module C05Map_Impl1_ProducesOne_Impl
   type i
   type b
   type f
+  use prelude.Int
   use seq.Seq
   use prelude.Borrow
   clone C05Map_Common_Iterator_Completed_Interface as Completed1 with

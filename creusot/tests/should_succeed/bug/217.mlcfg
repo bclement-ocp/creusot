@@ -50,8 +50,8 @@ module C217_Ex
   axiom ex_spec : forall c : Seq.seq int, a : int . true
 end
 module C217_Ex_Impl
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use prelude.Int
   clone CreusotContracts_Logic_Seq_Impl0_Tail as Tail0 with
     type t = int

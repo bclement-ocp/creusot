@@ -3858,8 +3858,8 @@ module C06KnightsTour_DumbNonlinearArith
   axiom dumb_nonlinear_arith_spec : forall a : usize . ([#"../06_knights_tour.rs" 129 11 129 22] UIntSize.to_int a <= 1000) -> ([#"../06_knights_tour.rs" 130 10 130 30] UIntSize.to_int a * UIntSize.to_int a <= 1000000)
 end
 module C06KnightsTour_DumbNonlinearArith_Impl
-  use prelude.UIntSize
   use prelude.Int
+  use prelude.UIntSize
   let rec ghost function dumb_nonlinear_arith [#"../06_knights_tour.rs" 131 0 131 33] (a : usize) : ()
     requires {[#"../06_knights_tour.rs" 129 11 129 22] UIntSize.to_int a <= 1000}
     ensures { [#"../06_knights_tour.rs" 130 10 130 30] UIntSize.to_int a * UIntSize.to_int a <= 1000000 }

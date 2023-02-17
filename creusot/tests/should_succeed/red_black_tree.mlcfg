@@ -357,6 +357,7 @@ end
 module RedBlackTree_Impl0_ModelAccHasMapping_Impl
   type k
   type v
+  use prelude.Int
   use map.Map
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
@@ -941,6 +942,7 @@ end
 module RedBlackTree_Impl0_HasMappingModelAcc_Impl
   type k
   type v
+  use prelude.Int
   use map.Map
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
@@ -1186,6 +1188,7 @@ end
 module RedBlackTree_Impl0_HasMappingModel_Impl
   type k
   type v
+  use prelude.Int
   use map.Map
   use map.Const
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
@@ -1381,6 +1384,7 @@ end
 module RedBlackTree_Impl0_HasMappingInj_Impl
   type k
   type v
+  use prelude.Int
   use map.Map
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
@@ -1576,14 +1580,15 @@ end
 module RedBlackTree_Impl1_HasMapping_Impl
   type k
   type v
-  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
-  use RedBlackTree_Node_Type as RedBlackTree_Node_Type
-  use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
+  use prelude.Int
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
   clone CreusotContracts_Model_DeepModel_DeepModel_Interface as DeepModel0 with
     type self = k,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
+  use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
+  use RedBlackTree_Node_Type as RedBlackTree_Node_Type
+  use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   clone RedBlackTree_Impl0_HasMapping as HasMapping0 with
@@ -1962,6 +1967,7 @@ end
 module RedBlackTree_Impl6_MatchT_Impl
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   use RedBlackTree_Color_Type as RedBlackTree_Color_Type
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
@@ -2314,10 +2320,10 @@ module RedBlackTree_Impl11_Height_Impl
   type k
   type v
   use prelude.Int
+  use RedBlackTree_Color_Type as RedBlackTree_Color_Type
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
-  use RedBlackTree_Color_Type as RedBlackTree_Color_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   clone RedBlackTree_Impl10_Height as Height0 with

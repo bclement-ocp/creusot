@@ -56,121 +56,6 @@ module C06MapPrecond_Common_Iterator_Completed
     ensures { result = completed self }
     
 end
-module C06MapPrecond_Common_Iterator_Produces_Stub
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  predicate produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self)
-end
-module C06MapPrecond_Common_Iterator_Produces_Interface
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  predicate produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self)
-end
-module C06MapPrecond_Common_Iterator_Produces
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  predicate produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self)
-  val produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self) : bool
-    ensures { result = produces self visited _3' }
-    
-end
-module C06MapPrecond_Common_Iterator_ProducesRefl_Stub
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
-    type self = self,
-    type Item0.item = Item0.item
-  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = self
-  function produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
-end
-module C06MapPrecond_Common_Iterator_ProducesRefl_Interface
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
-    type self = self,
-    type Item0.item = Item0.item
-  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = self
-  function produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
-  axiom produces_refl_spec : forall a : self . ([#"../common.rs" 14 15 14 28] Invariant0.invariant' a) -> ([#"../common.rs" 15 14 15 39] Produces0.produces a (Seq.empty ) a)
-end
-module C06MapPrecond_Common_Iterator_ProducesRefl
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
-    type self = self,
-    type Item0.item = Item0.item
-  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = self
-  function produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
-  val produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
-    requires {[#"../common.rs" 14 15 14 28] Invariant0.invariant' a}
-    ensures { result = produces_refl a }
-    
-  axiom produces_refl_spec : forall a : self . ([#"../common.rs" 14 15 14 28] Invariant0.invariant' a) -> ([#"../common.rs" 15 14 15 39] Produces0.produces a (Seq.empty ) a)
-end
-module C06MapPrecond_Common_Iterator_ProducesTrans_Stub
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
-    type self = self,
-    type Item0.item = Item0.item
-  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = self
-  function produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
-    
-end
-module C06MapPrecond_Common_Iterator_ProducesTrans_Interface
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
-    type self = self,
-    type Item0.item = Item0.item
-  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = self
-  function produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
-    
-  axiom produces_trans_spec : forall a : self, ab : Seq.seq Item0.item, b : self, bc : Seq.seq Item0.item, c : self . ([#"../common.rs" 19 15 19 28] Invariant0.invariant' a) -> ([#"../common.rs" 20 15 20 28] Invariant0.invariant' b) -> ([#"../common.rs" 21 15 21 28] Invariant0.invariant' c) -> ([#"../common.rs" 22 15 22 32] Produces0.produces a ab b) -> ([#"../common.rs" 23 15 23 32] Produces0.produces b bc c) -> ([#"../common.rs" 24 14 24 42] Produces0.produces a (Seq.(++) ab bc) c)
-end
-module C06MapPrecond_Common_Iterator_ProducesTrans
-  type self
-  use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = self
-  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
-    type self = self,
-    type Item0.item = Item0.item
-  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = self
-  function produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
-    
-  val produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
-    requires {[#"../common.rs" 19 15 19 28] Invariant0.invariant' a}
-    requires {[#"../common.rs" 20 15 20 28] Invariant0.invariant' b}
-    requires {[#"../common.rs" 21 15 21 28] Invariant0.invariant' c}
-    requires {[#"../common.rs" 22 15 22 32] Produces0.produces a ab b}
-    requires {[#"../common.rs" 23 15 23 32] Produces0.produces b bc c}
-    ensures { result = produces_trans a ab b bc c }
-    
-  axiom produces_trans_spec : forall a : self, ab : Seq.seq Item0.item, b : self, bc : Seq.seq Item0.item, c : self . ([#"../common.rs" 19 15 19 28] Invariant0.invariant' a) -> ([#"../common.rs" 20 15 20 28] Invariant0.invariant' b) -> ([#"../common.rs" 21 15 21 28] Invariant0.invariant' c) -> ([#"../common.rs" 22 15 22 32] Produces0.produces a ab b) -> ([#"../common.rs" 23 15 23 32] Produces0.produces b bc c) -> ([#"../common.rs" 24 14 24 42] Produces0.produces a (Seq.(++) ab bc) c)
-end
 module C06MapPrecond_Impl0_Completed_Stub
   type i
   type b
@@ -215,6 +100,30 @@ module C06MapPrecond_Impl0_Completed
     [#"../06_map_precond.rs" 20 8 23 9] Ghost.inner (C06MapPrecond_Map_Type.map_produced ( ^ self)) = Seq.empty  /\ Completed0.completed {current = C06MapPrecond_Map_Type.map_iter ( * self); final = C06MapPrecond_Map_Type.map_iter ( ^ self)} /\ C06MapPrecond_Map_Type.map_func ( * self) = C06MapPrecond_Map_Type.map_func ( ^ self)
   val completed [#"../06_map_precond.rs" 19 4 19 35] (self : borrowed (C06MapPrecond_Map_Type.t_map i Item0.item f)) : bool
     ensures { result = completed self }
+    
+end
+module C06MapPrecond_Common_Iterator_Produces_Stub
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  predicate produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self)
+end
+module C06MapPrecond_Common_Iterator_Produces_Interface
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  predicate produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self)
+end
+module C06MapPrecond_Common_Iterator_Produces
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  predicate produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self)
+  val produces [#"../common.rs" 8 4 8 65] (self : self) (visited : Seq.seq Item0.item) (_3' : self) : bool
+    ensures { result = produces self visited _3' }
     
 end
 module CreusotContracts_Std1_Ops_Impl0_Precondition_Stub
@@ -425,6 +334,97 @@ module C06MapPrecond_Impl1_Reinitialize
   val reinitialize [#"../06_map_precond.rs" 104 4 104 29] (_1' : ()) : bool
     ensures { result = reinitialize _1' }
     
+end
+module C06MapPrecond_Common_Iterator_ProducesRefl_Stub
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
+    type self = self,
+    type Item0.item = Item0.item
+  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = self
+  function produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
+end
+module C06MapPrecond_Common_Iterator_ProducesRefl_Interface
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
+    type self = self,
+    type Item0.item = Item0.item
+  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = self
+  function produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
+  axiom produces_refl_spec : forall a : self . ([#"../common.rs" 14 15 14 28] Invariant0.invariant' a) -> ([#"../common.rs" 15 14 15 39] Produces0.produces a (Seq.empty ) a)
+end
+module C06MapPrecond_Common_Iterator_ProducesRefl
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
+    type self = self,
+    type Item0.item = Item0.item
+  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = self
+  function produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
+  val produces_refl [#"../common.rs" 16 4 16 30] (a : self) : ()
+    requires {[#"../common.rs" 14 15 14 28] Invariant0.invariant' a}
+    ensures { result = produces_refl a }
+    
+  axiom produces_refl_spec : forall a : self . ([#"../common.rs" 14 15 14 28] Invariant0.invariant' a) -> ([#"../common.rs" 15 14 15 39] Produces0.produces a (Seq.empty ) a)
+end
+module C06MapPrecond_Common_Iterator_ProducesTrans_Stub
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
+    type self = self,
+    type Item0.item = Item0.item
+  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = self
+  function produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
+    
+end
+module C06MapPrecond_Common_Iterator_ProducesTrans_Interface
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
+    type self = self,
+    type Item0.item = Item0.item
+  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = self
+  function produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
+    
+  axiom produces_trans_spec : forall a : self, ab : Seq.seq Item0.item, b : self, bc : Seq.seq Item0.item, c : self . ([#"../common.rs" 19 15 19 28] Invariant0.invariant' a) -> ([#"../common.rs" 20 15 20 28] Invariant0.invariant' b) -> ([#"../common.rs" 21 15 21 28] Invariant0.invariant' c) -> ([#"../common.rs" 22 15 22 32] Produces0.produces a ab b) -> ([#"../common.rs" 23 15 23 32] Produces0.produces b bc c) -> ([#"../common.rs" 24 14 24 42] Produces0.produces a (Seq.(++) ab bc) c)
+end
+module C06MapPrecond_Common_Iterator_ProducesTrans
+  type self
+  use seq.Seq
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = self
+  clone C06MapPrecond_Common_Iterator_Produces_Stub as Produces0 with
+    type self = self,
+    type Item0.item = Item0.item
+  clone C06MapPrecond_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = self
+  function produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
+    
+  val produces_trans [#"../common.rs" 25 4 25 91] (a : self) (ab : Seq.seq Item0.item) (b : self) (bc : Seq.seq Item0.item) (c : self) : ()
+    requires {[#"../common.rs" 19 15 19 28] Invariant0.invariant' a}
+    requires {[#"../common.rs" 20 15 20 28] Invariant0.invariant' b}
+    requires {[#"../common.rs" 21 15 21 28] Invariant0.invariant' c}
+    requires {[#"../common.rs" 22 15 22 32] Produces0.produces a ab b}
+    requires {[#"../common.rs" 23 15 23 32] Produces0.produces b bc c}
+    ensures { result = produces_trans a ab b bc c }
+    
+  axiom produces_trans_spec : forall a : self, ab : Seq.seq Item0.item, b : self, bc : Seq.seq Item0.item, c : self . ([#"../common.rs" 19 15 19 28] Invariant0.invariant' a) -> ([#"../common.rs" 20 15 20 28] Invariant0.invariant' b) -> ([#"../common.rs" 21 15 21 28] Invariant0.invariant' c) -> ([#"../common.rs" 22 15 22 32] Produces0.produces a ab b) -> ([#"../common.rs" 23 15 23 32] Produces0.produces b bc c) -> ([#"../common.rs" 24 14 24 42] Produces0.produces a (Seq.(++) ab bc) c)
 end
 module CreusotContracts_Std1_Ops_Impl1_PostconditionMutUnnest_Stub
   type args
@@ -726,8 +726,9 @@ module C06MapPrecond_Impl1_PreservationInv_Impl
   type i
   type b
   type f
-  use prelude.Ghost
+  use prelude.Int
   use seq.Seq
+  use prelude.Ghost
   use prelude.Borrow
   clone CreusotContracts_Resolve_Resolve_Resolve_Interface as Resolve0 with
     type self = f
@@ -1435,6 +1436,7 @@ module C06MapPrecond_Impl1_ProducesOne_Impl
   type i
   type b
   type f
+  use prelude.Int
   use seq.Seq
   use prelude.Borrow
   use prelude.Ghost

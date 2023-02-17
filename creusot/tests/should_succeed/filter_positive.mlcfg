@@ -28,8 +28,8 @@ module FilterPositive_NumOfPos
 end
 module FilterPositive_NumOfPos_Impl
   use prelude.Int
-  use seq.Seq
   use prelude.Int32
+  use seq.Seq
   let rec ghost function num_of_pos [#"../filter_positive.rs" 37 0 37 49] (i : int) (j : int) (t : Seq.seq int32) : int
     variant {[#"../filter_positive.rs" 36 10 36 13] j - i}
     
@@ -80,8 +80,8 @@ module FilterPositive_LemmaNumOfPosIncreasing
 end
 module FilterPositive_LemmaNumOfPosIncreasing_Impl
   use prelude.Int
-  use seq.Seq
   use prelude.Int32
+  use seq.Seq
   clone FilterPositive_NumOfPos as NumOfPos0 with
     axiom .
   let rec ghost function lemma_num_of_pos_increasing [#"../filter_positive.rs" 65 0 65 67] (i : int) (j : int) (k : int) (t : Seq.seq int32) : ()
@@ -127,8 +127,8 @@ module FilterPositive_LemmaNumOfPosStrictlyIncreasing
 end
 module FilterPositive_LemmaNumOfPosStrictlyIncreasing_Impl
   use prelude.Int
-  use seq.Seq
   use prelude.Int32
+  use seq.Seq
   clone FilterPositive_NumOfPos as NumOfPos0 with
     axiom .
   let rec ghost function lemma_num_of_pos_strictly_increasing [#"../filter_positive.rs" 79 0 79 60] (i : int) (t : Seq.seq int32) : ()

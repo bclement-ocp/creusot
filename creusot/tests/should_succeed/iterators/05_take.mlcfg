@@ -127,6 +127,66 @@ module C05Take_Common_Iterator_Produces
     ensures { result = produces self visited _3' }
     
 end
+module C05Take_Impl0_Produces_Stub
+  type i
+  use seq.Seq
+  use prelude.Int
+  use prelude.UIntSize
+  clone C05Take_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  use C05Take_Take_Type as C05Take_Take_Type
+  predicate produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i)
+    
+end
+module C05Take_Impl0_Produces_Interface
+  type i
+  use seq.Seq
+  clone C05Take_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  use C05Take_Take_Type as C05Take_Take_Type
+  predicate produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i)
+    
+end
+module C05Take_Impl0_Produces
+  type i
+  use seq.Seq
+  use prelude.Int
+  use prelude.UIntSize
+  clone C05Take_Common_Iterator_Item_Type as Item0 with
+    type self = i
+  clone C05Take_Common_Iterator_Produces_Stub as Produces0 with
+    type self = i,
+    type Item0.item = Item0.item
+  use C05Take_Take_Type as C05Take_Take_Type
+  predicate produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i)
+    
+   =
+    [#"../05_take.rs" 30 8 32 9] UIntSize.to_int (C05Take_Take_Type.take_n self) = UIntSize.to_int (C05Take_Take_Type.take_n o) + Seq.length visited /\ Produces0.produces (C05Take_Take_Type.take_iter self) visited (C05Take_Take_Type.take_iter o)
+  val produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i) : bool
+    ensures { result = produces self visited o }
+    
+end
+module C05Take_Impl0_Invariant_Stub
+  type i
+  use C05Take_Take_Type as C05Take_Take_Type
+  predicate invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i)
+end
+module C05Take_Impl0_Invariant_Interface
+  type i
+  use C05Take_Take_Type as C05Take_Take_Type
+  predicate invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i)
+end
+module C05Take_Impl0_Invariant
+  type i
+  clone C05Take_Common_Iterator_Invariant_Stub as Invariant0 with
+    type self = i
+  use C05Take_Take_Type as C05Take_Take_Type
+  predicate invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i) =
+    [#"../05_take.rs" 37 8 39 9] Invariant0.invariant' (C05Take_Take_Type.take_iter self)
+  val invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i) : bool
+    ensures { result = invariant' self }
+    
+end
 module C05Take_Common_Iterator_ProducesRefl_Stub
   type self
   use seq.Seq
@@ -217,66 +277,6 @@ module C05Take_Common_Iterator_ProducesTrans
     ensures { result = produces_trans a ab b bc c }
     
   axiom produces_trans_spec : forall a : self, ab : Seq.seq Item0.item, b : self, bc : Seq.seq Item0.item, c : self . ([#"../common.rs" 19 15 19 28] Invariant0.invariant' a) -> ([#"../common.rs" 20 15 20 28] Invariant0.invariant' b) -> ([#"../common.rs" 21 15 21 28] Invariant0.invariant' c) -> ([#"../common.rs" 22 15 22 32] Produces0.produces a ab b) -> ([#"../common.rs" 23 15 23 32] Produces0.produces b bc c) -> ([#"../common.rs" 24 14 24 42] Produces0.produces a (Seq.(++) ab bc) c)
-end
-module C05Take_Impl0_Produces_Stub
-  type i
-  use seq.Seq
-  use prelude.Int
-  use prelude.UIntSize
-  clone C05Take_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  use C05Take_Take_Type as C05Take_Take_Type
-  predicate produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i)
-    
-end
-module C05Take_Impl0_Produces_Interface
-  type i
-  use seq.Seq
-  clone C05Take_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  use C05Take_Take_Type as C05Take_Take_Type
-  predicate produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i)
-    
-end
-module C05Take_Impl0_Produces
-  type i
-  use seq.Seq
-  use prelude.Int
-  use prelude.UIntSize
-  clone C05Take_Common_Iterator_Item_Type as Item0 with
-    type self = i
-  clone C05Take_Common_Iterator_Produces_Stub as Produces0 with
-    type self = i,
-    type Item0.item = Item0.item
-  use C05Take_Take_Type as C05Take_Take_Type
-  predicate produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i)
-    
-   =
-    [#"../05_take.rs" 30 8 32 9] UIntSize.to_int (C05Take_Take_Type.take_n self) = UIntSize.to_int (C05Take_Take_Type.take_n o) + Seq.length visited /\ Produces0.produces (C05Take_Take_Type.take_iter self) visited (C05Take_Take_Type.take_iter o)
-  val produces [#"../05_take.rs" 29 4 29 64] (self : C05Take_Take_Type.t_take i) (visited : Seq.seq Item0.item) (o : C05Take_Take_Type.t_take i) : bool
-    ensures { result = produces self visited o }
-    
-end
-module C05Take_Impl0_Invariant_Stub
-  type i
-  use C05Take_Take_Type as C05Take_Take_Type
-  predicate invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i)
-end
-module C05Take_Impl0_Invariant_Interface
-  type i
-  use C05Take_Take_Type as C05Take_Take_Type
-  predicate invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i)
-end
-module C05Take_Impl0_Invariant
-  type i
-  clone C05Take_Common_Iterator_Invariant_Stub as Invariant0 with
-    type self = i
-  use C05Take_Take_Type as C05Take_Take_Type
-  predicate invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i) =
-    [#"../05_take.rs" 37 8 39 9] Invariant0.invariant' (C05Take_Take_Type.take_iter self)
-  val invariant' [#"../05_take.rs" 36 4 36 30] (self : C05Take_Take_Type.t_take i) : bool
-    ensures { result = invariant' self }
-    
 end
 module C05Take_Impl0_ProducesRefl_Stub
   type i

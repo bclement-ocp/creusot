@@ -131,6 +131,7 @@ module C01Range_Impl0_ProducesRefl
 end
 module C01Range_Impl0_ProducesRefl_Impl
   use seq.Seq
+  use prelude.IntSize
   use C01Range_Range_Type as C01Range_Range_Type
   clone C01Range_Impl0_Produces as Produces0
   let rec ghost function produces_refl [#"../01_range.rs" 40 4 40 29] (a : C01Range_Range_Type.t_range) : ()
@@ -174,9 +175,8 @@ module C01Range_Impl0_ProducesTrans
   axiom produces_trans_spec : forall a : C01Range_Range_Type.t_range, ab : Seq.seq isize, b : C01Range_Range_Type.t_range, bc : Seq.seq isize, c : C01Range_Range_Type.t_range . ([#"../01_range.rs" 43 15 43 32] Produces0.produces a ab b) -> ([#"../01_range.rs" 44 15 44 32] Produces0.produces b bc c) -> ([#"../01_range.rs" 45 14 45 42] Produces0.produces a (Seq.(++) ab bc) c)
 end
 module C01Range_Impl0_ProducesTrans_Impl
-  use seq.Seq
-  use prelude.Int
   use prelude.IntSize
+  use seq.Seq
   use C01Range_Range_Type as C01Range_Range_Type
   clone C01Range_Impl0_Produces as Produces0
   let rec ghost function produces_trans [#"../01_range.rs" 46 4 46 90] (a : C01Range_Range_Type.t_range) (ab : Seq.seq isize) (b : C01Range_Range_Type.t_range) (bc : Seq.seq isize) (c : C01Range_Range_Type.t_range) : ()

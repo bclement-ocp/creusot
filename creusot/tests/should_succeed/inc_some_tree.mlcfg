@@ -79,7 +79,6 @@ module IncSomeTree_Impl0_LemmaSumNonneg
 end
 module IncSomeTree_Impl0_LemmaSumNonneg_Impl
   use prelude.Int
-  use prelude.Borrow
   use IncSomeTree_Tree_Type as IncSomeTree_Tree_Type
   clone IncSomeTree_Impl0_Sum as Sum0
   let rec ghost function lemma_sum_nonneg [#"../inc_some_tree.rs" 33 4 33 30] (self : IncSomeTree_Tree_Type.t_tree) : ()
