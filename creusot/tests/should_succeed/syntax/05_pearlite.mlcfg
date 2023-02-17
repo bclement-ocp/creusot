@@ -74,6 +74,8 @@ module C05Pearlite_StructOrder
   
 end
 module C05Pearlite_Field1IsTrue_Stub
+  use prelude.Int
+  use prelude.UInt32
   use C05Pearlite_B_Type as C05Pearlite_B_Type
   predicate field1_is_true [#"../05_pearlite.rs" 27 0 27 35] (x : C05Pearlite_B_Type.t_b)
 end

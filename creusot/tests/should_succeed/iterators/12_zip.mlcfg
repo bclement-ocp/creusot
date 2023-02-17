@@ -50,6 +50,7 @@ module C12Zip_Impl0_Completed_Stub
   type i
   type j
   use prelude.Borrow
+  use prelude.Int
   use C12Zip_Zip_Type as C12Zip_Zip_Type
   predicate completed [#"../12_zip.rs" 17 4 17 35] (self : borrowed (C12Zip_Zip_Type.t_zip i j))
 end
@@ -199,6 +200,7 @@ module C12Zip_Impl0_Produces_Stub
   type i
   type j
   use seq.Seq
+  use prelude.Int
   clone C12Zip_Common_Iterator_Item_Type as Item1 with
     type self = j
   clone C12Zip_Common_Iterator_Item_Type as Item0 with
@@ -246,6 +248,7 @@ end
 module C12Zip_Impl0_Invariant_Stub
   type i
   type j
+  use prelude.Int
   use C12Zip_Zip_Type as C12Zip_Zip_Type
   predicate invariant' [#"../12_zip.rs" 33 4 33 30] (self : C12Zip_Zip_Type.t_zip i j)
 end
@@ -400,11 +403,11 @@ module C12Zip_Impl0_ProducesTrans_Stub
   type i
   type j
   use seq.Seq
+  use C12Zip_Zip_Type as C12Zip_Zip_Type
   clone C12Zip_Common_Iterator_Item_Type as Item1 with
     type self = j
   clone C12Zip_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C12Zip_Zip_Type as C12Zip_Zip_Type
   clone C12Zip_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type j = j,
@@ -571,6 +574,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -606,6 +610,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve_Stub
   type t1
   type t2
+  use prelude.Int
   predicate resolve (self : (t1, t2))
 end
 module CreusotContracts_Resolve_Impl0_Resolve_Interface

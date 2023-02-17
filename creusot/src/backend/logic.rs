@@ -14,6 +14,8 @@ use why3::{
     Ident, QName,
 };
 
+use super::dependency::DepLevel;
+
 pub(crate) fn binders_to_args(
     ctx: &mut TranslationCtx,
     binders: Vec<Binder>,
@@ -62,7 +64,7 @@ fn builtin_body<'tcx>(
     ctx: &mut TranslationCtx<'tcx>,
     def_id: DefId,
 ) -> (Module, CloneSummary<'tcx>) {
-    let (clones, mut names, summary) = CloneMap::from_static_deps(ctx, def_id, CloneLevel::Stub);
+    let (clones, mut names, summary) = CloneMap::from_static_deps(ctx, def_id, CloneDepth::Shallow, DepLevel::Signature);
     let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
     let (val_args, val_binders) = binders_to_args(ctx, sig.args);
     sig.args = val_binders;
@@ -117,7 +119,7 @@ fn body_module<'tcx>(
     ctx: &mut TranslationCtx<'tcx>,
     def_id: DefId,
 ) -> (Module, CloneSummary<'tcx>) {
-    let (clones, mut names, summary) = CloneMap::from_static_deps(ctx, def_id, CloneLevel::Stub);
+    let (clones, mut names, summary) = CloneMap::from_static_deps(ctx, def_id, CloneDepth::Shallow, DepLevel::Body);
 
     let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
     let mut val_sig = sig.clone();
@@ -199,7 +201,7 @@ fn body_module<'tcx>(
 }
 
 pub(crate) fn stub_module(ctx: &mut TranslationCtx, def_id: DefId) -> Module {
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Stub);
+    let (clones, mut names, _) = CloneMap::from_static_deps(ctx, def_id, CloneDepth::Shallow, DepLevel::Signature);
     let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
 
     if util::is_predicate(ctx.tcx, def_id) {
@@ -214,7 +216,6 @@ pub(crate) fn stub_module(ctx: &mut TranslationCtx, def_id: DefId) -> Module {
 
     let mut decls: Vec<_> = Vec::new();
     decls.extend(all_generic_decls_for(ctx.tcx, def_id));
-    let (clones, _) = names.to_clones(ctx);
     decls.extend(clones);
     decls.push(decl);
 

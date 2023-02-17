@@ -162,9 +162,12 @@ pub(crate) fn get_deps<'tcx>(
         ItemType::Closure => todo!(),
         ItemType::Trait => todo!(),
         ItemType::Impl => todo!(),
-        ItemType::Type => todo!(),
         ItemType::AssocTy => todo!(),
-        ItemType::Constant => todo!(),
+        ItemType::Constant => {
+            ctx.type_of(def_id).deps(ctx.tcx, &mut |d| {
+                deps.insert((DepLevel::Signature, d));
+            });
+        }
         ItemType::Unsupported(_) => todo!(),
     }
 
@@ -334,7 +337,7 @@ impl<'tcx> VisitDeps<'tcx> for Body<'tcx> {
 }
 
 impl<'tcx> VisitDeps<'tcx> for Place<'tcx> {
-    fn deps<F: FnMut(Dependency<'tcx>)>(&self, tcx: TyCtxt<'tcx>, f: &mut F) {
+    fn deps<F: FnMut(Dependency<'tcx>)>(&self, _tcx: TyCtxt<'tcx>, _f: &mut F) {
         panic!()
         // let mut ty = PlaceTy::from_ty(self.ty);
         // for elem in self.projection {
@@ -363,7 +366,7 @@ impl<'tcx> VisitDeps<'tcx> for Place<'tcx> {
 impl<'tcx> VisitDeps<'tcx> for Pattern<'tcx> {
     fn deps<F: FnMut(Dependency<'tcx>)>(&self, tcx: TyCtxt<'tcx>, f: &mut F) {
         match self {
-            Pattern::Constructor { adt, substs, variant, fields } => {
+            Pattern::Constructor { adt, substs, fields, .. } => {
                 // FIXME: Make this `Dependency::Type`
                 (f)(Dependency::Item((*adt, substs)));
                 fields.iter().for_each(|fld| fld.deps(tcx, f))
@@ -389,7 +392,7 @@ impl<'tcx, F: FnMut(Dependency<'tcx>)> TermVisitor<'tcx> for TermDep<'tcx, F> {
                 (self.f)(Dependency::Item((*id, subst)))
             }
             TermKind::Constructor { adt: _, variant: _, fields: _ } => {
-                if let TyKind::Adt(def, subst) = term.ty.kind() {
+                if let TyKind::Adt(_, _) = term.ty.kind() {
                     (self.f)(Dependency::Type(term.ty))
                 } else {
                     unreachable!()
@@ -398,14 +401,13 @@ impl<'tcx, F: FnMut(Dependency<'tcx>)> TermVisitor<'tcx> for TermDep<'tcx, F> {
             TermKind::Fin { term } => {
                 (self.f)(Dependency::Type(term.ty));
             }
-            TermKind::Projection { name, lhs } => match lhs.ty.kind() {
+            TermKind::Projection { lhs, .. } => match lhs.ty.kind() {
                 // TyKind::Closure(def, substs) => (self.f)(Dependency::Item((*def, substs))),
-                TyKind::Adt(def, substs) => {
+                TyKind::Adt(_, _) => {
                     // let field = &def.variants()[0u32.into()].fields[name.as_usize()];
                     // (self.f)(Dependency::Item((field.did, substs)))
                     (self.f)(Dependency::Type(lhs.ty))
                 }
-                _ => {}
                 _ => unreachable!("{:?}", lhs.ty),
             },
             TermKind::Lit(_) => {
@@ -429,7 +431,7 @@ impl<'tcx, F: FnMut(Dependency<'tcx>)> TypeVisitor<'tcx> for TermDep<'tcx, F> {
                 sub.visit_with(self);
                 (self.f)(Dependency::Type(t))
             }
-            TyKind::Closure(def, sub) => {
+            TyKind::Closure(def, _) => {
                 if !util::is_logic(self.tcx, *def) {
                     (self.f)(Dependency::Type(t));
                 }

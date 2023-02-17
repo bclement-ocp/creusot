@@ -1,7 +1,8 @@
 
 module C06LogicFunctionContracts_Sum_Stub
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
+  use seq_ext.SeqExt
   function sum [#"../06_logic_function_contracts.rs" 9 0 9 32] (seq : Seq.seq int) : int
 end
 module C06LogicFunctionContracts_Sum_Interface
@@ -39,8 +40,9 @@ module C06LogicFunctionContracts_Sum_Impl
     
 end
 module C06LogicFunctionContracts_AllZero_Stub
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
+  use seq_ext.SeqExt
   predicate all_zero [#"../06_logic_function_contracts.rs" 20 0 20 38] (seq : Seq.seq int)
 end
 module C06LogicFunctionContracts_AllZero_Interface

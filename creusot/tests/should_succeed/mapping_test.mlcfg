@@ -100,6 +100,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -119,7 +120,6 @@ module CreusotContracts_Resolve_Impl1_Resolve
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy

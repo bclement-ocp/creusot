@@ -46,7 +46,6 @@ module CreusotContracts_Model_ShallowModel_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -98,7 +97,6 @@ module CreusotContracts_Model_DeepModel_DeepModel
 end
 module CreusotContracts_Model_Impl0_DeepModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   function deep_model (self : t) : DeepModelTy0.deepModelTy
@@ -578,6 +576,7 @@ module IteNormalize_Impl5_Ite
   
 end
 module IteNormalize_Impl5_IsNormalized_Stub
+  use prelude.Int
   use IteNormalize_Expr_Type as IteNormalize_Expr_Type
   predicate is_normalized [#"../ite_normalize.rs" 125 4 125 34] (self : IteNormalize_Expr_Type.t_expr)
 end
@@ -906,8 +905,8 @@ module IteNormalize_Impl5_Normalize
   
 end
 module IteNormalize_Impl5_DoesNotContain_Stub
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   use IteNormalize_Expr_Type as IteNormalize_Expr_Type
   predicate does_not_contain [#"../ite_normalize.rs" 168 4 168 48] (self : IteNormalize_Expr_Type.t_expr) (vp : usize)
 end
@@ -932,6 +931,7 @@ module IteNormalize_Impl5_DoesNotContain
     
 end
 module IteNormalize_Impl5_IsSimplified_Stub
+  use prelude.Int
   use IteNormalize_Expr_Type as IteNormalize_Expr_Type
   predicate is_simplified [#"../ite_normalize.rs" 157 4 157 34] (self : IteNormalize_Expr_Type.t_expr)
 end
@@ -956,8 +956,8 @@ module IteNormalize_Impl5_IsSimplified
     
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel_Stub
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function deep_model (self : usize) : int
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel_Interface

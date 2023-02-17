@@ -7,7 +7,7 @@
 <path name=".."/><path name="index_range.mlcfg"/>
 <theory name="IndexRange_CreateArr" proved="true">
  <goal name="create_arr&#39;vc" expl="VC for create_arr" proved="true">
- <proof prover="2"><result status="valid" time="0.14" steps="2933"/></proof>
+ <proof prover="2"><result status="valid" time="0.14" steps="2935"/></proof>
  </goal>
 </theory>
 <theory name="IndexRange_TestRange" proved="true">
@@ -50,7 +50,7 @@
   <proof prover="2"><result status="valid" time="0.03" steps="705"/></proof>
   </goal>
   <goal name="test_range&#39;vc.12" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.11" steps="802"/></proof>
+  <proof prover="2"><result status="valid" time="0.11" steps="801"/></proof>
   </goal>
   <goal name="test_range&#39;vc.13" expl="precondition" proved="true">
   <proof prover="2"><result status="valid" time="0.14" steps="2694"/></proof>
@@ -98,16 +98,16 @@
   <proof prover="2"><result status="valid" time="0.19" steps="4141"/></proof>
   </goal>
   <goal name="test_range&#39;vc.28" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.28" steps="4882"/></proof>
+  <proof prover="2"><result status="valid" time="0.28" steps="4888"/></proof>
   </goal>
   <goal name="test_range&#39;vc.29" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.28" steps="4866"/></proof>
+  <proof prover="2"><result status="valid" time="0.28" steps="4876"/></proof>
   </goal>
   <goal name="test_range&#39;vc.30" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.34" steps="4831"/></proof>
+  <proof prover="2"><result status="valid" time="0.34" steps="4836"/></proof>
   </goal>
   <goal name="test_range&#39;vc.31" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.19" steps="4091"/></proof>
+  <proof prover="2"><result status="valid" time="0.19" steps="4102"/></proof>
   </goal>
   <goal name="test_range&#39;vc.32" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.05" steps="699"/></proof>
@@ -116,7 +116,7 @@
   <proof prover="2"><result status="valid" time="0.28" steps="5181"/></proof>
   </goal>
   <goal name="test_range&#39;vc.34" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.21" steps="3435"/></proof>
+  <proof prover="2"><result status="valid" time="0.21" steps="3445"/></proof>
   </goal>
   <goal name="test_range&#39;vc.35" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.07" steps="1641"/></proof>
@@ -128,7 +128,7 @@
   <proof prover="2"><result status="valid" time="0.05" steps="1120"/></proof>
   </goal>
   <goal name="test_range&#39;vc.38" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.06" steps="943"/></proof>
+  <proof prover="2"><result status="valid" time="0.06" steps="947"/></proof>
   </goal>
   <goal name="test_range&#39;vc.39" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.05" steps="913"/></proof>
@@ -137,7 +137,7 @@
   <proof prover="2"><result status="valid" time="0.08" steps="797"/></proof>
   </goal>
   <goal name="test_range&#39;vc.41" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1295"/></proof>
+  <proof prover="2"><result status="valid" time="0.07" steps="1294"/></proof>
   </goal>
  </transf>
  </goal>
@@ -206,7 +206,7 @@
   <proof prover="2"><result status="valid" time="0.02" steps="200"/></proof>
   </goal>
   <goal name="test_range_to&#39;vc.20" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.02" steps="1489"/></proof>
+  <proof prover="2"><result status="valid" time="0.02" steps="1495"/></proof>
   </goal>
   <goal name="test_range_to&#39;vc.21" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.02" steps="1436"/></proof>
@@ -218,7 +218,7 @@
   <proof prover="2"><result status="valid" time="0.09" steps="1647"/></proof>
   </goal>
   <goal name="test_range_to&#39;vc.24" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.09" steps="1633"/></proof>
+  <proof prover="2"><result status="valid" time="0.09" steps="1624"/></proof>
   </goal>
   <goal name="test_range_to&#39;vc.25" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.08" steps="365"/></proof>
@@ -305,19 +305,19 @@
   <proof prover="2"><result status="valid" time="0.02" steps="209"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.20" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.05" steps="1910"/></proof>
+  <proof prover="2"><result status="valid" time="0.05" steps="1919"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.21" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.13" steps="1890"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.22" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.09" steps="1888"/></proof>
+  <proof prover="2"><result status="valid" time="0.09" steps="1882"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.23" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.09" steps="1582"/></proof>
+  <proof prover="2"><result status="valid" time="0.09" steps="1589"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.24" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.13" steps="1541"/></proof>
+  <proof prover="2"><result status="valid" time="0.13" steps="1527"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.25" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.08" steps="392"/></proof>
@@ -326,7 +326,7 @@
   <proof prover="2"><result status="valid" time="0.05" steps="1766"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.27" expl="unreachable point" proved="true">
-  <proof prover="2"><result status="valid" time="0.02" steps="1062"/></proof>
+  <proof prover="2"><result status="valid" time="0.02" steps="1059"/></proof>
   </goal>
   <goal name="test_range_from&#39;vc.28" expl="unreachable point" proved="true">
   <proof prover="2"><result status="valid" time="0.11" steps="525"/></proof>
@@ -345,12 +345,12 @@
 </theory>
 <theory name="IndexRange_TestRangeFull" proved="true">
  <goal name="test_range_full&#39;vc" expl="VC for test_range_full" proved="true">
- <proof prover="2"><result status="valid" time="0.57" steps="8536"/></proof>
+ <proof prover="2"><result status="valid" time="0.75" steps="8539"/></proof>
  </goal>
 </theory>
 <theory name="IndexRange_TestRangeToInclusive" proved="true">
  <goal name="test_range_to_inclusive&#39;vc" expl="VC for test_range_to_inclusive" proved="true">
- <proof prover="2"><result status="valid" time="0.49" steps="9468"/></proof>
+ <proof prover="2"><result status="valid" time="0.49" steps="9467"/></proof>
  </goal>
 </theory>
 </file>

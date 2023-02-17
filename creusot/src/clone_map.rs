@@ -376,12 +376,24 @@ impl<'tcx> Cloner<'tcx> for CloneMap<'tcx> {
     }
 }
 
+#[derive(Debug, Copy, Clone)]
+pub(crate) enum CloneDepth {
+    Shallow, Deep
+}
+
 impl<'tcx> CloneMap<'tcx> {
     pub(crate) fn from_static_deps(
         ctx: &mut TranslationCtx<'tcx>,
         self_id: DefId,
-        clone_level: CloneLevel,
+        depth: CloneDepth,
+        level: DepLevel,
     ) -> (Vec<Decl>, CloneRead<'tcx>, CloneSummary<'tcx>) {
+        let clone_level = match (depth, level) {
+            (CloneDepth::Shallow, DepLevel::Body) => CloneLevel::Stub,
+            (CloneDepth::Deep, DepLevel::Body) => CloneLevel::Body,
+            (CloneDepth::Shallow, DepLevel::Signature) => CloneLevel::Stub,
+            (CloneDepth::Deep, DepLevel::Signature) => unreachable!("???"),
+        };
         let mut names = Self::new(ctx.tcx, self_id, clone_level);
 
         get_deps(ctx, self_id).for_each(|dep| {
@@ -392,23 +404,19 @@ impl<'tcx> CloneMap<'tcx> {
                 .map(|sym| QName::from_string(&sym.as_str()).unwrap().module_qname())
                 .or_else(|| dep.1.as_ty().and_then(base_ty_name));
 
+
             if let Some(builtin) = builtin {
-                match dep.0 {
-                    DepLevel::Body => {
-                        names.import_builtin_module(builtin);
-                    }
-                    DepLevel::Signature => names.with_public_clones(|names| {
-                        names.import_builtin_module(builtin);
-                    }),
-                }
+                names.import_builtin_module(builtin);
             } else if let Some((id, subst)) = dep.1.cloneable_id() {
-                match dep.0 {
-                    DepLevel::Body => {
+                // eprintln!("{:?} {:?} {:?}", depth, level, dep);
+                match (level, dep.0) {
+                    (DepLevel::Body, DepLevel::Body) => {
                         names.insert(id, subst);
                     }
-                    DepLevel::Signature => names.with_public_clones(|names| {
+                    (_, DepLevel::Signature) => names.with_public_clones(|names| {
                         names.insert(id, subst);
                     }),
+                    _ => {},
                 };
             };
         });

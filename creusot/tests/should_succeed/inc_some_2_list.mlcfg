@@ -22,6 +22,7 @@ module IncSome2List_List_Type
 end
 module IncSome2List_Impl0_Sum_Stub
   use prelude.Int
+  use prelude.UInt32
   use IncSome2List_List_Type as IncSome2List_List_Type
   function sum [#"../inc_some_2_list.rs" 21 4 21 23] (self : IncSome2List_List_Type.t_list) : int
 end
@@ -45,7 +46,6 @@ module IncSome2List_Impl0_Sum
 end
 module IncSome2List_Impl0_LemmaSumNonneg_Stub
   use prelude.Int
-  use prelude.Borrow
   use IncSome2List_List_Type as IncSome2List_List_Type
   clone IncSome2List_Impl0_Sum_Stub as Sum0
   function lemma_sum_nonneg [#"../inc_some_2_list.rs" 34 4 34 30] (self : IncSome2List_List_Type.t_list) : ()
@@ -208,6 +208,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -226,8 +227,8 @@ module CreusotContracts_Resolve_Impl1_Resolve
     
 end
 module CreusotContracts_Logic_Int_Impl11_ShallowModel_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function shallow_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl11_ShallowModel_Interface
@@ -420,6 +421,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve_Stub
   type t1
   type t2
+  use prelude.Int
   predicate resolve (self : (t1, t2))
 end
 module CreusotContracts_Resolve_Impl0_Resolve_Interface

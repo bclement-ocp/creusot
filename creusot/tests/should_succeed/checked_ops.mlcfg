@@ -6,7 +6,6 @@ module Core_Option_Option_Type
     
 end
 module Core_Num_Impl7_Min_Stub
-  use prelude.Int
   use prelude.UInt8
   val constant mIN'  : uint8
 end
@@ -17,7 +16,6 @@ module Core_Num_Impl7_Min
     (0 : uint8)
 end
 module Core_Num_Impl7_Max_Stub
-  use prelude.Int
   use prelude.UInt8
   val constant mAX'  : uint8
 end
@@ -55,7 +53,6 @@ module Core_Option_Impl0_IsNone_Interface
     
 end
 module Core_Num_Impl7_Bits_Stub
-  use prelude.Int
   use prelude.UInt32
   val constant bITS'  : uint32
 end
@@ -127,6 +124,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve_Stub
   type t1
   type t2
+  use prelude.Int
   predicate resolve (self : (t1, t2))
 end
 module CreusotContracts_Resolve_Impl0_Resolve_Interface
@@ -2654,7 +2652,6 @@ module CheckedOps_TestU8DivZero
   
 end
 module Core_Num_Impl1_Min_Stub
-  use prelude.Int
   use prelude.Int8
   val constant mIN'  : int8
 end
@@ -2665,7 +2662,6 @@ module Core_Num_Impl1_Min
     (-128 : int8)
 end
 module Core_Num_Impl1_Max_Stub
-  use prelude.Int
   use prelude.Int8
   val constant mAX'  : int8
 end
@@ -2687,7 +2683,6 @@ module Core_Num_Impl1_CheckedAdd_Interface
     
 end
 module Core_Num_Impl1_Bits_Stub
-  use prelude.Int
   use prelude.UInt32
   val constant bITS'  : uint32
 end

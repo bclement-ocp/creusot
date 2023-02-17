@@ -108,7 +108,6 @@ module C02Operators_ModulusInt
     
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -335,8 +334,8 @@ module C02Operators_Expression
   
 end
 module C02Operators_ExpressionLogic_Stub
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function expression_logic [#"../02_operators.rs" 83 0 83 57] (x : usize) (y : usize) (z : usize) : bool
 end
 module C02Operators_ExpressionLogic_Interface

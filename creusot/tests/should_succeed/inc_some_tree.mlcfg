@@ -27,6 +27,7 @@ module IncSomeTree_Tree_Type
 end
 module IncSomeTree_Impl0_Sum_Stub
   use prelude.Int
+  use prelude.UInt32
   use IncSomeTree_Tree_Type as IncSomeTree_Tree_Type
   function sum [#"../inc_some_tree.rs" 21 4 21 23] (self : IncSomeTree_Tree_Type.t_tree) : int
 end
@@ -50,7 +51,6 @@ module IncSomeTree_Impl0_Sum
 end
 module IncSomeTree_Impl0_LemmaSumNonneg_Stub
   use prelude.Int
-  use prelude.Borrow
   use IncSomeTree_Tree_Type as IncSomeTree_Tree_Type
   clone IncSomeTree_Impl0_Sum_Stub as Sum0
   function lemma_sum_nonneg [#"../inc_some_tree.rs" 33 4 33 30] (self : IncSomeTree_Tree_Type.t_tree) : ()
@@ -230,6 +230,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -248,8 +249,8 @@ module CreusotContracts_Resolve_Impl1_Resolve
     
 end
 module CreusotContracts_Logic_Int_Impl11_ShallowModel_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function shallow_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl11_ShallowModel_Interface

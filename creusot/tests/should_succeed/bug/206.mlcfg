@@ -53,7 +53,6 @@ module C206_A_Type
       end
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -66,9 +65,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -101,15 +100,16 @@ end
 module C206_U2_Stub
   use prelude.Int
   use prelude.UIntSize
+  use seq.Seq
+  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max_Stub as Max0
+  use C206_A_Type as C206_A_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = usize,
     type a = Alloc_Alloc_Global_Type.t_global,
     val Max0.mAX' = Max0.mAX',
     axiom .
-  use C206_A_Type as C206_A_Type
   function u2 [#"../206.rs" 9 0 9 11] (a : C206_A_Type.t_a) : ()
 end
 module C206_U2_Interface

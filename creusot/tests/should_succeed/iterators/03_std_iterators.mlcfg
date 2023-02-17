@@ -26,7 +26,6 @@ module CreusotContracts_Model_ShallowModel_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -73,9 +72,7 @@ module Core_Slice_Iter_Iter_Type
 end
 module CreusotContracts_Std1_Slice_Impl13_ShallowModel_Stub
   type t
-  use prelude.Borrow
   use prelude.Slice
-  use prelude.Seq
   use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
   function shallow_model (self : Core_Slice_Iter_Iter_Type.t_iter t) : seq t
 end
@@ -204,6 +201,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -222,7 +220,6 @@ module CreusotContracts_Resolve_Impl1_Resolve
     
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -234,11 +231,10 @@ module Core_Num_Impl12_Max
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
 end
@@ -297,6 +293,8 @@ end
 module CreusotContracts_Std1_Slice_Impl15_Completed_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
+  use seq.Seq
   use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
   predicate completed (self : borrowed (Core_Slice_Iter_Iter_Type.t_iter t))
 end
@@ -332,9 +330,8 @@ module CreusotContracts_Std1_Slice_Impl15_Completed
 end
 module CreusotContracts_Std1_Slice_Impl4_ToRefSeq_Stub
   type t
-  use seq.Seq
   use prelude.Int
-  use prelude.Borrow
+  use seq.Seq
   use prelude.Slice
   use prelude.Seq
   use seq.Seq
@@ -376,7 +373,7 @@ end
 module CreusotContracts_Std1_Slice_Impl15_Produces_Stub
   type t
   use seq.Seq
-  use prelude.Borrow
+  use prelude.Int
   use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
   predicate produces (self : Core_Slice_Iter_Iter_Type.t_iter t) (visited : Seq.seq t) (tl : Core_Slice_Iter_Iter_Type.t_iter t)
     
@@ -481,6 +478,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPre
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Stub
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i)
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
@@ -529,7 +527,6 @@ end
 module CreusotContracts_Std1_Slice_Impl15_ProducesTrans_Stub
   type t
   use seq.Seq
-  use prelude.Borrow
   use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
   clone CreusotContracts_Std1_Slice_Impl15_Produces_Stub as Produces0 with
     type t = t
@@ -799,7 +796,6 @@ end
 module CreusotContracts_Std1_Vec_Impl3_IntoIterPre_Stub
   type t
   type a
-  use prelude.Borrow
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   predicate into_iter_pre (self : Alloc_Vec_Vec_Type.t_vec t a)
 end
@@ -823,7 +819,8 @@ end
 module CreusotContracts_Std1_Vec_Impl3_IntoIterPost_Stub
   type t
   type a
-  use prelude.Borrow
+  use prelude.Int
+  use prelude.Slice
   use Core_Slice_Iter_Iter_Type as Core_Slice_Iter_Iter_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   predicate into_iter_post (self : Alloc_Vec_Vec_Type.t_vec t a) (res : Core_Slice_Iter_Iter_Type.t_iter t)
@@ -883,9 +880,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -1168,10 +1165,10 @@ module Core_Slice_Iter_IterMut_Type
 end
 module CreusotContracts_Std1_Slice_Impl16_ShallowModel_Stub
   type t
-  use prelude.Borrow
+  use prelude.Int
   use seq.Seq
+  use prelude.Borrow
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   clone CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub as ShallowModel0 with
@@ -1215,6 +1212,9 @@ module CreusotContracts_Std1_Slice_Impl16_ShallowModel
 end
 module CreusotContracts_Std1_Slice_Impl17_Invariant_Stub
   type t
+  use prelude.Int
+  use seq.Seq
+  use prelude.Borrow
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   predicate invariant' (self : Core_Slice_Iter_IterMut_Type.t_itermut t)
 end
@@ -1271,6 +1271,8 @@ end
 module CreusotContracts_Std1_Slice_Impl18_Completed_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
+  use seq.Seq
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   predicate completed (self : borrowed (Core_Slice_Iter_IterMut_Type.t_itermut t))
 end
@@ -1306,9 +1308,9 @@ module CreusotContracts_Std1_Slice_Impl18_Completed
 end
 module CreusotContracts_Std1_Slice_Impl4_ToMutSeq_Stub
   type t
-  use seq.Seq
   use prelude.Int
   use prelude.Borrow
+  use seq.Seq
   use prelude.Slice
   use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
@@ -1365,8 +1367,9 @@ module CreusotContracts_Std1_Slice_Impl4_ToMutSeq
 end
 module CreusotContracts_Std1_Slice_Impl18_Produces_Stub
   type t
-  use seq.Seq
   use prelude.Borrow
+  use seq.Seq
+  use prelude.Int
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   predicate produces (self : Core_Slice_Iter_IterMut_Type.t_itermut t) (visited : Seq.seq (borrowed t)) (tl : Core_Slice_Iter_IterMut_Type.t_itermut t)
     
@@ -1438,6 +1441,8 @@ module Core_Slice_Iter_Impl187_Next_Interface
 end
 module CreusotContracts_Std1_Slice_Impl19_Resolve_Stub
   type t
+  use prelude.Int
+  use prelude.Borrow
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   predicate resolve (self : Core_Slice_Iter_IterMut_Type.t_itermut t)
 end
@@ -1470,6 +1475,7 @@ end
 module CreusotContracts_Std1_Slice_Impl18_ProducesRefl_Stub
   type t
   use seq.Seq
+  use prelude.Borrow
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   clone CreusotContracts_Std1_Slice_Impl18_Produces_Stub as Produces0 with
     type t = t
@@ -1500,8 +1506,8 @@ module CreusotContracts_Std1_Slice_Impl18_ProducesRefl
 end
 module CreusotContracts_Std1_Slice_Impl18_ProducesTrans_Stub
   type t
-  use seq.Seq
   use prelude.Borrow
+  use seq.Seq
   use Core_Slice_Iter_IterMut_Type as Core_Slice_Iter_IterMut_Type
   clone CreusotContracts_Std1_Slice_Impl18_Produces_Stub as Produces0 with
     type t = t
@@ -2077,6 +2083,8 @@ end
 module CreusotContracts_Std1_Iter_Skip_Impl2_Completed_Stub
   type i
   use prelude.Borrow
+  use prelude.Int
+  use seq.Seq
   use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   predicate completed (self : borrowed (Core_Iter_Adapters_Skip_Skip_Type.t_skip i))
 end
@@ -2117,6 +2125,7 @@ end
 module CreusotContracts_Std1_Iter_Skip_Impl2_Produces_Stub
   type i
   use seq.Seq
+  use prelude.Int
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
@@ -2231,9 +2240,9 @@ end
 module CreusotContracts_Std1_Iter_Skip_Impl2_ProducesTrans_Stub
   type i
   use seq.Seq
+  use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
-  use Core_Iter_Adapters_Skip_Skip_Type as Core_Iter_Adapters_Skip_Skip_Type
   clone CreusotContracts_Std1_Iter_Skip_Impl2_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -2285,6 +2294,7 @@ end
 module CreusotContracts_Std1_Iter_Take_Impl2_Produces_Stub
   type i
   use seq.Seq
+  use prelude.Int
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
@@ -2327,6 +2337,7 @@ module CreusotContracts_Std1_Iter_Take_Impl2_Produces
 end
 module CreusotContracts_Std1_Iter_Take_Impl0_IterMut_Stub
   type i
+  use prelude.Int
   use prelude.Borrow
   use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone CreusotContracts_Std1_Iter_Take_Impl0_Iter_Stub as Iter0 with
@@ -2358,6 +2369,7 @@ end
 module CreusotContracts_Std1_Iter_Take_Impl2_Completed_Stub
   type i
   use prelude.Borrow
+  use prelude.Int
   use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   predicate completed (self : borrowed (Core_Iter_Adapters_Take_Take_Type.t_take i))
 end
@@ -2442,9 +2454,9 @@ end
 module CreusotContracts_Std1_Iter_Take_Impl2_ProducesTrans_Stub
   type i
   use seq.Seq
+  use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
-  use Core_Iter_Adapters_Take_Take_Type as Core_Iter_Adapters_Take_Take_Type
   clone CreusotContracts_Std1_Iter_Take_Impl2_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -2863,6 +2875,9 @@ module CreusotContracts_Std1_Iter_MapInv_Impl0_Completed_Stub
   type b
   type f
   use prelude.Borrow
+  use prelude.Int
+  use seq.Seq
+  use prelude.Ghost
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
@@ -2901,6 +2916,8 @@ module CreusotContracts_Std1_Iter_MapInv_Impl3_NextPrecondition_Stub
   type i
   type b
   type f
+  use seq.Seq
+  use prelude.Ghost
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
@@ -2997,6 +3014,9 @@ module CreusotContracts_Std1_Iter_MapInv_Impl3_Preservation_Stub
   type i
   type b
   type f
+  use seq.Seq
+  use prelude.Ghost
+  use prelude.Borrow
   predicate preservation (iter : i) (func : f)
 end
 module CreusotContracts_Std1_Iter_MapInv_Impl3_Preservation_Interface
@@ -3041,6 +3061,8 @@ module CreusotContracts_Std1_Iter_MapInv_Impl3_Reinitialize_Stub
   type i
   type b
   type f
+  use prelude.Borrow
+  use prelude.Int
   predicate reinitialize (_1' : ())
 end
 module CreusotContracts_Std1_Iter_MapInv_Impl3_Reinitialize_Interface
@@ -3084,14 +3106,16 @@ module CreusotContracts_Std1_Iter_MapInv_Impl3_PreservationInv_Stub
   type i
   type b
   type f
-  use prelude.Ghost
+  use prelude.Int
   use seq.Seq
-  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
-    type self = i
+  use prelude.Ghost
+  use prelude.Borrow
   clone CreusotContracts_Std1_Iter_MapInv_Impl3_Preservation_Stub as Preservation0 with
     type i = i,
     type b = b,
     type f = f
+  clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
+    type self = i
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
   predicate preservation_inv (self : CreusotContracts_Std1_Iter_MapInv_MapInv_Type.t_mapinv i Item0.item f)
 end
@@ -3154,6 +3178,7 @@ module CreusotContracts_Std1_Iter_MapInv_Impl1_Invariant_Stub
   type i
   type b
   type f
+  use prelude.Int
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
@@ -3403,6 +3428,8 @@ module C03StdIterators_Counter_Closure0
 end
 module CreusotContracts_Std1_Vec_Impl9_Resolve_Stub
   type t
+  use prelude.Int
+  use seq.Seq
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   predicate resolve (self : Alloc_Vec_Vec_Type.t_vec t (Alloc_Alloc_Global_Type.t_global))
@@ -3437,6 +3464,7 @@ module CreusotContracts_Std1_Iter_MapInv_Impl4_Resolve_Stub
   type i
   type b
   type f
+  use prelude.Int
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
   predicate resolve (self : CreusotContracts_Std1_Iter_MapInv_MapInv_Type.t_mapinv i b f)
 end
@@ -3468,6 +3496,10 @@ module CreusotContracts_Std1_Iter_MapInv_Impl0_Produces_Stub
   type b
   type f
   use seq.Seq
+  use prelude.Int
+  use prelude.Ghost
+  use prelude.Borrow
+  use seq_ext.SeqExt
   clone Core_Iter_Traits_Iterator_Iterator_Item_Type as Item0 with
     type self = i
   use CreusotContracts_Std1_Iter_MapInv_MapInv_Type as CreusotContracts_Std1_Iter_MapInv_MapInv_Type
@@ -3527,6 +3559,7 @@ end
 module CreusotContracts_Std1_Vec_Impl8_FromIterPost_Stub
   type t
   use seq.Seq
+  use prelude.Int
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   predicate from_iter_post (prod : Seq.seq t) (res : Alloc_Vec_Vec_Type.t_vec t (Alloc_Alloc_Global_Type.t_global))
@@ -4086,6 +4119,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl0_Produces_Stub
   type idx
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate produces (self : Core_Ops_Range_Range_Type.t_range idx) (visited : Seq.seq idx) (o : Core_Ops_Range_Range_Type.t_range idx)
     
@@ -4197,8 +4231,8 @@ module CreusotContracts_Std1_Iter_Range_Impl0_ProducesTrans
   axiom produces_trans_spec : forall a : Core_Ops_Range_Range_Type.t_range idx, ab : Seq.seq idx, b : Core_Ops_Range_Range_Type.t_range idx, bc : Seq.seq idx, c : Core_Ops_Range_Range_Type.t_range idx . Invariant0.invariant' a -> Invariant0.invariant' b -> Invariant0.invariant' c -> Produces0.produces a ab b -> Produces0.produces b bc c -> Produces0.produces a (Seq.(++) ab bc) c
 end
 module CreusotContracts_Logic_Int_Impl30_DeepModel_Stub
-  use prelude.Int
   use prelude.IntSize
+  use prelude.Int
   function deep_model (self : isize) : int
 end
 module CreusotContracts_Logic_Int_Impl30_DeepModel_Interface
@@ -4218,6 +4252,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl0_Completed_Stub
   type idx
   use prelude.Borrow
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate completed (self : borrowed (Core_Ops_Range_Range_Type.t_range idx))
 end

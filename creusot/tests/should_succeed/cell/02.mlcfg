@@ -23,7 +23,6 @@ end
 module C02_Inv_Inv_Stub
   type self
   type t
-  use prelude.Borrow
   predicate inv [#"../02.rs" 6 4 6 32] (self : self) (x : t)
 end
 module C02_Inv_Inv_Interface
@@ -143,8 +142,8 @@ module C02_LemmaFibBound_Impl
     
 end
 module C02_LemmaMaxInt_Stub
-  use int.Power
   use prelude.Int
+  use int.Power
   use prelude.UIntSize
   function lemma_max_int [#"../02.rs" 59 0 59 22] (_1' : ()) : ()
 end
@@ -188,9 +187,8 @@ module Core_Option_Option_Type
       end
 end
 module C02_Impl1_Inv_Stub
-  use prelude.Borrow
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   use C02_Fib_Type as C02_Fib_Type
   predicate inv [#"../02.rs" 66 4 66 43] (self : C02_Fib_Type.t_fib) (v : Core_Option_Option_Type.t_option usize)
@@ -259,7 +257,6 @@ module Alloc_Alloc_Global_Type
     
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -272,9 +269,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -305,8 +302,9 @@ module CreusotContracts_Std1_Vec_Impl0_ShallowModel
   axiom shallow_model_spec : forall self : Alloc_Vec_Vec_Type.t_vec t a . Seq.length (shallow_model self) <= UIntSize.to_int Max0.mAX'
 end
 module C02_FibCell_Stub
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
+  use seq.Seq
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use C02_Fib_Type as C02_Fib_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
@@ -376,7 +374,6 @@ module CreusotContracts_Model_ShallowModel_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -495,9 +492,9 @@ module Alloc_Vec_Impl15_Index_Interface
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t)
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
@@ -520,9 +517,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t)
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface

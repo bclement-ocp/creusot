@@ -13,6 +13,8 @@ module C564_Invariants
     
 end
 module C564_EmitsPureEq_Stub
+  use prelude.Int
+  use prelude.Int32
   clone C564_Invariants_Stub as Invariants0
   function emits_pure_eq [#"../564.rs" 6 0 6 30] (_1' : ()) : bool
 end
@@ -44,6 +46,8 @@ module C564_EmitsPureEq_Impl
     [#"../564.rs" 8 8 8 30] let a = pure {(1 : int32) = (1 : int32)} in pure {a = true}
 end
 module C564_EmitsPureImplies_Stub
+  use prelude.Int
+  use prelude.Int32
   clone C564_Invariants_Stub as Invariants0
   function emits_pure_implies [#"../564.rs" 14 0 14 35] (_1' : ()) : bool
 end

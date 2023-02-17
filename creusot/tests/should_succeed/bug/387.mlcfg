@@ -141,6 +141,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GeLog_Stub
   type self
+  use prelude.Int
   predicate ge_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GeLog_Interface
@@ -161,6 +162,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_GeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub
   type self
+  use prelude.Int
   predicate le_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
@@ -181,6 +183,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Stub
   type self
+  use prelude.Int
   predicate lt_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Interface
@@ -221,8 +224,8 @@ module Core_Cmp_Ord_Max_Interface
     
 end
 module CreusotContracts_Logic_Int_Impl14_DeepModel_Stub
-  use prelude.Int
   use prelude.UInt64
+  use prelude.Int
   function deep_model (self : uint64) : int
 end
 module CreusotContracts_Logic_Int_Impl14_DeepModel_Interface

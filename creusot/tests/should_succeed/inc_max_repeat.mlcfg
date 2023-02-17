@@ -2,6 +2,7 @@
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -306,6 +307,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl0_Produces_Stub
   type idx
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate produces (self : Core_Ops_Range_Range_Type.t_range idx) (visited : Seq.seq idx) (o : Core_Ops_Range_Range_Type.t_range idx)
     
@@ -354,6 +356,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPre
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Stub
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i)
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
@@ -452,8 +455,8 @@ module CreusotContracts_Std1_Iter_Range_Impl0_ProducesTrans
   axiom produces_trans_spec : forall a : Core_Ops_Range_Range_Type.t_range idx, ab : Seq.seq idx, b : Core_Ops_Range_Range_Type.t_range idx, bc : Seq.seq idx, c : Core_Ops_Range_Range_Type.t_range idx . Invariant0.invariant' a -> Invariant0.invariant' b -> Invariant0.invariant' c -> Produces0.produces a ab b -> Produces0.produces b bc c -> Produces0.produces a (Seq.(++) ab bc) c
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function deep_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Interface
@@ -473,6 +476,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl0_Completed_Stub
   type idx
   use prelude.Borrow
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate completed (self : borrowed (Core_Ops_Range_Range_Type.t_range idx))
 end

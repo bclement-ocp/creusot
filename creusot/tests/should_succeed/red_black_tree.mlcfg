@@ -157,6 +157,7 @@ end
 module RedBlackTree_Impl0_HasMapping_Stub
   type k
   type v
+  use prelude.Int
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
@@ -200,6 +201,7 @@ end
 module RedBlackTree_Impl0_SameMappings_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   predicate same_mappings [#"../red_black_tree.rs" 42 4 42 43] (self : RedBlackTree_Tree_Type.t_tree k v) (o : RedBlackTree_Tree_Type.t_tree k v)
     
@@ -280,10 +282,11 @@ end
 module RedBlackTree_Impl0_ModelAccHasMapping_Stub
   type k
   type v
+  use prelude.Int
   use map.Map
+  use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
-  use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   clone RedBlackTree_Impl0_HasMapping_Stub as HasMapping0 with
     type k = k,
     type v = v,
@@ -411,6 +414,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Stub
   type self
+  use prelude.Int
   predicate lt_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Interface
@@ -432,6 +436,7 @@ end
 module RedBlackTree_Impl4_BstInvariantHere_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate bst_invariant_here [#"../red_black_tree.rs" 182 4 182 39] (self : RedBlackTree_Node_Type.t_node k v)
 end
@@ -467,6 +472,7 @@ end
 module RedBlackTree_Impl5_BstInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   predicate bst_invariant [#"../red_black_tree.rs" 202 4 202 34] (self : RedBlackTree_Tree_Type.t_tree k v)
 end
@@ -499,6 +505,7 @@ module RedBlackTree_Impl5_BstInvariant
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub
   type self
+  use prelude.Int
   predicate le_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
@@ -519,6 +526,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpLeLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -552,6 +560,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpLtLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -585,6 +594,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLtLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GeLog_Stub
   type self
+  use prelude.Int
   predicate ge_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GeLog_Interface
@@ -605,6 +615,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_GeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpGeLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -638,6 +649,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpGeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GtLog_Stub
   type self
+  use prelude.Int
   predicate gt_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GtLog_Interface
@@ -658,6 +670,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_GtLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpGtLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -691,6 +704,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpGtLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Refl_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -718,6 +732,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Refl
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Trans_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -747,6 +762,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Trans
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Antisym1_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -775,6 +791,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Antisym1
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Antisym2_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -803,6 +820,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Antisym2
 end
 module CreusotContracts_Logic_Ord_OrdLogic_EqCmp_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -831,11 +849,12 @@ end
 module RedBlackTree_Impl0_HasMappingModelAcc_Stub
   type k
   type v
+  use prelude.Int
   use map.Map
-  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
-    type self = k
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
+  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
+    type self = k
   clone RedBlackTree_Impl0_ModelAcc_Stub as ModelAcc0 with
     type k = k,
     type v = v,
@@ -1027,6 +1046,7 @@ module RedBlackTree_Impl3_ShallowModel_Stub
   type k
   type v
   use map.Map
+  use map.Const
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
@@ -1069,11 +1089,13 @@ end
 module RedBlackTree_Impl0_HasMappingModel_Stub
   type k
   type v
+  use prelude.Int
   use map.Map
-  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
-    type self = k
+  use map.Const
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
+  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
+    type self = k
   clone RedBlackTree_Impl3_ShallowModel_Stub as ShallowModel0 with
     type k = k,
     type v = v,
@@ -1281,6 +1303,8 @@ end
 module RedBlackTree_Impl0_HasMappingInj_Stub
   type k
   type v
+  use prelude.Int
+  use map.Map
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
@@ -1489,17 +1513,18 @@ end
 module RedBlackTree_Impl1_HasMapping_Stub
   type k
   type v
+  use prelude.Int
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
+  use Core_Option_Option_Type as Core_Option_Option_Type
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   clone RedBlackTree_Impl0_HasMapping_Stub as HasMapping0 with
     type k = k,
     type v = v,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
-  use Core_Option_Option_Type as Core_Option_Option_Type
   predicate has_mapping [#"../red_black_tree.rs" 140 4 140 57] (self : RedBlackTree_Node_Type.t_node k v) (k : DeepModelTy0.deepModelTy) (v : v)
     
 end
@@ -1575,6 +1600,7 @@ end
 module RedBlackTree_Impl1_SameMappings_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate same_mappings [#"../red_black_tree.rs" 148 4 148 43] (self : RedBlackTree_Node_Type.t_node k v) (o : RedBlackTree_Node_Type.t_node k v)
     
@@ -1668,6 +1694,7 @@ end
 module RedBlackTree_Impl4_BstInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate bst_invariant [#"../red_black_tree.rs" 190 4 190 34] (self : RedBlackTree_Node_Type.t_node k v)
 end
@@ -1744,6 +1771,7 @@ end
 module RedBlackTree_Impl9_ColorInvariantHere_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate color_invariant_here [#"../red_black_tree.rs" 305 4 305 41] (self : RedBlackTree_Node_Type.t_node k v)
 end
@@ -1772,6 +1800,7 @@ end
 module RedBlackTree_Impl8_ColorInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   predicate color_invariant [#"../red_black_tree.rs" 290 4 290 36] (self : RedBlackTree_Tree_Type.t_tree k v)
 end
@@ -1805,6 +1834,7 @@ end
 module RedBlackTree_Impl9_ColorInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate color_invariant [#"../red_black_tree.rs" 310 4 310 36] (self : RedBlackTree_Node_Type.t_node k v)
 end
@@ -1835,6 +1865,7 @@ end
 module RedBlackTree_Impl6_MatchN_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   use RedBlackTree_Cpl_Type as RedBlackTree_Cpl_Type
   predicate match_n [#"../red_black_tree.rs" 253 4 253 46] (self : RedBlackTree_Cpl_Type.t_cpl) (node : RedBlackTree_Node_Type.t_node k v)
@@ -1868,6 +1899,7 @@ end
 module RedBlackTree_Impl6_MatchT_Stub
   type k
   type v
+  use prelude.Int
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
@@ -2013,6 +2045,7 @@ module RedBlackTree_Impl7_MatchN_Stub
   type v
   type l
   type r
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   use RedBlackTree_Cpn_Type as RedBlackTree_Cpn_Type
   predicate match_n [#"../red_black_tree.rs" 271 4 271 46] (self : RedBlackTree_Cpn_Type.t_cpn l r) (node : RedBlackTree_Node_Type.t_node k v)
@@ -2058,6 +2091,7 @@ module RedBlackTree_Impl7_MatchT_Stub
   type v
   type l
   type r
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   use RedBlackTree_Cpn_Type as RedBlackTree_Cpn_Type
   predicate match_t [#"../red_black_tree.rs" 263 4 263 46] (self : RedBlackTree_Cpn_Type.t_cpn l r) (tree : RedBlackTree_Tree_Type.t_tree k v)
@@ -2161,6 +2195,7 @@ end
 module RedBlackTree_Impl11_HeightInvariantHere_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate height_invariant_here [#"../red_black_tree.rs" 362 4 362 42] (self : RedBlackTree_Node_Type.t_node k v)
 end
@@ -2189,6 +2224,7 @@ end
 module RedBlackTree_Impl10_HeightInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   predicate height_invariant [#"../red_black_tree.rs" 335 4 335 37] (self : RedBlackTree_Tree_Type.t_tree k v)
 end
@@ -2226,12 +2262,12 @@ module RedBlackTree_Impl11_Height_Stub
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   use Alloc_Boxed_Box_Type as Alloc_Boxed_Box_Type
+  use Core_Option_Option_Type as Core_Option_Option_Type
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   clone RedBlackTree_Impl10_Height_Stub as Height0 with
     type k = k,
     type v = v,
     axiom .
-  use Core_Option_Option_Type as Core_Option_Option_Type
   function height [#"../red_black_tree.rs" 352 4 352 26] (self : RedBlackTree_Node_Type.t_node k v) : int
 end
 module RedBlackTree_Impl11_Height_Interface
@@ -2300,6 +2336,7 @@ end
 module RedBlackTree_Impl11_HeightInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate height_invariant [#"../red_black_tree.rs" 367 4 367 37] (self : RedBlackTree_Node_Type.t_node k v)
 end
@@ -2330,6 +2367,7 @@ end
 module RedBlackTree_Impl12_InternalInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   predicate internal_invariant [#"../red_black_tree.rs" 379 4 379 43] (self : RedBlackTree_Tree_Type.t_tree k v)
 end
@@ -2359,6 +2397,7 @@ end
 module RedBlackTree_Impl12_Invariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Tree_Type as RedBlackTree_Tree_Type
   predicate invariant' [#"../red_black_tree.rs" 386 4 386 34] (self : RedBlackTree_Tree_Type.t_tree k v)
 end
@@ -2392,6 +2431,7 @@ end
 module RedBlackTree_Impl13_InternalInvariant_Stub
   type k
   type v
+  use prelude.Int
   use RedBlackTree_Node_Type as RedBlackTree_Node_Type
   predicate internal_invariant [#"../red_black_tree.rs" 398 4 398 43] (self : RedBlackTree_Node_Type.t_node k v)
 end
@@ -2549,6 +2589,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -2568,6 +2609,7 @@ module CreusotContracts_Resolve_Impl1_Resolve
 end
 module CreusotContracts_Std1_Option_Impl0_IsDefault_Stub
   type t
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   predicate is_default (self : Core_Option_Option_Type.t_option t)
 end
@@ -5867,6 +5909,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve_Stub
   type t1
   type t2
+  use prelude.Int
   predicate resolve (self : (t1, t2))
 end
 module CreusotContracts_Resolve_Impl0_Resolve_Interface
@@ -7808,7 +7851,6 @@ module RedBlackTree_Impl16_DeleteMin
 end
 module CreusotContracts_Model_Impl0_DeepModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   function deep_model (self : t) : DeepModelTy0.deepModelTy
@@ -8786,7 +8828,6 @@ module RedBlackTree_Impl16_DeleteRec
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy

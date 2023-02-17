@@ -2,10 +2,30 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="CVC4" version="1.8" timelimit="5" steplimit="0" memlimit="1000"/>
+<prover id="0" name="CVC4" version="1.8" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="1" name="Z3" version="4.11.0" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Alt-Ergo" version="2.4.1" timelimit="1" steplimit="0" memlimit="1000"/>
-<file format="mlcfg" proved="true">
+<prover id="3" name="CVC5" version="1.0.0" timelimit="1" steplimit="0" memlimit="1000"/>
+<file format="mlcfg">
 <path name=".."/><path name="05_map.mlcfg"/>
+<theory name="X">
+ <goal name="omg&#39;vc" expl="VC for omg">
+ <transf name="split_vc" >
+  <goal name="omg&#39;vc.0" expl="loop invariant init" proved="true">
+  <proof prover="2"><result status="valid" time="0.00" steps="0"/></proof>
+  </goal>
+  <goal name="omg&#39;vc.1" expl="termination">
+  <proof prover="0"><result status="unknown" time="0.01" steps="31"/></proof>
+  <proof prover="1"><result status="unknown" time="0.01" steps="7"/></proof>
+  <proof prover="2"><result status="unknown" time="0.01"/></proof>
+  <proof prover="3"><result status="unknown" time="0.01" steps="44"/></proof>
+  </goal>
+  <goal name="omg&#39;vc.2" expl="loop invariant preservation" proved="true">
+  <proof prover="2"><result status="valid" time="0.00" steps="0"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
 <theory name="C05Map_Impl1_PreservationInv_Impl" proved="true">
  <goal name="preservation_inv&#39;vc" expl="VC for preservation_inv" proved="true">
  <proof prover="2"><result status="valid" time="0.00" steps="50"/></proof>
@@ -22,7 +42,7 @@
     <proof prover="2"><result status="valid" time="0.00" steps="4"/></proof>
     </goal>
     <goal name="produces_refl&#39;vc.0.0.1" expl="VC for produces_refl" proved="true">
-    <proof prover="0" timelimit="1"><result status="valid" time="0.11" steps="29061"/></proof>
+    <proof prover="0"><result status="valid" time="0.11" steps="29061"/></proof>
     </goal>
    </transf>
    </goal>
@@ -117,7 +137,7 @@
    <goal name="produces_one&#39;vc.0.1" expl="postcondition" proved="true">
    <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
     <goal name="produces_one&#39;vc.0.1.0" expl="postcondition" proved="true">
-    <proof prover="0" memlimit="2000"><result status="valid" time="0.39" steps="78876"/></proof>
+    <proof prover="0" timelimit="5" memlimit="2000"><result status="valid" time="0.39" steps="78876"/></proof>
     </goal>
    </transf>
    </goal>

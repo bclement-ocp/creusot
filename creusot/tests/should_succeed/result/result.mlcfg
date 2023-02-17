@@ -170,6 +170,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -233,8 +234,8 @@ module Core_Result_Impl3_Transpose_Interface
     
 end
 module CreusotContracts_Std1_Default_Impl11_IsDefault_Stub
-  use prelude.Int
   use prelude.Int32
+  use prelude.Int
   predicate is_default (self : int32)
 end
 module CreusotContracts_Std1_Default_Impl11_IsDefault_Interface

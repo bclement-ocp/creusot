@@ -51,6 +51,7 @@ module C05Map_Impl0_Completed_Stub
   type b
   type f
   use prelude.Borrow
+  use prelude.Int
   use C05Map_Map_Type as C05Map_Map_Type
   predicate completed [#"../05_map.rs" 20 4 20 35] (self : borrowed (C05Map_Map_Type.t_map i f))
 end
@@ -127,6 +128,7 @@ module C05Map_Impl1_NextPrecondition_Stub
   type i
   type b
   type f
+  use seq.Seq
   use C05Map_Map_Type as C05Map_Map_Type
   predicate next_precondition [#"../05_map.rs" 86 4 86 38] (self : C05Map_Map_Type.t_map i f)
 end
@@ -216,6 +218,8 @@ module C05Map_Impl1_Preservation_Stub
   type i
   type b
   type f
+  use seq.Seq
+  use prelude.Borrow
   predicate preservation [#"../05_map.rs" 116 4 116 45] (iter : i) (func : f)
 end
 module C05Map_Impl1_Preservation_Interface
@@ -257,6 +261,8 @@ module C05Map_Impl1_Reinitialize_Stub
   type i
   type b
   type f
+  use prelude.Borrow
+  use prelude.Int
   predicate reinitialize [#"../05_map.rs" 94 4 94 29] (_1' : ())
 end
 module C05Map_Impl1_Reinitialize_Interface
@@ -545,6 +551,7 @@ end
 module CreusotContracts_Std1_Ops_Impl1_FnMutOnce_Stub
   type args
   type f
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
@@ -609,11 +616,14 @@ module C05Map_Impl1_PreservationInv_Stub
   type i
   type b
   type f
+  use prelude.Int
+  use seq.Seq
+  use prelude.Borrow
+  use C05Map_Map_Type as C05Map_Map_Type
   clone C05Map_Impl1_Preservation_Stub as Preservation0 with
     type i = i,
     type b = b,
     type f = f
-  use C05Map_Map_Type as C05Map_Map_Type
   predicate preservation_inv [#"../05_map.rs" 103 4 103 37] (self : C05Map_Map_Type.t_map i f)
 end
 module C05Map_Impl1_PreservationInv_Interface
@@ -751,6 +761,7 @@ module C05Map_Impl0_Invariant_Stub
   type i
   type b
   type f
+  use prelude.Int
   use C05Map_Map_Type as C05Map_Map_Type
   predicate invariant' [#"../05_map.rs" 57 4 57 30] (self : C05Map_Map_Type.t_map i f)
 end
@@ -798,6 +809,8 @@ module C05Map_Impl0_Produces_Stub
   type b
   type f
   use seq.Seq
+  use prelude.Int
+  use prelude.Borrow
   use C05Map_Map_Type as C05Map_Map_Type
   predicate produces [@inline:trivial] [#"../05_map.rs" 40 4 40 67] (self : C05Map_Map_Type.t_map i f) (visited : Seq.seq b) (succ : C05Map_Map_Type.t_map i f)
     
@@ -1244,7 +1257,9 @@ module C05Map_Impl1_ProducesOne_Stub
   type i
   type b
   type f
+  use prelude.Int
   use seq.Seq
+  use prelude.Borrow
   use C05Map_Map_Type as C05Map_Map_Type
   clone C05Map_Impl0_Produces_Stub as Produces0 with
     type i = i,
@@ -1536,6 +1551,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface

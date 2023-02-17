@@ -42,7 +42,6 @@ module Alloc_Vec_Vec_Type
     
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -55,9 +54,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -143,6 +142,8 @@ end
 module CreusotContracts_Logic_Seq_Impl0_PermutationOf_Stub
   type t
   use seq.Seq
+  use seq.Permut
+  use prelude.Int
   predicate permutation_of (self : Seq.seq t) (o : Seq.seq t)
 end
 module CreusotContracts_Logic_Seq_Impl0_PermutationOf_Interface
@@ -168,7 +169,6 @@ module Alloc_Alloc_Global_Type
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -393,11 +393,10 @@ module Core_Iter_Range_Impl3_Next_Interface
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
 end
@@ -507,6 +506,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl0_Produces_Stub
   type idx
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate produces (self : Core_Ops_Range_Range_Type.t_range idx) (visited : Seq.seq idx) (o : Core_Ops_Range_Range_Type.t_range idx)
     
@@ -566,6 +566,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -603,6 +604,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPre
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Stub
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i)
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
@@ -701,8 +703,8 @@ module CreusotContracts_Std1_Iter_Range_Impl0_ProducesTrans
   axiom produces_trans_spec : forall a : Core_Ops_Range_Range_Type.t_range idx, ab : Seq.seq idx, b : Core_Ops_Range_Range_Type.t_range idx, bc : Seq.seq idx, c : Core_Ops_Range_Range_Type.t_range idx . Invariant0.invariant' a -> Invariant0.invariant' b -> Invariant0.invariant' c -> Produces0.produces a ab b -> Produces0.produces b bc c -> Produces0.produces a (Seq.(++) ab bc) c
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel_Stub
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function deep_model (self : usize) : int
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel_Interface
@@ -722,6 +724,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl0_Completed_Stub
   type idx
   use prelude.Borrow
+  use prelude.Int
   use Core_Ops_Range_Range_Type as Core_Ops_Range_Range_Type
   predicate completed (self : borrowed (Core_Ops_Range_Range_Type.t_range idx))
 end

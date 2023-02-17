@@ -2,6 +2,8 @@
 module CreusotContracts_Logic_Seq_Impl0_Tail_Stub
   type t
   use seq.Seq
+  use seq_ext.SeqExt
+  use prelude.Int
   function tail (self : Seq.seq t) : Seq.seq t
 end
 module CreusotContracts_Logic_Seq_Impl0_Tail_Interface
@@ -21,8 +23,8 @@ module CreusotContracts_Logic_Seq_Impl0_Tail
     
 end
 module C217_Ex_Stub
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   function ex [#"../217.rs" 10 0 10 37] (c : Seq.seq int) (a : int) : int
 end
 module C217_Ex_Interface

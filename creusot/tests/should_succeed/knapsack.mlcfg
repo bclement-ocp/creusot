@@ -69,6 +69,8 @@ module Knapsack_M_Stub
   type name
   use prelude.Int
   use seq.Seq
+  use prelude.UIntSize
+  use int.MinMax
   use Knapsack_Item_Type as Knapsack_Item_Type
   function m [#"../knapsack.rs" 34 0 34 57] (items : Seq.seq (Knapsack_Item_Type.t_item name)) (i : int) (w : int) : int
 end
@@ -155,7 +157,6 @@ module CreusotContracts_Model_ShallowModel_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -220,7 +221,6 @@ module Alloc_Alloc_Global_Type
     
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -233,9 +233,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -544,6 +544,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -563,6 +564,8 @@ module CreusotContracts_Resolve_Impl1_Resolve
 end
 module CreusotContracts_Std1_Vec_Impl9_Resolve_Stub
   type t
+  use prelude.Int
+  use seq.Seq
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   predicate resolve (self : Alloc_Vec_Vec_Type.t_vec t (Alloc_Alloc_Global_Type.t_global))
@@ -595,9 +598,9 @@ module CreusotContracts_Std1_Vec_Impl9_Resolve
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t)
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
@@ -620,9 +623,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t)
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
@@ -645,9 +648,9 @@ module CreusotContracts_Std1_Slice_Impl5_HasValue
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate resolve_elswhere [@inline:trivial] (self : usize) (old' : Seq.seq t) (fin : Seq.seq t)
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Interface

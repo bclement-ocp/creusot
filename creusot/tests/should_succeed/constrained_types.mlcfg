@@ -26,7 +26,6 @@ module CreusotContracts_Model_DeepModel_DeepModel
 end
 module CreusotContracts_Model_Impl0_DeepModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   function deep_model (self : t) : DeepModelTy0.deepModelTy
@@ -78,6 +77,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Stub
   type self
+  use prelude.Int
   predicate lt_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Interface
@@ -99,6 +99,7 @@ end
 module CreusotContracts_Logic_Ord_Impl0_LtLog_Stub
   type a
   type b
+  use prelude.Int
   predicate lt_log (self : (a, b)) (o : (a, b))
 end
 module CreusotContracts_Logic_Ord_Impl0_LtLog_Interface
@@ -156,6 +157,7 @@ end
 module CreusotContracts_Resolve_Impl0_Resolve_Stub
   type t1
   type t2
+  use prelude.Int
   predicate resolve (self : (t1, t2))
 end
 module CreusotContracts_Resolve_Impl0_Resolve_Interface
@@ -247,8 +249,8 @@ module CreusotContracts_Logic_Ord_Impl2_LtLog
     
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function deep_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Interface

@@ -65,8 +65,8 @@ module C01_Impl0_Set_Interface
     
 end
 module C01_Impl1_Inv_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   predicate inv [#"../01.rs" 34 4 34 26] (x : uint32)
 end
 module C01_Impl1_Inv_Interface

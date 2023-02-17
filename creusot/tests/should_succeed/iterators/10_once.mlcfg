@@ -34,6 +34,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -54,6 +55,7 @@ end
 module C10Once_Impl0_Completed_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   use C10Once_Once_Type as C10Once_Once_Type
   predicate completed [#"../10_once.rs" 14 4 14 35] (self : borrowed (C10Once_Once_Type.t_once t))
 end
@@ -80,6 +82,7 @@ end
 module C10Once_Impl0_Produces_Stub
   type t
   use seq.Seq
+  use prelude.Int
   use C10Once_Once_Type as C10Once_Once_Type
   predicate produces [#"../10_once.rs" 19 4 19 64] (self : C10Once_Once_Type.t_once t) (visited : Seq.seq t) (o : C10Once_Once_Type.t_once t)
     

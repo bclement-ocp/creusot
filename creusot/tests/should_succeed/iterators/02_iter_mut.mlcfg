@@ -30,6 +30,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -103,6 +104,9 @@ end
 module C02IterMut_Impl0_Completed_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
+  use seq.Seq
+  use prelude.Slice
   use C02IterMut_IterMut_Type as C02IterMut_IterMut_Type
   predicate completed [#"../02_iter_mut.rs" 20 4 20 35] (self : borrowed (C02IterMut_IterMut_Type.t_itermut t))
 end
@@ -133,7 +137,6 @@ module C02IterMut_Impl0_Completed
     
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -145,11 +148,10 @@ module Core_Num_Impl12_Max
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
 end
@@ -179,9 +181,9 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel
 end
 module CreusotContracts_Std1_Slice_Impl4_ToMutSeq_Stub
   type t
-  use seq.Seq
   use prelude.Int
   use prelude.Borrow
+  use seq.Seq
   use prelude.Slice
   use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
@@ -238,8 +240,8 @@ module CreusotContracts_Std1_Slice_Impl4_ToMutSeq
 end
 module C02IterMut_Impl0_Produces_Stub
   type t
-  use seq.Seq
   use prelude.Borrow
+  use seq.Seq
   use C02IterMut_IterMut_Type as C02IterMut_IterMut_Type
   predicate produces [#"../02_iter_mut.rs" 25 4 25 65] (self : C02IterMut_IterMut_Type.t_itermut t) (visited : Seq.seq (borrowed t)) (tl : C02IterMut_IterMut_Type.t_itermut t)
     
@@ -284,6 +286,9 @@ module C02IterMut_Impl0_Produces
 end
 module C02IterMut_Impl0_Invariant_Stub
   type t
+  use prelude.Int
+  use seq.Seq
+  use prelude.Borrow
   use C02IterMut_IterMut_Type as C02IterMut_IterMut_Type
   predicate invariant' [#"../02_iter_mut.rs" 30 4 30 30] (self : C02IterMut_IterMut_Type.t_itermut t)
 end
@@ -312,6 +317,7 @@ end
 module C02IterMut_Impl0_ProducesRefl_Stub
   type t
   use seq.Seq
+  use prelude.Borrow
   use C02IterMut_IterMut_Type as C02IterMut_IterMut_Type
   clone C02IterMut_Impl0_Produces_Stub as Produces0 with
     type t = t
@@ -388,8 +394,8 @@ module C02IterMut_Impl0_ProducesRefl_Impl
 end
 module C02IterMut_Impl0_ProducesTrans_Stub
   type t
-  use seq.Seq
   use prelude.Borrow
+  use seq.Seq
   use C02IterMut_IterMut_Type as C02IterMut_IterMut_Type
   clone C02IterMut_Impl0_Produces_Stub as Produces0 with
     type t = t
@@ -492,6 +498,8 @@ end
 module CreusotContracts_Logic_Seq_Impl0_Tail_Stub
   type t
   use seq.Seq
+  use seq_ext.SeqExt
+  use prelude.Int
   function tail (self : Seq.seq t) : Seq.seq t
 end
 module CreusotContracts_Logic_Seq_Impl0_Tail_Interface
@@ -710,9 +718,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -910,7 +918,7 @@ module CreusotContracts_Std1_Slice_Impl9_HasValue_Stub
   type t
   use seq.Seq
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeFull_Type as Core_Ops_Range_RangeFull_Type
   predicate has_value (self : Core_Ops_Range_RangeFull_Type.t_rangefull) (seq : Seq.seq t) (out : seq t)
 end

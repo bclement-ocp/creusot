@@ -57,6 +57,7 @@ end
 module Hashmap_Impl1_Get_Stub
   type k
   type v
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
@@ -103,6 +104,7 @@ end
 module Hashmap_Impl1_NoDoubleBinding_Stub
   type k
   type v
+  use prelude.Int
   use Hashmap_List_Type as Hashmap_List_Type
   predicate no_double_binding [#"../hashmap.rs" 36 4 36 38] (self : Hashmap_List_Type.t_list (k, v))
 end
@@ -138,7 +140,6 @@ module Hashmap_Impl1_NoDoubleBinding
 end
 module CreusotContracts_Model_Impl0_DeepModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   function deep_model (self : t) : DeepModelTy0.deepModelTy
@@ -180,8 +181,8 @@ module Hashmap_Impl2_HashLog
     
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel_Stub
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   function deep_model (self : usize) : int
 end
 module CreusotContracts_Logic_Int_Impl18_DeepModel_Interface
@@ -296,7 +297,6 @@ module Hashmap_MyHashMap_Type
       end
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -309,9 +309,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -369,6 +369,8 @@ module Hashmap_Impl4_BucketIx_Stub
   type k
   type v
   use prelude.Int
+  use int.EuclideanDivision
+  use seq.Seq
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
   use Hashmap_MyHashMap_Type as Hashmap_MyHashMap_Type
@@ -417,6 +419,7 @@ end
 module Hashmap_Impl4_Bucket_Stub
   type k
   type v
+  use seq.Seq
   use Hashmap_List_Type as Hashmap_List_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
@@ -466,6 +469,8 @@ module Hashmap_Impl3_ShallowModel_Stub
   type k
   type v
   use map.Map
+  use prelude.Int32
+  use prelude.Mapping
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = k
@@ -557,7 +562,8 @@ end
 module Hashmap_Impl5_HashmapInv_Stub
   type k
   type v
-  use prelude.Borrow
+  use prelude.Int
+  use seq.Seq
   use Hashmap_MyHashMap_Type as Hashmap_MyHashMap_Type
   predicate hashmap_inv [#"../hashmap.rs" 207 4 207 33] (self : Hashmap_MyHashMap_Type.t_myhashmap k v)
 end
@@ -818,7 +824,6 @@ module CreusotContracts_Model_Impl3_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -1027,6 +1032,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -1046,9 +1052,9 @@ module CreusotContracts_Resolve_Impl1_Resolve
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t)
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
@@ -1071,9 +1077,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t)
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
@@ -1096,9 +1102,9 @@ module CreusotContracts_Std1_Slice_Impl5_HasValue
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate resolve_elswhere [@inline:trivial] (self : usize) (old' : Seq.seq t) (fin : Seq.seq t)
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Interface

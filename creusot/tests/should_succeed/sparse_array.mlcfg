@@ -71,7 +71,6 @@ module SparseArray_Sparse_Type
       end
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -84,9 +83,9 @@ end
 module CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub
   type t
   type a
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : Alloc_Vec_Vec_Type.t_vec t a) : Seq.seq t
@@ -118,8 +117,9 @@ module CreusotContracts_Std1_Vec_Impl0_ShallowModel
 end
 module SparseArray_Impl1_IsElt_Stub
   type t
-  use prelude.Borrow
   use prelude.Int
+  use prelude.UIntSize
+  use seq.Seq
   use SparseArray_Sparse_Type as SparseArray_Sparse_Type
   predicate is_elt [#"../sparse_array.rs" 55 4 55 36] (self : SparseArray_Sparse_Type.t_sparse t) (i : int)
 end
@@ -158,13 +158,12 @@ module Core_Option_Option_Type
 end
 module SparseArray_Impl0_ShallowModel_Stub
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
+  clone Core_Num_Impl12_Max_Stub as Max0
   use Alloc_Alloc_Global_Type as Alloc_Alloc_Global_Type
   use Alloc_Vec_Vec_Type as Alloc_Vec_Vec_Type
-  clone Core_Num_Impl12_Max_Stub as Max0
-  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Std1_Vec_Impl0_ShallowModel_Stub as ShallowModel0 with
     type t = t,
     type a = Alloc_Alloc_Global_Type.t_global,
@@ -173,6 +172,7 @@ module SparseArray_Impl0_ShallowModel_Stub
   use SparseArray_Sparse_Type as SparseArray_Sparse_Type
   clone SparseArray_Impl1_IsElt_Stub as IsElt0 with
     type t = t
+  use Core_Option_Option_Type as Core_Option_Option_Type
   function shallow_model [#"../sparse_array.rs" 41 4 41 50] (self : SparseArray_Sparse_Type.t_sparse t) : Seq.seq (Core_Option_Option_Type.t_option t)
     
 end
@@ -256,7 +256,6 @@ module CreusotContracts_Model_ShallowModel_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -283,7 +282,9 @@ module CreusotContracts_Model_Impl1_ShallowModel
 end
 module SparseArray_Impl1_SparseInv_Stub
   type t
-  use prelude.Borrow
+  use prelude.Int
+  use prelude.UIntSize
+  use seq.Seq
   use SparseArray_Sparse_Type as SparseArray_Sparse_Type
   predicate sparse_inv [#"../sparse_array.rs" 65 4 65 32] (self : SparseArray_Sparse_Type.t_sparse t)
 end
@@ -434,9 +435,9 @@ module CreusotContracts_Resolve_Resolve_Resolve
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate in_bounds [@inline:trivial] (self : usize) (seq : Seq.seq t)
 end
 module CreusotContracts_Std1_Slice_Impl5_InBounds_Interface
@@ -459,9 +460,9 @@ module CreusotContracts_Std1_Slice_Impl5_InBounds
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate has_value [@inline:trivial] (self : usize) (seq : Seq.seq t) (out : t)
 end
 module CreusotContracts_Std1_Slice_Impl5_HasValue_Interface
@@ -889,6 +890,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -908,9 +910,9 @@ module CreusotContracts_Resolve_Impl1_Resolve
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Stub
   type t
-  use prelude.Int
   use prelude.UIntSize
   use seq.Seq
+  use prelude.Int
   predicate resolve_elswhere [@inline:trivial] (self : usize) (old' : Seq.seq t) (fin : Seq.seq t)
 end
 module CreusotContracts_Std1_Slice_Impl5_ResolveElswhere_Interface
@@ -1401,8 +1403,8 @@ module SparseArray_Create
   
 end
 module CreusotContracts_Logic_Int_Impl23_ShallowModel_Stub
-  use prelude.Int
   use prelude.Int32
+  use prelude.Int
   function shallow_model (self : int32) : int
 end
 module CreusotContracts_Logic_Int_Impl23_ShallowModel_Interface

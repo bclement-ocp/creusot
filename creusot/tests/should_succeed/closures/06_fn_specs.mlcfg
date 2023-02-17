@@ -25,7 +25,6 @@ end
 module CreusotContracts_Std1_Ops_FnExt_Postcondition_Stub
   type self
   type args
-  use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = self,
     type args = args
@@ -359,6 +358,7 @@ end
 module CreusotContracts_Std1_Ops_FnMutExt_FnMutOnce_Stub
   type self
   type args
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = self,
@@ -541,6 +541,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -561,6 +562,7 @@ end
 module CreusotContracts_Std1_Ops_FnExt_FnMut_Stub
   type self
   type args
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = self,
@@ -624,6 +626,7 @@ end
 module CreusotContracts_Std1_Ops_FnExt_FnOnce_Stub
   type self
   type args
+  use prelude.Int
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = self,
     type args = args
@@ -840,7 +843,6 @@ end
 module CreusotContracts_Std1_Ops_Impl2_Postcondition_Stub
   type args
   type f
-  use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
     type args = args
@@ -1144,6 +1146,7 @@ end
 module CreusotContracts_Std1_Ops_Impl1_FnMutOnce_Stub
   type args
   type f
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
@@ -1326,6 +1329,7 @@ end
 module CreusotContracts_Std1_Ops_Impl2_FnMut_Stub
   type args
   type f
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
@@ -1389,6 +1393,7 @@ end
 module CreusotContracts_Std1_Ops_Impl2_FnOnce_Stub
   type args
   type f
+  use prelude.Int
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
     type args = args

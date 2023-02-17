@@ -176,6 +176,9 @@ module C06MapPrecond_Impl0_Completed_Stub
   type b
   type f
   use prelude.Borrow
+  use prelude.Int
+  use seq.Seq
+  use prelude.Ghost
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
@@ -236,6 +239,8 @@ module C06MapPrecond_Impl1_NextPrecondition_Stub
   type i
   type b
   type f
+  use seq.Seq
+  use prelude.Ghost
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
@@ -333,6 +338,9 @@ module C06MapPrecond_Impl1_Preservation_Stub
   type i
   type b
   type f
+  use seq.Seq
+  use prelude.Ghost
+  use prelude.Borrow
   predicate preservation [#"../06_map_precond.rs" 129 4 129 45] (iter : i) (func : f)
 end
 module C06MapPrecond_Impl1_Preservation_Interface
@@ -377,6 +385,8 @@ module C06MapPrecond_Impl1_Reinitialize_Stub
   type i
   type b
   type f
+  use prelude.Borrow
+  use prelude.Int
   predicate reinitialize [#"../06_map_precond.rs" 104 4 104 29] (_1' : ())
 end
 module C06MapPrecond_Impl1_Reinitialize_Interface
@@ -578,6 +588,7 @@ end
 module CreusotContracts_Std1_Ops_Impl1_FnMutOnce_Stub
   type args
   type f
+  use prelude.Int
   use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
@@ -642,14 +653,16 @@ module C06MapPrecond_Impl1_PreservationInv_Stub
   type i
   type b
   type f
-  use prelude.Ghost
+  use prelude.Int
   use seq.Seq
-  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
-    type self = i
+  use prelude.Ghost
+  use prelude.Borrow
   clone C06MapPrecond_Impl1_Preservation_Stub as Preservation0 with
     type i = i,
     type b = b,
     type f = f
+  clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
+    type self = i
   use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
   predicate preservation_inv [#"../06_map_precond.rs" 116 4 116 37] (self : C06MapPrecond_Map_Type.t_map i Item0.item f)
 end
@@ -799,6 +812,7 @@ module C06MapPrecond_Impl0_Invariant_Stub
   type i
   type b
   type f
+  use prelude.Int
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
@@ -854,6 +868,10 @@ module C06MapPrecond_Impl0_Produces_Stub
   type b
   type f
   use seq.Seq
+  use prelude.Int
+  use prelude.Ghost
+  use prelude.Borrow
+  use seq_ext.SeqExt
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
@@ -1344,7 +1362,10 @@ module C06MapPrecond_Impl1_ProducesOne_Stub
   type i
   type b
   type f
+  use prelude.Int
   use seq.Seq
+  use prelude.Borrow
+  use prelude.Ghost
   clone C06MapPrecond_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C06MapPrecond_Map_Type as C06MapPrecond_Map_Type
@@ -1654,6 +1675,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -3116,7 +3138,6 @@ module C06MapPrecond_Increment
   
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end

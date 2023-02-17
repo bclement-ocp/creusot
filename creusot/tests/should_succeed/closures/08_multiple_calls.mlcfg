@@ -25,7 +25,6 @@ end
 module CreusotContracts_Std1_Ops_Impl2_Postcondition_Stub
   type args
   type f
-  use prelude.Borrow
   clone Core_Ops_Function_FnOnce_Output_Type as Output0 with
     type self = f,
     type args = args

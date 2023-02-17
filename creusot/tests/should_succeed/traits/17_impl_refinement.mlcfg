@@ -30,8 +30,8 @@ module C17ImplRefinement_Impl0_MyFunction
   
 end
 module C17ImplRefinement_Impl1_NeedFalse_Stub
-  use prelude.UInt64
   use prelude.Int
+  use prelude.UInt64
   function need_false [#"../17_impl_refinement.rs" 29 4 29 25] (y : uint64) : ()
 end
 module C17ImplRefinement_Impl1_NeedFalse_Interface

@@ -33,6 +33,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -71,6 +72,8 @@ end
 module C05Take_Impl0_Completed_Stub
   type i
   use prelude.Borrow
+  use prelude.Int
+  use prelude.UIntSize
   use C05Take_Take_Type as C05Take_Take_Type
   predicate completed [#"../05_take.rs" 21 4 21 35] (self : borrowed (C05Take_Take_Type.t_take i))
 end
@@ -218,6 +221,8 @@ end
 module C05Take_Impl0_Produces_Stub
   type i
   use seq.Seq
+  use prelude.Int
+  use prelude.UIntSize
   clone C05Take_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C05Take_Take_Type as C05Take_Take_Type
@@ -359,9 +364,9 @@ end
 module C05Take_Impl0_ProducesTrans_Stub
   type i
   use seq.Seq
+  use C05Take_Take_Type as C05Take_Take_Type
   clone C05Take_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C05Take_Take_Type as C05Take_Take_Type
   clone C05Take_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item

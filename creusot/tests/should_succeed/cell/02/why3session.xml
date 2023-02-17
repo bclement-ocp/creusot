@@ -50,7 +50,7 @@
   <proof prover="1"><result status="valid" time="0.09" steps="1994"/></proof>
   </goal>
   <goal name="fib_memo&#39;vc.10" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" time="0.79" steps="76486"/></proof>
+  <proof prover="2"><result status="valid" time="1.03" steps="76486"/></proof>
   </goal>
   <goal name="fib_memo&#39;vc.11" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" time="0.01" steps="25"/></proof>

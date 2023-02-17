@@ -1,6 +1,7 @@
 
 module LogicCall_Reflexive_Stub
   type t
+  use prelude.Int
   function reflexive [#"../logic_call.rs" 6 0 6 40] (x : t) : bool
 end
 module LogicCall_Reflexive_Interface

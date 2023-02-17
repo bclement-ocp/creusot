@@ -1,7 +1,7 @@
 
 module C04_A_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function a [#"../04.rs" 6 0 6 20] (x : uint32) : bool
 end
 module C04_A_Interface
@@ -19,8 +19,8 @@ module C04_A
     
 end
 module C04_B_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function b [#"../04.rs" 11 0 11 20] (x : uint32) : bool
 end
 module C04_B_Interface
@@ -39,8 +39,8 @@ module C04_B
     
 end
 module C04_C_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function c [#"../04.rs" 16 0 16 20] (x : uint32) : bool
 end
 module C04_C_Interface

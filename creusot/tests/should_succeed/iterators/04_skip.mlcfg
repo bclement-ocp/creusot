@@ -94,6 +94,9 @@ end
 module C04Skip_Impl0_Completed_Stub
   type i
   use prelude.Borrow
+  use prelude.Int
+  use prelude.UIntSize
+  use seq.Seq
   use C04Skip_Skip_Type as C04Skip_Skip_Type
   predicate completed [#"../04_skip.rs" 21 4 21 35] (self : borrowed (C04Skip_Skip_Type.t_skip i))
 end
@@ -219,6 +222,8 @@ end
 module C04Skip_Impl0_Produces_Stub
   type i
   use seq.Seq
+  use prelude.Int
+  use prelude.UIntSize
   clone C04Skip_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C04Skip_Skip_Type as C04Skip_Skip_Type
@@ -365,9 +370,9 @@ end
 module C04Skip_Impl0_ProducesTrans_Stub
   type i
   use seq.Seq
+  use C04Skip_Skip_Type as C04Skip_Skip_Type
   clone C04Skip_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C04Skip_Skip_Type as C04Skip_Skip_Type
   clone C04Skip_Impl0_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -522,6 +527,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -540,8 +546,8 @@ module CreusotContracts_Resolve_Impl1_Resolve
     
 end
 module CreusotContracts_Std1_Default_Impl2_IsDefault_Stub
-  use prelude.Int
   use prelude.UIntSize
+  use prelude.Int
   predicate is_default (self : usize)
 end
 module CreusotContracts_Std1_Default_Impl2_IsDefault_Interface

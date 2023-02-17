@@ -2,7 +2,6 @@
 module Mutex_Inv_Inv_Stub
   type self
   type t
-  use prelude.Borrow
   predicate inv [#"../mutex.rs" 7 4 7 32] (self : self) (x : t)
 end
 module Mutex_Inv_Inv_Interface
@@ -124,9 +123,8 @@ module Mutex_Even_Type
     
 end
 module Mutex_Impl2_Inv_Stub
-  use prelude.Borrow
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   use Mutex_Even_Type as Mutex_Even_Type
   predicate inv [#"../mutex.rs" 65 4 65 33] (self : Mutex_Even_Type.t_even) (x : uint32)
 end
@@ -387,7 +385,6 @@ module Mutex_FakeFnOnce_Postcondition
 end
 module Mutex_Impl5_Inv_Stub
   type f
-  use prelude.Borrow
   clone Mutex_FakeFnOnce_Return_Type as Return0 with
     type self = f
   use Mutex_SpawnPostCond_Type as Mutex_SpawnPostCond_Type
@@ -426,6 +423,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface

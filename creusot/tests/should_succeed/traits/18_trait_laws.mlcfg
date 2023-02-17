@@ -16,6 +16,7 @@ module C18TraitLaws_Symmetric_Op
 end
 module C18TraitLaws_Symmetric_Reflexive_Stub
   type self
+  use prelude.Int
   clone C18TraitLaws_Symmetric_Op_Stub as Op0 with
     type self = self
   function reflexive [#"../18_trait_laws.rs" 10 4 10 35] (a : self) (b : self) : ()
@@ -40,6 +41,7 @@ module C18TraitLaws_Symmetric_Reflexive
 end
 module C18TraitLaws_UsesOp_Stub
   type t
+  use prelude.Int
   function uses_op [#"../18_trait_laws.rs" 15 0 15 48] (x : t) (y : t) : bool
 end
 module C18TraitLaws_UsesOp_Interface
@@ -87,6 +89,7 @@ module C18TraitLaws_Impl0_Op
     
 end
 module C18TraitLaws_Impl0_Reflexive_Stub
+  use prelude.Int
   clone C18TraitLaws_Impl0_Op_Stub as Op0
   function reflexive [#"../18_trait_laws.rs" 27 4 27 34] (a : ()) (b : ()) : ()
 end
@@ -114,6 +117,7 @@ module C18TraitLaws_Impl0_Reflexive_Impl
     [#"../18_trait_laws.rs" 25 4 25 10] ()
 end
 module C18TraitLaws_ImplLaws_Stub
+  use prelude.Int
   function impl_laws [#"../18_trait_laws.rs" 32 0 32 26] (_1' : ()) : bool
 end
 module C18TraitLaws_ImplLaws_Interface

@@ -1,6 +1,5 @@
 
 module Core_Num_Impl10_Max_Stub
-  use prelude.Int
   use prelude.UInt64
   val constant mAX'  : uint64
 end
@@ -13,6 +12,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -68,7 +68,6 @@ module C682_AddSome
 end
 module CreusotContracts_Ghost_Impl0_Deref_Stub
   type t
-  use prelude.Borrow
   use prelude.Ghost
   function deref (self : Ghost.ghost_ty t) : t
 end

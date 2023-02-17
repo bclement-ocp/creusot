@@ -41,6 +41,7 @@ module C07Fuse_Fuse_Type
 end
 module C07Fuse_Impl0_Inner_Stub
   type i
+  use prelude.Ghost
   use C07Fuse_Fuse_Type as C07Fuse_Fuse_Type
   function inner [#"../07_fuse.rs" 15 4 15 23] (self : C07Fuse_Fuse_Type.t_fuse i) : i
 end
@@ -67,6 +68,7 @@ end
 module C07Fuse_Impl1_Completed_Stub
   type i
   use prelude.Borrow
+  use prelude.Int
   use C07Fuse_Fuse_Type as C07Fuse_Fuse_Type
   predicate completed [#"../07_fuse.rs" 27 4 27 35] (self : borrowed (C07Fuse_Fuse_Type.t_fuse i))
 end
@@ -211,6 +213,7 @@ end
 module C07Fuse_Impl1_Produces_Stub
   type i
   use seq.Seq
+  use prelude.Int
   clone C07Fuse_Common_Iterator_Item_Type as Item0 with
     type self = i
   use C07Fuse_Fuse_Type as C07Fuse_Fuse_Type
@@ -253,6 +256,7 @@ module C07Fuse_Impl1_Produces
 end
 module C07Fuse_Impl1_Invariant_Stub
   type i
+  use prelude.Ghost
   use C07Fuse_Fuse_Type as C07Fuse_Fuse_Type
   predicate invariant' [#"../07_fuse.rs" 40 4 40 30] (self : C07Fuse_Fuse_Type.t_fuse i)
 end
@@ -328,6 +332,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -638,9 +643,9 @@ end
 module C07Fuse_Impl1_ProducesTrans_Stub
   type i
   use seq.Seq
+  use C07Fuse_Fuse_Type as C07Fuse_Fuse_Type
   clone C07Fuse_Common_Iterator_Item_Type as Item0 with
     type self = i
-  use C07Fuse_Fuse_Type as C07Fuse_Fuse_Type
   clone C07Fuse_Impl1_Produces_Stub as Produces0 with
     type i = i,
     type Item0.item = Item0.item
@@ -738,6 +743,7 @@ end
 module C07Fuse_Impl2_IsFused_Stub
   type i
   use prelude.Borrow
+  use prelude.Int
   use seq.Seq
   clone C07Fuse_Common_Iterator_Item_Type as Item0 with
     type self = i

@@ -26,7 +26,6 @@ module CreusotContracts_Model_ShallowModel_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -78,7 +77,6 @@ module CreusotContracts_Model_DeepModel_DeepModel
 end
 module CreusotContracts_Model_Impl0_DeepModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   function deep_model (self : t) : DeepModelTy0.deepModelTy
@@ -130,6 +128,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub
   type self
+  use prelude.Int
   predicate le_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
@@ -175,6 +174,7 @@ end
 module CreusotContracts_Logic_Seq_Impl0_Sorted_Stub
   type t
   use seq.Seq
+  use prelude.Int
   predicate sorted (self : Seq.seq t)
 end
 module CreusotContracts_Logic_Seq_Impl0_Sorted_Interface
@@ -201,7 +201,6 @@ module Core_Result_Result_Type
     
 end
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -213,11 +212,10 @@ module Core_Num_Impl12_Max
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
 end
@@ -247,10 +245,9 @@ module CreusotContracts_Std1_Slice_Impl0_ShallowModel
 end
 module CreusotContracts_Std1_Slice_Impl1_DeepModel_Stub
   type t
-  use seq.Seq
   use prelude.Int
+  use seq.Seq
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
@@ -305,6 +302,7 @@ module CreusotContracts_Std1_Slice_Impl1_DeepModel
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Stub
   type self
+  use prelude.Int
   predicate lt_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Interface
@@ -397,8 +395,8 @@ module CreusotContracts_Logic_Ord_Impl2_LtLog
     
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function deep_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Interface

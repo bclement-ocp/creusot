@@ -30,6 +30,7 @@ end
 module C10_Impl0_Resolve_Stub
   type t1
   type t2
+  use prelude.Int
   use C10_Pair_Type as C10_Pair_Type
   predicate resolve [#"../10.rs" 11 4 11 28] (self : C10_Pair_Type.t_pair t1 t2)
 end

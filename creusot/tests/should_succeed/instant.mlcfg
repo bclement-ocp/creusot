@@ -87,7 +87,6 @@ module Core_Time_Duration_Type
     
 end
 module Core_Num_Impl10_Max_Stub
-  use prelude.Int
   use prelude.UInt64
   val constant mAX'  : uint64
 end
@@ -101,8 +100,8 @@ module CreusotContracts_Std1_Time_Impl0_ShallowModel_Stub
   use prelude.Int
   use prelude.UInt64
   use Core_Time_Duration_Type as Core_Time_Duration_Type
-  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   clone Core_Num_Impl10_Max_Stub as Max0
+  clone CreusotContracts_Std1_Time_SecsToNanos_Stub as SecsToNanos0
   function shallow_model (self : Core_Time_Duration_Type.t_duration) : int
 end
 module CreusotContracts_Std1_Time_Impl0_ShallowModel_Interface
@@ -182,7 +181,6 @@ module CreusotContracts_Model_DeepModel_DeepModel
 end
 module CreusotContracts_Model_Impl0_DeepModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
     type self = t
   function deep_model (self : t) : DeepModelTy0.deepModelTy
@@ -234,6 +232,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GeLog_Stub
   type self
+  use prelude.Int
   predicate ge_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GeLog_Interface
@@ -338,7 +337,6 @@ module CreusotContracts_Model_ShallowModel_ShallowModel
 end
 module CreusotContracts_Model_Impl1_ShallowModel_Stub
   type t
-  use prelude.Borrow
   clone CreusotContracts_Model_ShallowModel_ShallowModelTy_Type as ShallowModelTy0 with
     type self = t
   function shallow_model (self : t) : ShallowModelTy0.shallowModelTy
@@ -365,6 +363,7 @@ module CreusotContracts_Model_Impl1_ShallowModel
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Stub
   type self
+  use prelude.Int
   predicate lt_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LtLog_Interface
@@ -448,6 +447,7 @@ module Std_Time_Impl1_Add_Interface
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GtLog_Stub
   type self
+  use prelude.Int
   predicate gt_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_GtLog_Interface
@@ -734,6 +734,7 @@ module CreusotContracts_Std1_Time_Impl3_DeepModel
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub
   type self
+  use prelude.Int
   predicate le_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
@@ -754,6 +755,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_LeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpLeLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -787,6 +789,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpLtLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -820,6 +823,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLtLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpGeLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -853,6 +857,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpGeLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_CmpGtLog_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -886,6 +891,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpGtLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Refl_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -913,6 +919,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Refl
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Trans_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -942,6 +949,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Trans
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Antisym1_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -970,6 +978,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Antisym1
 end
 module CreusotContracts_Logic_Ord_OrdLogic_Antisym2_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -998,6 +1007,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_Antisym2
 end
 module CreusotContracts_Logic_Ord_OrdLogic_EqCmp_Stub
   type self
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_OrdLogic_CmpLog_Stub as CmpLog0 with
     type self = self
@@ -1058,8 +1068,9 @@ module CreusotContracts_Logic_Ord_Impl1_CmpLog
 end
 module CreusotContracts_Logic_Ord_Impl1_CmpLeLog_Stub
   type t
-  use Core_Option_Option_Type as Core_Option_Option_Type
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
+  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
     type t = t
   clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
@@ -1095,8 +1106,9 @@ module CreusotContracts_Logic_Ord_Impl1_CmpLeLog
 end
 module CreusotContracts_Logic_Ord_Impl1_CmpLtLog_Stub
   type t
-  use Core_Option_Option_Type as Core_Option_Option_Type
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
+  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
     type t = t
   clone CreusotContracts_Logic_Ord_OrdLogic_LtLog_Stub as LtLog0 with
@@ -1132,8 +1144,9 @@ module CreusotContracts_Logic_Ord_Impl1_CmpLtLog
 end
 module CreusotContracts_Logic_Ord_Impl1_CmpGeLog_Stub
   type t
-  use Core_Option_Option_Type as Core_Option_Option_Type
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
+  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
     type t = t
   clone CreusotContracts_Logic_Ord_OrdLogic_GeLog_Stub as GeLog0 with
@@ -1169,8 +1182,9 @@ module CreusotContracts_Logic_Ord_Impl1_CmpGeLog
 end
 module CreusotContracts_Logic_Ord_Impl1_CmpGtLog_Stub
   type t
-  use Core_Option_Option_Type as Core_Option_Option_Type
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
+  use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
     type t = t
   clone CreusotContracts_Logic_Ord_OrdLogic_GtLog_Stub as GtLog0 with
@@ -1206,6 +1220,7 @@ module CreusotContracts_Logic_Ord_Impl1_CmpGtLog
 end
 module CreusotContracts_Logic_Ord_Impl1_Refl_Stub
   type t
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
@@ -1237,6 +1252,7 @@ module CreusotContracts_Logic_Ord_Impl1_Refl
 end
 module CreusotContracts_Logic_Ord_Impl1_Trans_Stub
   type t
+  use prelude.Int
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
@@ -1274,6 +1290,7 @@ module CreusotContracts_Logic_Ord_Impl1_Trans
 end
 module CreusotContracts_Logic_Ord_Impl1_Antisym1_Stub
   type t
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
@@ -1306,6 +1323,7 @@ module CreusotContracts_Logic_Ord_Impl1_Antisym1
 end
 module CreusotContracts_Logic_Ord_Impl1_Antisym2_Stub
   type t
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with
@@ -1338,6 +1356,7 @@ module CreusotContracts_Logic_Ord_Impl1_Antisym2
 end
 module CreusotContracts_Logic_Ord_Impl1_EqCmp_Stub
   type t
+  use prelude.Int
   use Core_Option_Option_Type as Core_Option_Option_Type
   use Core_Cmp_Ordering_Type as Core_Cmp_Ordering_Type
   clone CreusotContracts_Logic_Ord_Impl1_CmpLog_Stub as CmpLog0 with

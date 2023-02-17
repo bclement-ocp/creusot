@@ -1,6 +1,5 @@
 
 module Core_Num_Impl12_Max_Stub
-  use prelude.Int
   use prelude.UIntSize
   val constant mAX'  : usize
 end
@@ -12,11 +11,10 @@ module Core_Num_Impl12_Max
 end
 module CreusotContracts_Std1_Slice_Impl0_ShallowModel_Stub
   type t
+  use prelude.Int
   use seq.Seq
   use prelude.UIntSize
-  use prelude.Int
   use prelude.Slice
-  use prelude.Seq
   clone Core_Num_Impl12_Max_Stub as Max0
   function shallow_model (self : seq t) : Seq.seq t
 end
@@ -47,6 +45,8 @@ end
 module CreusotContracts_Logic_Seq_Impl0_Tail_Stub
   type t
   use seq.Seq
+  use seq_ext.SeqExt
+  use prelude.Int
   function tail (self : Seq.seq t) : Seq.seq t
 end
 module CreusotContracts_Logic_Seq_Impl0_Tail_Interface
@@ -181,6 +181,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -217,7 +218,8 @@ module CreusotContracts_Std1_Slice_Impl2_IsDefault_Stub
   type t
   use prelude.Borrow
   use prelude.Slice
-  use prelude.Seq
+  use prelude.Int
+  use seq.Seq
   predicate is_default (self : borrowed (seq t))
 end
 module CreusotContracts_Std1_Slice_Impl2_IsDefault_Interface

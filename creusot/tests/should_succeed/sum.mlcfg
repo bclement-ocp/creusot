@@ -92,6 +92,7 @@ module CreusotContracts_Logic_Ord_OrdLogic_CmpLog
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub
   type self
+  use prelude.Int
   predicate le_log (self : self) (o : self)
 end
 module CreusotContracts_Logic_Ord_OrdLogic_LeLog_Interface
@@ -112,18 +113,18 @@ module CreusotContracts_Logic_Ord_OrdLogic_LeLog
 end
 module CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Stub
   type idx
-  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
-    type self = idx
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
-  clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
-    type self = DeepModelTy0.deepModelTy
   clone CreusotContracts_Std1_Ops_Impl5_EndLog_Stub as EndLog0 with
     type idx = idx
+  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
+    type idx = idx
+  clone CreusotContracts_Model_DeepModel_DeepModelTy_Type as DeepModelTy0 with
+    type self = idx
   clone CreusotContracts_Model_DeepModel_DeepModel_Stub as DeepModel0 with
     type self = idx,
     type DeepModelTy0.deepModelTy = DeepModelTy0.deepModelTy
-  clone CreusotContracts_Std1_Ops_Impl5_StartLog_Stub as StartLog0 with
-    type idx = idx
+  clone CreusotContracts_Logic_Ord_OrdLogic_LeLog_Stub as LeLog0 with
+    type self = DeepModelTy0.deepModelTy
   predicate is_empty_log (self : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx)
 end
 module CreusotContracts_Std1_Ops_Impl5_IsEmptyLog_Interface
@@ -458,6 +459,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl1_Produces_Stub
   type idx
   use seq.Seq
+  use prelude.Int
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   predicate produces (self : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx) (visited : Seq.seq idx) (o : Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx)
     
@@ -510,6 +512,7 @@ end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
   type t
   use prelude.Borrow
+  use prelude.Int
   predicate resolve (self : borrowed t)
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Interface
@@ -528,8 +531,8 @@ module CreusotContracts_Resolve_Impl1_Resolve
     
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Stub
-  use prelude.Int
   use prelude.UInt32
+  use prelude.Int
   function deep_model (self : uint32) : int
 end
 module CreusotContracts_Logic_Int_Impl12_DeepModel_Interface
@@ -566,6 +569,7 @@ module CreusotContracts_Std1_Iter_Impl0_IntoIterPre
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Stub
   type i
+  use prelude.Int
   predicate into_iter_post (self : i) (res : i)
 end
 module CreusotContracts_Std1_Iter_Impl0_IntoIterPost_Interface
@@ -666,6 +670,7 @@ end
 module CreusotContracts_Std1_Iter_Range_Impl1_Completed_Stub
   type idx
   use prelude.Borrow
+  use prelude.Int
   use Core_Ops_Range_RangeInclusive_Type as Core_Ops_Range_RangeInclusive_Type
   predicate completed (self : borrowed (Core_Ops_Range_RangeInclusive_Type.t_rangeinclusive idx))
 end

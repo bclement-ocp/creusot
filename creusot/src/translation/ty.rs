@@ -133,7 +133,7 @@ fn translate_ty_inner<'tcx, C: Cloner<'tcx>>(
             names.import_prelude_module(PreludeModule::Seq);
 
             MlT::TApp(
-                box MlT::TConstructor("rust_array".into()),
+                box MlT::TConstructor("seq".into()),
                 vec![translate_ty_inner(trans, ctx, names, span, *ty)],
             )
         }

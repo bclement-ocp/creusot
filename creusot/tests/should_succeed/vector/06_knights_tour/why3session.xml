@@ -59,14 +59,14 @@
   <goal name="count_degree&#39;vc.7" expl="precondition" proved="true">
   <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
    <goal name="count_degree&#39;vc.7.0" expl="precondition" proved="true">
-   <proof prover="1"><result status="valid" time="0.07" steps="1463"/></proof>
+   <proof prover="1"><result status="valid" time="0.07" steps="1470"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="count_degree&#39;vc.8" expl="precondition" proved="true">
   <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
    <goal name="count_degree&#39;vc.8.0" expl="precondition" proved="true">
-   <proof prover="1"><result status="valid" time="0.14" steps="1519"/></proof>
+   <proof prover="1"><result status="valid" time="0.14" steps="1521"/></proof>
    </goal>
   </transf>
   </goal>
@@ -98,7 +98,7 @@
 </theory>
 <theory name="C06KnightsTour_Impl1_Set" proved="true">
  <goal name="set&#39;vc" expl="VC for set" proved="true">
- <proof prover="1"><result status="valid" time="0.11" steps="2132"/></proof>
+ <proof prover="1"><result status="valid" time="0.11" steps="2119"/></proof>
  </goal>
 </theory>
 <theory name="C06KnightsTour_Min" proved="true">
@@ -208,7 +208,7 @@
   <proof prover="1"><result status="valid" time="0.01" steps="19"/></proof>
   </goal>
   <goal name="knights_tour&#39;vc.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" time="0.07" steps="388"/></proof>
+  <proof prover="1"><result status="valid" time="0.07" steps="390"/></proof>
   </goal>
   <goal name="knights_tour&#39;vc.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" time="0.00" steps="23"/></proof>
@@ -282,14 +282,14 @@
   <goal name="knights_tour&#39;vc.28" expl="precondition" proved="true">
   <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
    <goal name="knights_tour&#39;vc.28.0" expl="precondition" proved="true">
-   <proof prover="1"><result status="valid" time="0.30" steps="7964"/></proof>
+   <proof prover="1"><result status="valid" time="0.30" steps="7971"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="knights_tour&#39;vc.29" expl="precondition" proved="true">
   <transf name="use_th" proved="true" arg1="seq.FreeMonoid">
    <goal name="knights_tour&#39;vc.29.0" expl="precondition" proved="true">
-   <proof prover="1"><result status="valid" time="0.29" steps="8198"/></proof>
+   <proof prover="1"><result status="valid" time="0.29" steps="8196"/></proof>
    </goal>
   </transf>
   </goal>
