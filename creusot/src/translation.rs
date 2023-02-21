@@ -116,13 +116,14 @@ pub(crate) fn after_analysis(mut ctx: TranslationCtx) -> Result<(), Box<dyn Erro
         let matcher = ctx.opts.match_str.clone();
         let matcher: &str = matcher.as_ref().map(|s| &s[..]).unwrap_or("");
         let tcx = ctx.tcx;
-        let modules = ctx.modules().flat_map(|(id, item)| {
-            if tcx.def_path_str(id).contains(matcher) {
-                item.modules()
-            } else {
-                item.interface()
-            }
-        });
+        // let modules = ctx.modules().flat_map(|(id, item)| {
+        //     if tcx.def_path_str(id).contains(matcher) {
+        //         item.modules()
+        //     } else {
+        //         item.interface()
+        //     }
+        // });
+        let modules = todo!();
 
         let crate_name = tcx.crate_name(LOCAL_CRATE).to_string().to_upper_camel_case();
         print_crate(&mut out, crate_name, modules)?;

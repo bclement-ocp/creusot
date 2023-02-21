@@ -1,5 +1,5 @@
 use crate::{
-    backend::logic::stub_module,
+    backend::{logic::stub_module, Why3Backend},
     clone_map::CloneMap,
     ctx::{module_name, CloneSummary, TranslatedItem, TranslationCtx},
     traits::resolve_assoc_item_opt,
@@ -24,19 +24,19 @@ use super::{
     pearlite::{Term, TermKind},
 };
 
-impl<'tcx> TranslationCtx<'tcx> {
+impl<'tcx> Why3Backend<'tcx> {
     pub(crate) fn translate_constant(
         &mut self,
         def_id: DefId,
     ) -> (TranslatedItem, CloneSummary<'tcx>) {
-        let subst = InternalSubsts::identity_for_item(self.tcx, def_id);
+        let subst = InternalSubsts::identity_for_item(self.ctx.tcx, def_id);
         let uneval = ty::UnevaluatedConst::new(ty::WithOptConstParam::unknown(def_id), subst);
         let constant = self.mk_const(ty::ConstKind::Unevaluated(uneval), self.type_of(def_id));
 
-        let res = from_ty_const(self, constant, self.param_env(def_id), self.def_span(def_id));
-        let mut names = CloneMap::new(self.tcx, def_id, crate::clone_map::CloneLevel::Body);
-        let res = res.to_why(self, &mut names, None);
-        let sig = signature_of(self, &mut names, def_id);
+        let res = from_ty_const(&mut self.ctx, constant, self.param_env(def_id), self.def_span(def_id));
+        let mut names = CloneMap::new(self.ctx.tcx, def_id, crate::clone_map::CloneLevel::Body);
+        let res = res.to_why(&mut self.ctx, &mut names, None);
+        let sig = signature_of(&mut self.ctx, &mut names, def_id);
         let (mut decls, summary) = names.to_clones(self);
         decls.push(Decl::Let(LetDecl {
             kind: Some(LetKind::Constant),
@@ -48,7 +48,7 @@ impl<'tcx> TranslationCtx<'tcx> {
 
         let stub = stub_module(self, def_id);
 
-        let modl = Module { name: module_name(self.tcx, def_id), decls };
+        let modl = Module { name: module_name(self.ctx.tcx, def_id), decls };
         (TranslatedItem::Constant { stub, modl }, summary)
     }
 }

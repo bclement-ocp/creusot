@@ -2,7 +2,7 @@ use super::function::closure_generic_decls;
 use crate::{
     backend::{
         logic::spec_axiom,
-        program::{closure_aux_defs, closure_type_use},
+        program::{closure_aux_defs, closure_type_use}, Why3Backend,
     },
     clone_map::CloneMap,
     ctx::*,
@@ -17,21 +17,21 @@ use why3::{
 };
 
 pub(crate) fn interface_for<'tcx>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     def_id: DefId,
 ) -> (Module, CloneSummary<'tcx>) {
     debug!("interface_for: {def_id:?}");
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Stub);
-    let mut sig = util::signature_of(ctx, &mut names, def_id);
+    let mut names = CloneMap::new(ctx.ctx.tcx, def_id, CloneLevel::Stub);
+    let mut sig = util::signature_of(&mut ctx.ctx, &mut names, def_id);
 
     sig.contract.variant = Vec::new();
 
     let mut decls = Vec::new();
 
-    if ctx.tcx.is_closure(def_id) {
-        decls.extend(closure_aux_defs(ctx, &mut names, def_id));
+    if ctx.is_closure(def_id) {
+        decls.extend(closure_aux_defs(&mut ctx.ctx, &mut names, def_id));
 
-        if let TyKind::Closure(_, subst) = ctx.tcx.type_of(def_id).kind() {
+        if let TyKind::Closure(_, subst) = ctx.type_of(def_id).kind() {
             if subst.as_closure().kind() == ClosureKind::FnMut {
                 sig.contract.ensures.push(
                     Exp::pure_var("unnest".into())
@@ -42,12 +42,12 @@ pub(crate) fn interface_for<'tcx>(
         }
     }
 
-    match util::item_type(ctx.tcx, def_id) {
+    match util::item_type(ctx.ctx.tcx, def_id) {
         ItemType::Predicate => {
             let sig_contract = sig.clone();
             sig.retty = None;
             sig.contract = Contract::new();
-            decls.push(Decl::ValDecl(util::item_type(ctx.tcx, def_id).val(sig)));
+            decls.push(Decl::ValDecl(util::item_type(ctx.ctx.tcx, def_id).val(sig)));
 
             let has_axioms = !sig_contract.contract.is_empty();
             if has_axioms {
@@ -57,7 +57,7 @@ pub(crate) fn interface_for<'tcx>(
         ItemType::Logic => {
             let sig_contract = sig.clone();
             sig.contract = Contract::new();
-            decls.push(Decl::ValDecl(util::item_type(ctx.tcx, def_id).val(sig)));
+            decls.push(Decl::ValDecl(util::item_type(ctx.ctx.tcx, def_id).val(sig)));
 
             let has_axioms = !sig_contract.contract.is_empty();
             if has_axioms {
@@ -65,18 +65,18 @@ pub(crate) fn interface_for<'tcx>(
             }
         }
         _ => {
-            if !def_id.is_local() && !ctx.externs.verified(def_id) && sig.contract.is_empty() {
+            if !def_id.is_local() && !ctx.ctx.externs.verified(def_id) && sig.contract.is_empty() {
                 sig.contract.requires.push(why3::exp::Exp::mk_false());
             }
 
-            decls.push(Decl::ValDecl(util::item_type(ctx.tcx, def_id).val(sig)));
+            decls.push(Decl::ValDecl(util::item_type(ctx.ctx.tcx, def_id).val(sig)));
         }
     }
 
-    let name = interface_name(ctx, def_id);
+    let name = interface_name(&mut ctx.ctx, def_id);
     let (clones, summary) = names.to_clones(ctx);
-    let decls = closure_generic_decls(ctx.tcx, def_id)
-        .chain(closure_type_use(ctx, def_id))
+    let decls = closure_generic_decls(ctx.ctx.tcx, def_id)
+        .chain(closure_type_use(&mut ctx.ctx, def_id))
         .chain(clones)
         .chain(decls)
         .collect();

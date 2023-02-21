@@ -14,6 +14,8 @@ use why3::{
     Ident, QName,
 };
 
+use super::Why3Backend;
+
 pub(crate) fn binders_to_args(
     ctx: &mut TranslationCtx,
     binders: Vec<Binder>,
@@ -44,12 +46,12 @@ pub(crate) fn binders_to_args(
 }
 
 pub(crate) fn translate_logic_or_predicate<'tcx>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     def_id: DefId,
 ) -> (Module, Module, Option<Module>, bool, CloneSummary<'tcx>) {
-    let has_axioms = !ctx.sig(def_id).contract.is_empty();
+    let has_axioms = !ctx.ctx.sig(def_id).contract.is_empty();
 
-    let (body_modl, deps) = if get_builtin(ctx.tcx, def_id).is_some() {
+    let (body_modl, deps) = if get_builtin(ctx.ctx.tcx, def_id).is_some() {
         builtin_body(ctx, def_id)
     } else {
         body_module(ctx, def_id)
@@ -59,17 +61,17 @@ pub(crate) fn translate_logic_or_predicate<'tcx>(
 }
 
 fn builtin_body<'tcx>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     def_id: DefId,
 ) -> (Module, CloneSummary<'tcx>) {
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Stub);
-    let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
-    let (val_args, val_binders) = binders_to_args(ctx, sig.args);
+    let mut names = CloneMap::new(ctx.ctx.tcx, def_id, CloneLevel::Stub);
+    let mut sig = crate::util::signature_of(&mut ctx.ctx, &mut names, def_id);
+    let (val_args, val_binders) = binders_to_args(&mut ctx.ctx, sig.args);
     sig.args = val_binders;
 
     // Check that we don't have both `builtins` and a contract at the same time (which are contradictory)
     if !sig.contract.is_empty() {
-        ctx.crash_and_error(
+        ctx.ctx.crash_and_error(
             ctx.def_span(def_id),
             "cannot specify both `creusot::builtins` and a contract on the same definition",
         );
@@ -83,24 +85,24 @@ fn builtin_body<'tcx>(
         box Exp::Call(box Exp::pure_var(val_sig.name.clone()), val_args.clone()),
     )];
 
-    if util::is_predicate(ctx.tcx, def_id) {
+    if util::is_predicate(ctx.ctx.tcx, def_id) {
         sig.retty = None;
     }
 
-    let builtin = QName::from_string(get_builtin(ctx.tcx, def_id).unwrap().as_str()).unwrap();
+    let builtin = QName::from_string(get_builtin(ctx.ctx.tcx, def_id).unwrap().as_str()).unwrap();
 
     if !builtin.module.is_empty() {
         names.import_builtin_module(builtin.clone().module_qname());
     }
 
-    let mut decls: Vec<_> = all_generic_decls_for(ctx.tcx, def_id).collect();
+    let mut decls: Vec<_> = all_generic_decls_for(ctx.ctx.tcx, def_id).collect();
     let (clones, summary) = names.to_clones(ctx);
 
     decls.extend(clones);
     if !builtin.module.is_empty() {
         let body = Exp::Call(box Exp::pure_qvar(builtin.without_search_path()), val_args);
 
-        if util::is_predicate(ctx.tcx, def_id) {
+        if util::is_predicate(ctx.ctx.tcx, def_id) {
             decls.push(Decl::PredDecl(Predicate { sig, body }));
         } else {
             decls.push(Decl::LogicDefn(Logic { sig, body }));
@@ -109,21 +111,21 @@ fn builtin_body<'tcx>(
 
     decls.push(Decl::ValDecl(ValDecl { ghost: false, val: true, kind: None, sig: val_sig }));
 
-    let name = module_name(ctx.tcx, def_id);
+    let name = module_name(ctx.ctx.tcx, def_id);
 
     (Module { name, decls }, summary)
 }
 
 fn body_module<'tcx>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     def_id: DefId,
 ) -> (Module, CloneSummary<'tcx>) {
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Stub);
+    let mut names = CloneMap::new(ctx.ctx.tcx, def_id, CloneLevel::Stub);
 
-    let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
+    let mut sig = crate::util::signature_of(&mut ctx.ctx, &mut names, def_id);
     let mut val_sig = sig.clone();
     val_sig.contract.variant = Vec::new();
-    let (val_args, val_binders) = binders_to_args(ctx, val_sig.args);
+    let (val_args, val_binders) = binders_to_args(&mut ctx.ctx, val_sig.args);
     val_sig.contract.ensures = vec![Exp::BinaryOp(
         BinOp::Eq,
         box Exp::pure_var("result".into()),
@@ -131,7 +133,7 @@ fn body_module<'tcx>(
     )];
     val_sig.args = val_binders;
 
-    if util::is_predicate(ctx.tcx, def_id) {
+    if util::is_predicate(ctx.ctx.tcx, def_id) {
         sig.retty = None;
     }
 
@@ -140,16 +142,16 @@ fn body_module<'tcx>(
 
     let mut decls: Vec<_> = Vec::new();
 
-    if util::is_trusted(ctx.tcx, def_id) || !util::has_body(ctx, def_id) {
-        let val = util::item_type(ctx.tcx, def_id).val(sig.clone());
+    if util::is_trusted(ctx.ctx.tcx, def_id) || !util::has_body(&mut ctx.ctx, def_id) {
+        let val = util::item_type(ctx.ctx.tcx, def_id).val(sig.clone());
         decls.push(Decl::ValDecl(val));
         decls.push(Decl::ValDecl(ValDecl { sig: val_sig, ghost: false, val: true, kind: None }));
     } else {
-        let term = ctx.term(def_id).unwrap().clone();
-        let body = specification::lower_pure(ctx, &mut names, term);
+        let term = ctx.ctx.term(def_id).unwrap().clone();
+        let body = specification::lower_pure(&mut ctx.ctx, &mut names, term);
 
         if sig_contract.contract.variant.is_empty() {
-            let decl = match util::item_type(ctx.tcx, def_id) {
+            let decl = match util::item_type(ctx.ctx.tcx, def_id) {
                 ItemType::Logic => Decl::LogicDefn(Logic { sig, body }),
                 ItemType::Predicate => Decl::PredDecl(Predicate { sig, body }),
                 _ => unreachable!(),
@@ -163,7 +165,7 @@ fn body_module<'tcx>(
             }));
         } else if body.is_pure() {
             let def_sig = sig.clone();
-            let val = util::item_type(ctx.tcx, def_id).val(sig.clone());
+            let val = util::item_type(ctx.ctx.tcx, def_id).val(sig.clone());
             decls.push(Decl::ValDecl(val));
             decls.push(Decl::ValDecl(ValDecl {
                 sig: val_sig,
@@ -173,7 +175,7 @@ fn body_module<'tcx>(
             }));
             decls.push(Decl::Axiom(definition_axiom(&def_sig, body)));
         } else {
-            let val = util::item_type(ctx.tcx, def_id).val(sig.clone());
+            let val = util::item_type(ctx.ctx.tcx, def_id).val(sig.clone());
             decls.push(Decl::ValDecl(val));
             decls.push(Decl::ValDecl(ValDecl {
                 sig: val_sig,
@@ -184,15 +186,15 @@ fn body_module<'tcx>(
         }
     }
 
-    let has_axioms = !ctx.sig(def_id).contract.is_empty();
+    let has_axioms = !ctx.ctx.sig(def_id).contract.is_empty();
     if has_axioms {
         decls.push(Decl::Axiom(spec_axiom(&sig_contract)));
     }
 
-    let name = module_name(ctx.tcx, def_id);
+    let name = module_name(ctx.ctx.tcx, def_id);
 
     let (clones, summary) = names.to_clones(ctx);
-    let decls = closure_generic_decls(ctx.tcx, def_id)
+    let decls = closure_generic_decls(ctx.ctx.tcx, def_id)
         .chain(clones.into_iter())
         .chain(decls.into_iter())
         .collect();
@@ -200,22 +202,22 @@ fn body_module<'tcx>(
     (Module { name, decls }, summary)
 }
 
-pub(crate) fn stub_module(ctx: &mut TranslationCtx, def_id: DefId) -> Module {
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Stub);
-    let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
+pub(crate) fn stub_module(ctx: &mut Why3Backend, def_id: DefId) -> Module {
+    let mut names = CloneMap::new(ctx.ctx.tcx, def_id, CloneLevel::Stub);
+    let mut sig = crate::util::signature_of(&mut ctx.ctx, &mut names, def_id);
 
-    if util::is_predicate(ctx.tcx, def_id) {
+    if util::is_predicate(ctx.ctx.tcx, def_id) {
         sig.retty = None;
     }
     sig.contract = Contract::new();
 
-    let decl = Decl::ValDecl(util::item_type(ctx.tcx, def_id).val(sig));
+    let decl = Decl::ValDecl(util::item_type(ctx.ctx.tcx, def_id).val(sig));
 
-    let name = module_name(ctx.tcx, def_id);
+    let name = module_name(ctx.ctx.tcx, def_id);
     let name = format!("{}_Stub", &*name).into();
 
     let mut decls: Vec<_> = Vec::new();
-    decls.extend(all_generic_decls_for(ctx.tcx, def_id));
+    decls.extend(all_generic_decls_for(ctx.ctx.tcx, def_id));
     let (clones, _) = names.to_clones(ctx);
     decls.extend(clones);
     decls.push(decl);
@@ -223,28 +225,28 @@ pub(crate) fn stub_module(ctx: &mut TranslationCtx, def_id: DefId) -> Module {
     Module { name, decls }
 }
 
-fn proof_module(ctx: &mut TranslationCtx, def_id: DefId) -> Option<Module> {
-    if util::is_trusted(ctx.tcx, def_id) || !util::has_body(ctx, def_id) {
+fn proof_module(ctx: &mut Why3Backend, def_id: DefId) -> Option<Module> {
+    if util::is_trusted(ctx.ctx.tcx, def_id) || !util::has_body(&mut ctx.ctx, def_id) {
         return None;
     }
 
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Body);
+    let mut names = CloneMap::new(ctx.ctx.tcx, def_id, CloneLevel::Body);
 
-    let mut sig = crate::util::signature_of(ctx, &mut names, def_id);
+    let mut sig = crate::util::signature_of(&mut ctx.ctx, &mut names, def_id);
 
     if sig.contract.is_empty() {
         let _ = names.to_clones(ctx);
         return None;
     }
-    let term = ctx.term(def_id).unwrap().clone();
-    let body = specification::lower_impure(ctx, &mut names, term);
+    let term = ctx.ctx.term(def_id).unwrap().clone();
+    let body = specification::lower_impure(&mut ctx.ctx, &mut names, term);
 
     let mut decls: Vec<_> = Vec::new();
-    decls.extend(all_generic_decls_for(ctx.tcx, def_id));
+    decls.extend(all_generic_decls_for(ctx.ctx.tcx, def_id));
     let (clones, _) = names.to_clones(ctx);
     decls.extend(clones);
 
-    let kind = match util::item_type(ctx.tcx, def_id) {
+    let kind = match util::item_type(ctx.ctx.tcx, def_id) {
         ItemType::Predicate => {
             sig.retty = None;
             Some(LetKind::Predicate)
@@ -255,7 +257,7 @@ fn proof_module(ctx: &mut TranslationCtx, def_id: DefId) -> Option<Module> {
 
     decls.push(Decl::Let(LetDecl { sig, rec: true, ghost: true, body, kind }));
 
-    let name = impl_name(ctx, def_id);
+    let name = impl_name(&mut ctx.ctx, def_id);
     Some(Module { name, decls })
 }
 

@@ -21,7 +21,7 @@ use why3::{declaration::TyDecl, ty::Type as MlT, QName};
 
 use crate::{
     ctx::*,
-    util::{self, get_builtin, item_qname, module_name, PreSignature},
+    util::{self, get_builtin, item_qname, module_name, PreSignature}, backend::Why3Backend,
 };
 
 /// When we translate a type declaration, generic parameters should be declared using 't notation:
@@ -84,7 +84,7 @@ fn translate_ty_inner<'tcx>(
                 names.import_builtin_module(builtin.clone().module_qname());
                 MlT::TConstructor(builtin.without_search_path())
             } else {
-                ctx.translate(def.did());
+                // ctx.translate(def.did());
                 MlT::TConstructor(names.ty(def.did(), s))
             };
 
@@ -280,32 +280,32 @@ fn translate_ty_param(p: Symbol) -> Ident {
 // Additionally, types are not translated one by one but rather as a *binding group*, so that mutually
 // recursive types are properly translated.
 // Results are accumulated and can be collected at once by consuming the `Ctx`
-pub(crate) fn translate_tydecl(ctx: &mut TranslationCtx<'_>, did: DefId) {
+pub(crate) fn translate_tydecl(ctx: &mut Why3Backend<'_>, did: DefId) {
     let span = ctx.def_span(did);
-    let bg = ctx.binding_group(did).clone();
+    let bg = ctx.ctx.binding_group(did).clone();
 
-    ctx.start_group(bg.clone());
+    ctx.ctx.start_group(bg.clone());
 
-    if let Some(_) = get_builtin(ctx.tcx, did) {
+    if let Some(_) = get_builtin(ctx.ctx.tcx, did) {
         for did in bg {
-            ctx.finish(did);
+            ctx.ctx.finish(did);
         }
         return;
     }
 
     let repr = *bg.first().unwrap();
-    let mut names = CloneMap::new(ctx.tcx, repr, CloneLevel::Stub);
+    let mut names = CloneMap::new(ctx.ctx.tcx, repr, CloneLevel::Stub);
 
-    let name = module_name(ctx.tcx, repr);
+    let name = module_name(ctx.ctx.tcx, repr);
 
     // Trusted types (opaque)
-    if util::is_trusted(ctx.tcx, repr) {
+    if util::is_trusted(ctx.ctx.tcx, repr) {
         if bg.len() > 1 {
-            ctx.crash_and_error(span, "cannot mark mutually recursive types as trusted");
+            ctx.ctx.crash_and_error(span, "cannot mark mutually recursive types as trusted");
         }
-        let ty_name = translate_ty_name(ctx, repr).name;
+        let ty_name = translate_ty_name(&mut ctx.ctx, repr).name;
 
-        let ty_params: Vec<_> = ty_param_names(ctx.tcx, repr).collect();
+        let ty_params: Vec<_> = ty_param_names(ctx.ctx.tcx, repr).collect();
         let modl = Module {
             name,
             decls: vec![Decl::TyDecl(TyDecl::Opaque {
@@ -316,16 +316,16 @@ pub(crate) fn translate_tydecl(ctx: &mut TranslationCtx<'_>, did: DefId) {
         ctx.add_type(repr, vec![modl]);
         let _ = names.to_clones(ctx);
         for did in bg {
-            ctx.finish(did);
+            ctx.ctx.finish(did);
         }
         return;
     }
 
     // UGLY hack to ensure that we don't explicitly use/clone the members of a binding group
     for did in &bg {
-        let substs = InternalSubsts::identity_for_item(ctx.tcx, *did);
+        let substs = InternalSubsts::identity_for_item(ctx.ctx.tcx, *did);
         for field in ctx.adt_def(did).all_fields() {
-            for ty in field.ty(ctx.tcx, substs).walk() {
+            for ty in field.ty(ctx.ctx.tcx, substs).walk() {
                 let k = match ty.unpack() {
                     rustc_middle::ty::subst::GenericArgKind::Type(ty) => ty,
                     _ => continue,
@@ -341,19 +341,19 @@ pub(crate) fn translate_tydecl(ctx: &mut TranslationCtx<'_>, did: DefId) {
 
     let mut tys = Vec::new();
     for did in bg.iter() {
-        tys.push(build_ty_decl(ctx, &mut names, *did));
+        tys.push(build_ty_decl(&mut ctx.ctx, &mut names, *did));
     }
 
     let (mut decls, _) = names.to_clones(ctx);
     decls.push(Decl::TyDecl(TyDecl::Adt { tys: tys.clone() }));
     let mut modls = vec![Module { name: name.clone(), decls }];
     for did in &bg {
-        ctx.finish(*did);
+        ctx.ctx.finish(*did);
         if *did == repr {
             continue;
         };
         modls.push(Module {
-            name: module_name(ctx.tcx, *did),
+            name: module_name(ctx.ctx.tcx, *did),
             decls: vec![Decl::UseDecl(Use { name: name.clone().into(), as_: None, export: true })],
         });
     }
@@ -439,27 +439,27 @@ fn field_ty<'tcx>(
 }
 
 pub(crate) fn translate_accessor(
-    ctx: &mut TranslationCtx<'_>,
+    ctx: &mut Why3Backend<'_>,
     adt_did: DefId,
     variant_did: DefId,
     field_id: DefId,
 ) -> Decl {
-    let adt_def = ctx.tcx.adt_def(adt_did);
+    let adt_def = ctx.adt_def(adt_did);
     let variant_ix = adt_def.variant_index_with_id(variant_did);
     let variant = &adt_def.variants()[variant_ix];
     let ix = variant.fields.iter().position(|f| f.did == field_id).unwrap();
     let field = &variant.fields[ix];
 
-    let substs = InternalSubsts::identity_for_item(ctx.tcx, adt_did);
-    let repr = ctx.representative_type(adt_did);
-    let mut names = CloneMap::new(ctx.tcx, repr, CloneLevel::Stub);
+    let substs = InternalSubsts::identity_for_item(ctx.ctx.tcx, adt_did);
+    let repr = ctx.ctx.representative_type(adt_did);
+    let mut names = CloneMap::new(ctx.ctx.tcx, repr, CloneLevel::Stub);
 
     // UGLY hack to ensure that we don't explicitly use/clone the members of a binding group
-    let bg = ctx.binding_group(repr).clone();
+    let bg = ctx.ctx.binding_group(repr).clone();
     for did in &bg {
-        let substs = InternalSubsts::identity_for_item(ctx.tcx, *did);
+        let substs = InternalSubsts::identity_for_item(ctx.ctx.tcx, *did);
         for field in ctx.adt_def(did).all_fields() {
-            for ty in field.ty(ctx.tcx, substs).walk() {
+            for ty in field.ty(ctx.ctx.tcx, substs).walk() {
                 let k = match ty.unpack() {
                     rustc_middle::ty::subst::GenericArgKind::Type(ty) => ty,
                     _ => continue,
@@ -476,7 +476,7 @@ pub(crate) fn translate_accessor(
     let ty_name = names.ty(adt_did, substs);
     let acc_name = format!("{}_{}", variant.name.as_str().to_ascii_lowercase(), field.name);
 
-    let (target_ty, ghost) = field_ty(ctx, &mut names, &variant.fields[ix], substs);
+    let (target_ty, ghost) = field_ty(&mut ctx.ctx, &mut names, &variant.fields[ix], substs);
 
     let variant_arities: Vec<_> = adt_def
         .variants()
@@ -486,7 +486,7 @@ pub(crate) fn translate_accessor(
 
     let this = MlT::TApp(
         box MlT::TConstructor(ty_name.clone().into()),
-        ty_param_names(ctx.tcx, adt_did).map(MlT::TVar).collect(),
+        ty_param_names(ctx.ctx.tcx, adt_did).map(MlT::TVar).collect(),
     );
 
     let _ = names.to_clones(ctx);

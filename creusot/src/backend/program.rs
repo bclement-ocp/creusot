@@ -31,12 +31,14 @@ use why3::{
     Ident, QName,
 };
 
-fn closure_ty<'tcx>(ctx: &mut TranslationCtx<'tcx>, def_id: DefId) -> Module {
-    let mut names = CloneMap::new(ctx.tcx, def_id, CloneLevel::Body);
+use super::Why3Backend;
+
+fn closure_ty<'tcx>(ctx: &mut Why3Backend<'tcx>, def_id: DefId) -> Module {
+    let mut names = CloneMap::new(ctx.ctx.tcx, def_id, CloneLevel::Body);
     let mut decls = Vec::new();
 
-    let TyKind::Closure(_, subst) = ctx.tcx.type_of(def_id).kind() else { unreachable!() };
-    let env_ty = Decl::TyDecl(translate_closure_ty(ctx, &mut names, def_id, subst));
+    let TyKind::Closure(_, subst) = ctx.type_of(def_id).kind() else { unreachable!() };
+    let env_ty = Decl::TyDecl(translate_closure_ty(&mut ctx.ctx, &mut names, def_id, subst));
 
     let (clones, _) = names.to_clones(ctx);
     decls.extend(
@@ -45,7 +47,7 @@ fn closure_ty<'tcx>(ctx: &mut TranslationCtx<'tcx>, def_id: DefId) -> Module {
     );
     decls.push(env_ty);
 
-    Module { name: format!("{}_Type", &*module_name(ctx.tcx, def_id)).into(), decls }
+    Module { name: format!("{}_Type", &*module_name(ctx.ctx.tcx, def_id)).into(), decls }
 }
 
 pub(crate) fn closure_type_use<'tcx>(
@@ -90,7 +92,7 @@ pub(crate) fn closure_aux_defs<'tcx>(
 }
 
 pub(crate) fn translate_closure<'tcx>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     def_id: DefId,
 ) -> (Module, Option<Module>) {
     assert!(ctx.is_closure(def_id));
@@ -99,10 +101,10 @@ pub(crate) fn translate_closure<'tcx>(
 }
 
 pub(crate) fn translate_function<'tcx, 'sess>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     def_id: DefId,
 ) -> Option<Module> {
-    let tcx = ctx.tcx;
+    let tcx = ctx.ctx.tcx;
     let mut names = CloneMap::new(tcx, def_id, CloneLevel::Body);
 
     let body = to_why(ctx, &mut names, def_id)?;
@@ -110,8 +112,8 @@ pub(crate) fn translate_function<'tcx, 'sess>(
     // We use `mir_promoted` as it is the MIR required by borrowck which we will have run by this point
     let (_, promoted) = tcx.mir_promoted(WithOptConstParam::unknown(def_id.expect_local()));
 
-    let closure_defs = if ctx.tcx.is_closure(def_id) {
-        closure_aux_defs(ctx, &mut names, def_id)
+    let closure_defs = if ctx.is_closure(def_id) {
+        closure_aux_defs(&mut ctx.ctx, &mut names, def_id)
     } else {
         Vec::new()
     };
@@ -120,20 +122,20 @@ pub(crate) fn translate_function<'tcx, 'sess>(
 
     let (clones, _) = names.to_clones(ctx);
 
-    let decls = closure_generic_decls(ctx.tcx, def_id)
-        .chain(closure_type_use(ctx, def_id))
+    let decls = closure_generic_decls(tcx, def_id)
+        .chain(closure_type_use(&mut ctx.ctx, def_id))
         .chain(clones)
         .chain(closure_defs)
         .chain(promoteds)
         .chain(std::iter::once(body))
         .collect();
 
-    let name = module_name(ctx.tcx, def_id);
+    let name = module_name(tcx, def_id);
     Some(Module { name, decls })
 }
 
 fn lower_promoted<'tcx>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     names: &mut CloneMap<'tcx>,
     def_id: DefId,
     promoted: &IndexVec<mir::Promoted, mir::Body<'tcx>>,
@@ -142,12 +144,12 @@ fn lower_promoted<'tcx>(
 
     let mut decls = Vec::new();
     for p in promoted.iter_enumerated() {
-        if is_ghost_closure(ctx.tcx, p.1.return_ty()).is_some() {
+        if is_ghost_closure(ctx.ctx.tcx, p.1.return_ty()).is_some() {
             continue;
         }
 
-        let promoted = promoted::translate_promoted(ctx, names, param_env, p, def_id);
-        let promoted = promoted.unwrap_or_else(|e| e.emit(ctx.tcx.sess));
+        let promoted = promoted::translate_promoted(&mut ctx.ctx, names, param_env, p, def_id);
+        let promoted = promoted.unwrap_or_else(|e| e.emit(ctx.ctx.tcx.sess));
 
         decls.push(promoted);
     }
@@ -156,25 +158,25 @@ fn lower_promoted<'tcx>(
 }
 
 pub fn to_why<'tcx>(
-    ctx: &mut TranslationCtx<'tcx>,
+    ctx: &mut Why3Backend<'tcx>,
     names: &mut CloneMap<'tcx>,
     def_id: DefId,
 ) -> Option<Decl> {
-    if !def_id.is_local() || !util::has_body(ctx, def_id) || util::is_trusted(ctx.tcx, def_id) {
+    if !def_id.is_local() || !util::has_body(&mut ctx.ctx, def_id) || util::is_trusted(ctx.ctx.tcx, def_id) {
         return None;
     }
 
     let (mir, _) = ctx.mir_promoted(WithOptConstParam::unknown(def_id.expect_local()));
     let mut mir = mir.borrow().clone();
-    CleanupPostBorrowck.run_pass(ctx.tcx, &mut mir);
-    SimplifyCfg::new("verify").run_pass(ctx.tcx, &mut mir);
+    CleanupPostBorrowck.run_pass(ctx.ctx.tcx, &mut mir);
+    SimplifyCfg::new("verify").run_pass(ctx.ctx.tcx, &mut mir);
 
-    let body = ctx.fmir_body(def_id).unwrap().clone();
+    let body = ctx.ctx.fmir_body(def_id).unwrap().clone();
 
     let vars: Vec<_> = body
         .locals
         .into_iter()
-        .map(|(id, sp, ty)| (false, id, ty::translate_ty(ctx, names, sp, ty)))
+        .map(|(id, sp, ty)| (false, id, ty::translate_ty(&mut ctx.ctx, names, sp, ty)))
         .collect();
 
     let entry = mlcfg::Block {
@@ -190,8 +192,8 @@ pub fn to_why<'tcx>(
         terminator: mlcfg::Terminator::Goto(BlockId(0)),
     };
 
-    let mut sig = signature_of(ctx, names, def_id);
-    if matches!(util::item_type(ctx.tcx, def_id), ItemType::Program | ItemType::Closure) {
+    let mut sig = signature_of(&mut ctx.ctx, names, def_id);
+    if matches!(util::item_type(ctx.ctx.tcx, def_id), ItemType::Program | ItemType::Closure) {
         sig.attrs.push(declaration::Attribute::Attr("cfg:stackify".into()));
         sig.attrs.push(declaration::Attribute::Attr("cfg:subregion_analysis".into()));
     };
@@ -205,7 +207,7 @@ pub fn to_why<'tcx>(
         blocks: body
             .blocks
             .into_iter()
-            .map(|(bb, bbd)| (BlockId(bb.into()), bbd.to_why(ctx, names, &mir)))
+            .map(|(bb, bbd)| (BlockId(bb.into()), bbd.to_why(&mut ctx.ctx, names, &mir)))
             .collect(),
     });
     Some(func)
@@ -553,7 +555,7 @@ impl<'tcx> Statement<'tcx> {
                 exps
             }
             Statement::Resolve(id, subst, pl) => {
-                ctx.translate(id);
+                // ctx./translate(id);
 
                 let rp = Exp::impure_qvar(names.value(id, subst));
 

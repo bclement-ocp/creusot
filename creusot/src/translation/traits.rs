@@ -5,7 +5,7 @@ use crate::{
         ty::{self},
     },
     util,
-    util::{inputs_and_output, is_law, is_spec},
+    util::{inputs_and_output, is_law, is_spec}, backend::Why3Backend,
 };
 use rustc_hir::def_id::DefId;
 use rustc_infer::infer::TyCtxtInferExt;
@@ -112,35 +112,35 @@ impl<'tcx> TranslationCtx<'tcx> {
 
         TraitImpl { laws, refinements }
     }
+}
 
-    pub(crate) fn translate_assoc_ty(&mut self, def_id: DefId) -> (Module, CloneSummary<'tcx>) {
-        assert_eq!(util::item_type(self.tcx, def_id), ItemType::AssocTy);
+pub(crate) fn translate_assoc_ty<'tcx>(ctx: &mut Why3Backend<'tcx>, def_id: DefId) -> (Module, CloneSummary<'tcx>) {
+    assert_eq!(util::item_type(ctx.ctx.tcx, def_id), ItemType::AssocTy);
 
-        let mut names = CloneMap::new(self.tcx, def_id, CloneLevel::Interface);
+    let mut names = CloneMap::new(ctx.ctx.tcx, def_id, CloneLevel::Interface);
 
-        let mut decls: Vec<_> = all_generic_decls_for(self.tcx, def_id).collect();
-        let name = item_name(self.tcx, def_id, Namespace::TypeNS);
+    let mut decls: Vec<_> = all_generic_decls_for(ctx.ctx.tcx, def_id).collect();
+    let name = item_name(ctx.ctx.tcx, def_id, Namespace::TypeNS);
 
-        let ty_decl = match self.tcx.associated_item(def_id).container {
-            rustc_middle::ty::ImplContainer => names.with_public_clones(|names| {
-                let assoc_ty = self.tcx.type_of(def_id);
-                TyDecl::Alias {
-                    ty_name: name.clone(),
-                    ty_params: vec![],
-                    alias: ty::translate_ty(self, names, rustc_span::DUMMY_SP, assoc_ty),
-                }
-            }),
-            rustc_middle::ty::TraitContainer => {
-                TyDecl::Opaque { ty_name: name.clone(), ty_params: vec![] }
+    let ty_decl = match ctx.associated_item(def_id).container {
+        rustc_middle::ty::ImplContainer => names.with_public_clones(|names| {
+            let assoc_ty = ctx.ctx.tcx.type_of(def_id);
+            TyDecl::Alias {
+                ty_name: name.clone(),
+                ty_params: vec![],
+                alias: ty::translate_ty(&mut ctx.ctx, names, rustc_span::DUMMY_SP, assoc_ty),
             }
-        };
+        }),
+        rustc_middle::ty::TraitContainer => {
+            TyDecl::Opaque { ty_name: name.clone(), ty_params: vec![] }
+        }
+    };
 
-        let (clones, summary) = names.to_clones(self);
-        decls.extend(clones);
-        decls.push(Decl::TyDecl(ty_decl));
+    let (clones, summary) = names.to_clones(ctx);
+    decls.extend(clones);
+    decls.push(Decl::TyDecl(ty_decl));
 
-        (Module { name: module_name(self.tcx, def_id), decls }, summary)
-    }
+    (Module { name: module_name(ctx.ctx.tcx, def_id), decls }, summary)
 }
 
 fn logic_refinement_term<'tcx>(
