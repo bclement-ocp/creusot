@@ -154,6 +154,33 @@ module CreusotContracts_Model_Impl3_ShallowModel
     ensures { result = shallow_model self }
     
 end
+module CreusotContracts_Logic_Ops_Impl1_IndexLogic_Stub
+  type t
+  type s
+  use prelude.Int
+  function index_logic [@inline:trivial] (self : s) (ix : int) : t
+end
+module CreusotContracts_Logic_Ops_Impl1_IndexLogic_Interface
+  type t
+  type s
+  use prelude.Int
+  function index_logic [@inline:trivial] (self : s) (ix : int) : t
+end
+module CreusotContracts_Logic_Ops_Impl1_IndexLogic
+  type t
+  type s
+  use prelude.Int
+  use seq.Seq
+  use seq.Seq
+  clone CreusotContracts_Model_ShallowModel_ShallowModel_Stub as ShallowModel0 with
+    type self = s,
+    type ShallowModelTy0.shallowModelTy = Seq.seq t
+  function index_logic [@inline:trivial] (self : s) (ix : int) : t =
+    Seq.get (ShallowModel0.shallow_model self) ix
+  val index_logic [@inline:trivial] (self : s) (ix : int) : t
+    ensures { result = index_logic self ix }
+    
+end
 module Core_Slice_Impl0_SplitFirstMut_Interface
   type t
   use seq.Seq
@@ -169,13 +196,19 @@ module Core_Slice_Impl0_SplitFirstMut_Interface
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  clone CreusotContracts_Logic_Ops_Impl1_IndexLogic_Stub as IndexLogic1 with
+    type t = t,
+    type s = seq t
+  clone CreusotContracts_Logic_Ops_Impl1_IndexLogic_Stub as IndexLogic0 with
+    type t = t,
+    type s = borrowed (seq t)
   clone CreusotContracts_Model_Impl3_ShallowModel_Stub as ShallowModel0 with
     type t = seq t,
     type ShallowModelTy0.shallowModelTy = Seq.seq t
   use Core_Option_Option_Type as Core_Option_Option_Type
   val split_first_mut (self : borrowed (seq t)) : Core_Option_Option_Type.t_option (borrowed t, borrowed (seq t))
     ensures { result = Core_Option_Option_Type.C_None -> Seq.length (ShallowModel0.shallow_model self) = 0 /\  ^ self =  * self /\ ShallowModel0.shallow_model self = Seq.empty  }
-    ensures { forall tail : borrowed (seq t) . forall first : borrowed t . result = Core_Option_Option_Type.C_Some (first, tail) /\  * first = Seq.get (ShallowModel0.shallow_model self) 0 /\  ^ first = Seq.get (ShallowModel1.shallow_model ( ^ self)) 0 /\ Seq.length (ShallowModel0.shallow_model self) > 0 /\ Seq.length (ShallowModel1.shallow_model ( ^ self)) > 0 /\ ShallowModel0.shallow_model tail = Tail0.tail (ShallowModel0.shallow_model self) /\ ShallowModel1.shallow_model ( ^ tail) = Tail0.tail (ShallowModel1.shallow_model ( ^ self)) }
+    ensures { forall tail : borrowed (seq t) . forall first : borrowed t . result = Core_Option_Option_Type.C_Some (first, tail) /\  * first = IndexLogic0.index_logic self 0 /\  ^ first = IndexLogic1.index_logic ( ^ self) 0 /\ Seq.length (ShallowModel0.shallow_model self) > 0 /\ Seq.length (ShallowModel1.shallow_model ( ^ self)) > 0 /\ ShallowModel0.shallow_model tail = Tail0.tail (ShallowModel0.shallow_model self) /\ ShallowModel1.shallow_model ( ^ tail) = Tail0.tail (ShallowModel1.shallow_model ( ^ self)) }
     
 end
 module CreusotContracts_Resolve_Impl1_Resolve_Stub
@@ -283,10 +316,18 @@ module TakeFirstMut_TakeFirstMut
     type t = t,
     val Max0.mAX' = Max0.mAX',
     axiom .
+  clone CreusotContracts_Logic_Ops_Impl1_IndexLogic as IndexLogic1 with
+    type t = t,
+    type s = seq t,
+    function ShallowModel0.shallow_model = ShallowModel0.shallow_model
   clone CreusotContracts_Model_Impl3_ShallowModel as ShallowModel1 with
     type t = seq t,
     type ShallowModelTy0.shallowModelTy = Seq.seq t,
     function ShallowModel0.shallow_model = ShallowModel0.shallow_model
+  clone CreusotContracts_Logic_Ops_Impl1_IndexLogic as IndexLogic0 with
+    type t = t,
+    type s = borrowed (seq t),
+    function ShallowModel0.shallow_model = ShallowModel1.shallow_model
   clone CreusotContracts_Std1_Slice_Impl2_IsDefault as IsDefault0 with
     type t = t,
     function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
@@ -304,6 +345,8 @@ module TakeFirstMut_TakeFirstMut
   clone Core_Slice_Impl0_SplitFirstMut_Interface as SplitFirstMut0 with
     type t = t,
     function ShallowModel0.shallow_model = ShallowModel1.shallow_model,
+    function IndexLogic0.index_logic = IndexLogic0.index_logic,
+    function IndexLogic1.index_logic = IndexLogic1.index_logic,
     function ShallowModel1.shallow_model = ShallowModel0.shallow_model,
     function Tail0.tail = Tail0.tail,
     val Max0.mAX' = Max0.mAX'

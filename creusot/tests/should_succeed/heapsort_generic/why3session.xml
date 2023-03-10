@@ -2,9 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="CVC4" version="1.8" timelimit="10" steplimit="0" memlimit="4000"/>
+<prover id="1" name="CVC5" version="1.0.2" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Alt-Ergo" version="2.4.1" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="3" name="CVC5" version="1.0.0" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="4" name="Alt-Ergo" version="2.4.2" timelimit="1" steplimit="0" memlimit="1000"/>
 <file format="mlcfg" proved="true">
 <path name=".."/><path name="heapsort_generic.mlcfg"/>
 <theory name="HeapsortGeneric_HeapFragMax_Impl" proved="true">
@@ -16,104 +16,118 @@
  <goal name="sift_down&#39;vc" expl="VC for sift_down" proved="true">
  <transf name="split_vc" proved="true" >
   <goal name="sift_down&#39;vc.0" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="39"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="39"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.1" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="10"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="10"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.2" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="11"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="18"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.3" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="17"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="17"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.4" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="90"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="90"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.5" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.02" steps="242"/></proof>
+  <proof prover="4"><result status="valid" time="0.02" steps="242"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.6" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.03" steps="433"/></proof>
+  <proof prover="4"><result status="valid" time="0.03" steps="433"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.7" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="26"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="26"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.8" expl="division by zero" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="27"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="27"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.9" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.01" steps="90"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="91"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.10" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.03" steps="398"/></proof>
+  <proof prover="4"><result status="valid" time="0.02" steps="400"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.11" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.03" steps="442"/></proof>
+  <proof prover="4"><result status="valid" time="0.02" steps="444"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.12" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.03" steps="548"/></proof>
+  <proof prover="4"><result status="valid" time="0.03" steps="551"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.13" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.04" steps="455"/></proof>
+  <proof prover="4"><result status="valid" time="0.04" steps="456"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.14" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.02" steps="129"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="129"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.15" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.04" steps="493"/></proof>
+  <proof prover="4"><result status="valid" time="0.04" steps="497"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.16" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.02" steps="317"/></proof>
+  <proof prover="4"><result status="valid" time="0.02" steps="312"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.17" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1114"/></proof>
+  <proof prover="4"><result status="valid" time="0.07" steps="1126"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.18" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1113"/></proof>
+  <proof prover="4"><result status="valid" time="0.07" steps="1113"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.19" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1175"/></proof>
+  <proof prover="4"><result status="valid" time="0.08" steps="1202"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.20" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.08" steps="1262"/></proof>
+  <proof prover="4"><result status="valid" time="0.09" steps="1358"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.21" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1181"/></proof>
+  <proof prover="4"><result status="valid" time="0.08" steps="1178"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.22" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1341"/></proof>
+  <proof prover="4"><result status="valid" time="0.06" steps="1328"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.23" expl="loop invariant preservation" proved="true">
-  <proof prover="3"><result status="valid" time="0.20" steps="37821"/></proof>
+  <proof prover="1"><result status="valid" time="0.22" steps="39193"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.24" expl="loop invariant preservation" proved="true">
-  <proof prover="3"><result status="valid" time="0.93" steps="127774"/></proof>
-  </goal>
-  <goal name="sift_down&#39;vc.25" expl="loop invariant preservation" proved="true">
-  <transf name="remove" proved="true" arg1="zero,one,(-),(&gt;),(&lt;=),(&gt;=),uint64&#39;maxInt,uint64&#39;minInt,max_uint64,length1,radix,min_unsigned,in_bounds1,singleton,cons,snoc,(++),mem,iseq,occ,occ_all,seq_eq_sub,permut_sub,permut_all,id,mAX&#39;,shallow_model5,in_bounds,resolve,heap_frag,Assoc1,Unit_def_l,Unit_def_r,Inv_def_l,Inv_def_r,Comm1,Assoc,Mul_distr_l,Mul_distr_r,Comm,Unitary,NonTrivialRing,Refl,Trans,Antisymm,Total,ZeroLessOne,CompatOrderAdd,CompatOrderMult,Abs_le,Abs_pos,Div_bound,Div_sign_pos,Mod_sign_neg,Rounds_toward_zero,Div_1,Mod_1,Div_inf,Mod_inf,Div_mult,Mod_mult,numof&#39;def,Numof_bounds,Numof_append,Numof_left_no_add,Numof_left_add,Empty,Full,numof_increasing,numof_strictly_increasing,numof_change_any,numof_change_some,numof_change_equiv,to_int_in_bounds,extensionality,zero_unsigned_is_zero,length_nonnegative,(==)&#39;spec,create&#39;spec,empty&#39;def,set&#39;spec,set&#39;def,([&lt;-])&#39;def,singleton&#39;spec,cons&#39;spec,snoc&#39;spec,([..])&#39;spec,([..])&#39;def,([_..])&#39;def,([.._])&#39;def,(++)&#39;spec,mem_append,mem_tail,occ_cons,occ_snoc,occ_tail,append_num_occ,exchange_set,exchange_permut_sub,Permut_sub_weakening,permut_refl,permut_sym,permut_trans,permut_exists,permut_all_mem,exchange_permut_all,shallow_model_spec1,shallow_model_spec,eq_cmp_spec,antisym1_spec,trans_spec,refl_spec,cmp_gt_log_spec,cmp_ge_log_spec,Requires2,Requires1,permutation1,H8,H7,unchanged1,keep_bound1,H6,Ensures9,Ensures8,Assert,Ensures7,Assume2,Assume1,unchanged,keep_bound">
-   <goal name="sift_down&#39;vc.25.0" expl="loop invariant preservation" proved="true">
-   <proof prover="3"><result status="valid" time="0.20" steps="30991"/></proof>
+  <transf name="split_vc" proved="true" >
+   <goal name="sift_down&#39;vc.24.0" expl="loop invariant preservation" proved="true">
+   <transf name="split_vc" proved="true" >
+    <goal name="sift_down&#39;vc.24.0.0" expl="loop invariant preservation" proved="true">
+    <transf name="split_vc" proved="true" >
+     <goal name="sift_down&#39;vc.24.0.0.0" expl="loop invariant preservation" proved="true">
+     <proof prover="1"><result status="valid" time="0.99" steps="191181"/></proof>
+     </goal>
+     <goal name="sift_down&#39;vc.24.0.0.1" expl="loop invariant preservation" proved="true">
+     <proof prover="1"><result status="valid" time="0.83" steps="152296"/></proof>
+     </goal>
+    </transf>
+    </goal>
+   </transf>
+   </goal>
+   <goal name="sift_down&#39;vc.24.1" expl="loop invariant preservation" proved="true">
+   <proof prover="1"><result status="valid" time="0.93" steps="172959"/></proof>
    </goal>
   </transf>
   </goal>
+  <goal name="sift_down&#39;vc.25" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" time="0.87" steps="136908"/></proof>
+  </goal>
   <goal name="sift_down&#39;vc.26" expl="loop invariant preservation" proved="true">
-  <proof prover="3"><result status="valid" time="0.41" steps="63516"/></proof>
+  <proof prover="1"><result status="valid" time="0.60" steps="92457"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.27" expl="loop invariant preservation" proved="true">
-  <proof prover="3"><result status="valid" time="0.46" steps="72463"/></proof>
+  <proof prover="1"><result status="valid" time="0.70" steps="108687"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.28" expl="postcondition" proved="true">
-  <proof prover="3"><result status="valid" time="0.83" steps="107253"/></proof>
+  <proof prover="1"><result status="valid" time="0.74" steps="106660"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.29" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.04" steps="346"/></proof>
+  <proof prover="4"><result status="valid" time="0.03" steps="346"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.30" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.04" steps="389"/></proof>
+  <proof prover="4"><result status="valid" time="0.07" steps="985"/></proof>
   </goal>
   <goal name="sift_down&#39;vc.31" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.20" steps="2728"/></proof>
+  <proof prover="4"><result status="valid" time="0.25" steps="3235"/></proof>
   </goal>
  </transf>
  </goal>
@@ -122,108 +136,104 @@
  <goal name="heap_sort&#39;vc" expl="VC for heap_sort" proved="true">
  <transf name="split_vc" proved="true" >
   <goal name="heap_sort&#39;vc.0" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" time="0.05" steps="12"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="12"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.1" expl="division by zero" proved="true">
-  <proof prover="2"><result status="valid" time="0.03" steps="13"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="13"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.2" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="68"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="68"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.3" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.12" steps="236"/></proof>
+  <proof prover="4"><result status="valid" time="0.02" steps="236"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.4" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.04" steps="450"/></proof>
+  <proof prover="4"><result status="valid" time="0.03" steps="447"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.5" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.05" steps="108"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="108"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.6" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="128"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="128"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.7" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.05" steps="29"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="29"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.8" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="151"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="151"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.9" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.08" steps="216"/></proof>
+  <proof prover="4"><result status="valid" time="0.02" steps="216"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.10" expl="loop invariant init" proved="true">
-  <proof prover="2"><result status="valid" time="0.06" steps="141"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="141"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.11" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.18" steps="1075"/></proof>
+  <proof prover="4"><result status="valid" time="0.06" steps="1080"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.12" expl="postcondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="141"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="141"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.13" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.06" steps="148"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="148"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.14" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.04" steps="162"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="162"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.15" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.06" steps="164"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="164"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.16" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" time="1.28" steps="485390"/></proof>
+  <proof prover="1"><result status="valid" time="0.49" steps="94994"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.17" expl="precondition" proved="true">
-  <proof prover="0" timelimit="5" memlimit="2000"><result status="valid" time="0.28" steps="46259"/></proof>
+  <proof prover="1"><result status="valid" time="0.24" steps="43979"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.18" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.06" steps="57"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="57"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.19" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.09" steps="176"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="176"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.20" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.05" steps="666"/></proof>
+  <proof prover="4"><result status="valid" time="0.04" steps="674"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.21" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="1328"/></proof>
+  <proof prover="4"><result status="valid" time="0.08" steps="1410"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.22" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.11" steps="183"/></proof>
+  <proof prover="4"><result status="valid" time="0.02" steps="183"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.23" expl="loop invariant preservation" proved="true">
   <transf name="split_vc" proved="true" >
    <goal name="heap_sort&#39;vc.23.0" expl="loop invariant preservation" proved="true">
-   <proof prover="0"><result status="valid" time="1.45" steps="515317"/></proof>
+   <proof prover="1" timelimit="5" memlimit="2000"><result status="valid" time="1.68" steps="352101"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="heap_sort&#39;vc.24" expl="loop invariant preservation" proved="true">
-  <transf name="split_vc" proved="true" >
-   <goal name="heap_sort&#39;vc.24.0" expl="loop invariant preservation" proved="true">
-   <proof prover="0"><result status="valid" time="1.42" steps="412141"/></proof>
-   </goal>
-  </transf>
+  <proof prover="1"><result status="valid" time="0.39" steps="77062"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.25" expl="integer overflow" proved="true">
-  <proof prover="2"><result status="valid" time="0.05" steps="121"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="121"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.26" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.02" steps="143"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="143"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.27" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.07" steps="173"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="173"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.28" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" time="0.03" steps="149"/></proof>
+  <proof prover="4"><result status="valid" time="0.01" steps="149"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.29" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.18" steps="1073"/></proof>
+  <proof prover="4"><result status="valid" time="0.06" steps="1073"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.30" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.13" steps="562"/></proof>
+  <proof prover="4"><result status="valid" time="0.04" steps="562"/></proof>
   </goal>
   <goal name="heap_sort&#39;vc.31" expl="loop invariant preservation" proved="true">
-  <proof prover="2"><result status="valid" time="0.17" steps="733"/></proof>
+  <proof prover="4"><result status="valid" time="0.06" steps="735"/></proof>
   </goal>
  </transf>
  </goal>
