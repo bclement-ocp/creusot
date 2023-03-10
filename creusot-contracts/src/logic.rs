@@ -6,6 +6,8 @@ mod mapping;
 mod ord;
 mod seq;
 mod set;
+mod ops;
+
 
 pub use fset::FSet;
 pub use int::Int;
@@ -13,3 +15,4 @@ pub use mapping::Mapping;
 pub use ord::OrdLogic;
 pub use seq::Seq;
 pub use set::Set;
+pub use ops::IndexLogic;
