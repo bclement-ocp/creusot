@@ -59,31 +59,52 @@ module C10Once_Impl0_Completed
     ensures { result = completed self }
     
 end
-module C10Once_Impl1_Invariant_Stub
-  type t
-  use C10Once_Once_Type as C10Once_Once_Type
-  predicate invariant' [#"../10_once.rs" 48 4 48 30] (self : C10Once_Once_Type.t_once t)
+module CreusotContracts_Invariant_Invariant_Invariant_Stub
+  type self
+  predicate invariant' (self : self)
 end
-module C10Once_Impl1_Invariant_Interface
-  type t
-  use C10Once_Once_Type as C10Once_Once_Type
-  predicate invariant' [#"../10_once.rs" 48 4 48 30] (self : C10Once_Once_Type.t_once t)
+module CreusotContracts_Invariant_Invariant_Invariant_Interface
+  type self
+  predicate invariant' (self : self)
 end
-module C10Once_Impl1_Invariant
-  type t
-  use C10Once_Once_Type as C10Once_Once_Type
-  predicate invariant' [#"../10_once.rs" 48 4 48 30] (self : C10Once_Once_Type.t_once t) =
-    [#"../10_once.rs" 49 8 49 12] true
-  val invariant' [#"../10_once.rs" 48 4 48 30] (self : C10Once_Once_Type.t_once t) : bool
+module CreusotContracts_Invariant_Invariant_Invariant
+  type self
+  predicate invariant' (self : self) =
+    true
+  val invariant' (self : self) : bool
     ensures { result = invariant' self }
     
+end
+module CreusotContracts_Invariant_Invariant_IsInhabited_Stub
+  type self
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = self
+  function is_inhabited (_1' : ()) : bool
+end
+module CreusotContracts_Invariant_Invariant_IsInhabited_Interface
+  type self
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = self
+  function is_inhabited (_1' : ()) : bool
+  axiom is_inhabited_spec : forall _1' : () . is_inhabited _1' && (exists x : self . Invariant0.invariant' x /\ Invariant0.invariant' x)
+end
+module CreusotContracts_Invariant_Invariant_IsInhabited
+  type self
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = self
+  function is_inhabited (_1' : ()) : bool =
+    true
+  val is_inhabited (_1' : ()) : bool
+    ensures { result = is_inhabited _1' }
+    
+  axiom is_inhabited_spec : forall _1' : () . is_inhabited _1' && (exists x : self . Invariant0.invariant' x /\ Invariant0.invariant' x)
 end
 module C10Once_Impl0_Produces_Stub
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   predicate produces [#"../10_once.rs" 19 4 19 64] (self : C10Once_Once_Type.t_once t) (visited : Seq.seq t) (o : C10Once_Once_Type.t_once t)
     
 end
@@ -91,8 +112,8 @@ module C10Once_Impl0_Produces_Interface
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   predicate produces [#"../10_once.rs" 19 4 19 64] (self : C10Once_Once_Type.t_once t) (visited : Seq.seq t) (o : C10Once_Once_Type.t_once t)
     
 end
@@ -101,8 +122,8 @@ module C10Once_Impl0_Produces
   use seq.Seq
   use Core_Option_Option_Type as Core_Option_Option_Type
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   predicate produces [#"../10_once.rs" 19 4 19 64] (self : C10Once_Once_Type.t_once t) (visited : Seq.seq t) (o : C10Once_Once_Type.t_once t)
     
    =
@@ -116,10 +137,14 @@ end
 module C10Once_Impl0_Produces_Impl
   type t
   use seq.Seq
-  use Core_Option_Option_Type as Core_Option_Option_Type
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
+  clone CreusotContracts_Invariant_Invariant_IsInhabited as IsInhabited0 with
+    type self = C10Once_Once_Type.t_once t,
+    predicate Invariant0.invariant' = Invariant0.invariant',
+    axiom .
+  use Core_Option_Option_Type as Core_Option_Option_Type
   let rec ghost predicate produces [#"../10_once.rs" 19 4 19 64] (self : C10Once_Once_Type.t_once t) (visited : Seq.seq t) (o : C10Once_Once_Type.t_once t)
     requires {[#"../10_once.rs" 19 16 19 20] Invariant0.invariant' self}
     requires {[#"../10_once.rs" 19 48 19 49] Invariant0.invariant' o}
@@ -131,8 +156,8 @@ module C10Once_Impl0_ProducesRefl_Stub
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces_Stub as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -143,8 +168,8 @@ module C10Once_Impl0_ProducesRefl_Interface
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces_Stub as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -156,8 +181,8 @@ module C10Once_Impl0_ProducesRefl
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces_Stub as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -175,8 +200,12 @@ module C10Once_Impl0_ProducesRefl_Impl
   use seq.Seq
   use Core_Option_Option_Type as Core_Option_Option_Type
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
+  clone CreusotContracts_Invariant_Invariant_IsInhabited as IsInhabited0 with
+    type self = C10Once_Once_Type.t_once t,
+    predicate Invariant0.invariant' = Invariant0.invariant',
+    axiom .
   clone C10Once_Impl0_Produces as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -192,8 +221,8 @@ module C10Once_Impl0_ProducesTrans_Stub
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces_Stub as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -205,8 +234,8 @@ module C10Once_Impl0_ProducesTrans_Interface
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces_Stub as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -219,8 +248,8 @@ module C10Once_Impl0_ProducesTrans
   type t
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces_Stub as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -242,10 +271,14 @@ end
 module C10Once_Impl0_ProducesTrans_Impl
   type t
   use seq.Seq
-  use Core_Option_Option_Type as Core_Option_Option_Type
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
+  clone CreusotContracts_Invariant_Invariant_IsInhabited as IsInhabited0 with
+    type self = C10Once_Once_Type.t_once t,
+    predicate Invariant0.invariant' = Invariant0.invariant',
+    axiom .
+  use Core_Option_Option_Type as Core_Option_Option_Type
   clone C10Once_Impl0_Produces as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -274,8 +307,8 @@ module C10Once_Impl0_Next_Interface
   use prelude.Borrow
   use seq.Seq
   use C10Once_Once_Type as C10Once_Once_Type
-  clone C10Once_Impl1_Invariant_Stub as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant_Stub as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces_Stub as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -296,14 +329,18 @@ module C10Once_Impl0_Next
   type t
   use prelude.Borrow
   use seq.Seq
+  use C10Once_Once_Type as C10Once_Once_Type
+  clone CreusotContracts_Invariant_Invariant_Invariant as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
+  clone CreusotContracts_Invariant_Invariant_IsInhabited as IsInhabited0 with
+    type self = C10Once_Once_Type.t_once t,
+    predicate Invariant0.invariant' = Invariant0.invariant',
+    axiom .
   use Core_Option_Option_Type as Core_Option_Option_Type
   clone Core_Option_Impl0_Take_Interface as Take0 with
     type t = t
-  use C10Once_Once_Type as C10Once_Once_Type
   clone CreusotContracts_Resolve_Impl1_Resolve as Resolve0 with
     type t = C10Once_Once_Type.t_once t
-  clone C10Once_Impl1_Invariant as Invariant0 with
-    type t = t
   clone C10Once_Impl0_Produces as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
@@ -356,8 +393,8 @@ module C10Once_Impl0
   clone C10Once_Impl0_Completed as Completed0 with
     type t = t,
     predicate Resolve0.resolve = Resolve0.resolve
-  clone C10Once_Impl1_Invariant as Invariant0 with
-    type t = t
+  clone CreusotContracts_Invariant_Invariant_Invariant as Invariant0 with
+    type self = C10Once_Once_Type.t_once t
   clone C10Once_Impl0_Produces as Produces0 with
     type t = t,
     predicate Invariant0.invariant' = Invariant0.invariant',
